@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#1C2E46</color>
+    <color name="primary">#2192FF</color>
     <color name="primary_dark">#142232</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
@@ -8,6 +8,13 @@
     <color name="input_background">#ECECEC</color>
     <color name="icon_background">#20FFFFFF</color>
     <color name="error">#B00020</color>
-    <color name="received_message_background">#090D16</color>
+    <color name="received_message_background">#F0F0F0</color>
     <color name="online">#008000</color>
+    <color name="background_design">#4D60EFB8</color>
+    <color name="background_design_nontransparent">#60EFB8</color>
+    <color name="background_design_white">#80FFFFFF</color>
+    <color name="background_intro">#D4EDFC</color>
+    <color name="sent_message">#0014FF</color>
+    <color name="home_text">#3B7CFA</color>
+    <color name="home_dark_text">#001584</color>
 </resources>

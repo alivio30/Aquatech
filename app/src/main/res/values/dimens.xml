@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_150dp">150dp</dimen>
+    <dimen name="_850dp">850dp</dimen>
+    <dimen name="_950dp">950dp</dimen>
+    <dimen name="_800dp">800</dimen>
+    <dimen name="_820dp">820dp</dimen>
+    <dimen name="_805dp">805dp</dimen>
+    <dimen name="_750dp">750dp</dimen>
+</resources>

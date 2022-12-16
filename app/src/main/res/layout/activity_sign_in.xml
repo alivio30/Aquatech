@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,30 +8,47 @@
     android:overScrollMode="never"
     android:padding="@dimen/_24sdp"
     android:scrollbars="none"
+    android:background="@color/background_intro"
     tools:context=".activities.SignInActivity">
+
+    <View
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:translationX="-32dp"
+        android:translationY="-32dp"
+        android:background="@drawable/circle_design_top"
+        tools:ignore="MissingConstraints" />
+    <View
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:translationX="-32dp"
+        android:translationY="-32dp"
+        android:background="@drawable/circle_design"
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="31dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
-            android:text="@string/welcome_back"
+            android:text="@string/welcome_to_aquatech"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_18ssp"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:text="@string/login_to_continue"
-            android:textColor="@color/secondary_text"
             android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:src="@drawable/ic_login_image" />
+
         <EditText
             android:id="@+id/inputEmail"
             android:layout_width="match_parent"
@@ -45,7 +62,8 @@
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp"/>
+            android:textSize="@dimen/_13ssp" />
+
         <EditText
             android:id="@+id/inputPassword"
             android:layout_width="match_parent"
@@ -59,12 +77,22 @@
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp"/>
+            android:textSize="@dimen/_13ssp" />
+
+        <TextView
+            android:id="@+id/textForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/forgot_password"
+            android:textColor="#1F78FF"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
             android:animateLayoutChanges="true">
 
             <com.google.android.material.button.MaterialButton
@@ -83,7 +111,7 @@
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_gravity="center"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
         </FrameLayout>
 
         <TextView
@@ -94,9 +122,8 @@
             android:text="@string/create_new_account"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/_13ssp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

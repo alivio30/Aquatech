@@ -1,6 +1,7 @@
 package com.example.chatapp.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.chatapp.R;
 import com.example.chatapp.adapters.RecentConversionsAdapter;
 import com.example.chatapp.databinding.ActivityMainBinding;
 import com.example.chatapp.listeners.ConversationListener;
@@ -36,6 +38,7 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     private List<ChatMessage> conversations;
     private RecentConversionsAdapter conversionsAdapter;
     private FirebaseFirestore database;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,31 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         getToken();
         setListener();
         listenConversations();
+
+        binding.bottomNavigationView.setSelectedItemId(R.id.chat);
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            switch (item.getItemId()){
+
+                case R.id.home:
+                    startActivity(new Intent(getApplicationContext(), homeActivity.class));
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.search:
+                    startActivity(new Intent(getApplicationContext(), searchActivity.class));
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.chat:
+                    return true;
+                case R.id.profile:
+                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
+                    overridePendingTransition(0,0);
+                    return true;
+            }
+            return false;
+        });
     }
+
 
     private void init() {
         conversations = new ArrayList<>();

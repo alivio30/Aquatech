@@ -24,7 +24,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
         this.users = users;
         this.userListener = userListener;
-
     }
 
     @NonNull

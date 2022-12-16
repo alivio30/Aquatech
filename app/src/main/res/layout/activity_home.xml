@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.homeActivity">
+    <View
+        android:id="@+id/viewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_191sdp"
+        android:background="@color/primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view">
+    </View>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:background="@drawable/background_icon"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textName"
+        app:riv_corner_radius="@dimen/_8sdp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageSignOut"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@drawable/background_icon"
+        android:padding="@dimen/_6sdp"
+        android:src="@drawable/ic_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/white"/>
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_130sdp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_163sdp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        android:text="@string/admin"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textName"
+        tools:ignore="MissingConstraints" />
+    <View
+        android:layout_width="@dimen/_180sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:translationX="-32dp"
+        android:translationY="-32dp"
+        android:background="@drawable/circle_design_top"
+        tools:ignore="MissingConstraints" />
+    <View
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_180sdp"
+        android:translationX="-32dp"
+        android:translationY="-32dp"
+        android:background="@drawable/circle_design"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_water_drop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewTop">
+    </View>
+
+    <!-- Output -->
+    <!-- pumps -->
+    <View
+        android:id="@+id/viewPumps"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_3sdp">
+    </View>
+
+    <ImageView
+        android:id="@+id/imagePump"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:src="@drawable/pump_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewPumps"
+        app:layout_constraintStart_toStartOf="@+id/viewPumps"/>
+
+    <TextView
+        android:id="@+id/textPump"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_pump_s"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/imagePump"
+        app:layout_constraintStart_toStartOf="@+id/viewPumps"/>
+
+    <TextView
+        android:id="@+id/textTotalPumps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textPump"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPumps"
+        app:layout_constraintEnd_toEndOf="@+id/viewPumps"
+        app:layout_constraintStart_toStartOf="@+id/viewPumps"/>
+
+    <!-- Tanks -->
+
+    <View
+        android:id="@+id/viewTanks"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintEnd_toStartOf="@id/viewHousehold"
+        app:layout_constraintStart_toEndOf="@+id/viewPumps"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop" />
+
+    <ImageView
+        android:id="@+id/imageTank"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/water_tank_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewTanks"
+        app:layout_constraintStart_toStartOf="@+id/viewTanks" />
+
+    <TextView
+        android:id="@+id/textTank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_tank_s"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/imagePump"
+        app:layout_constraintStart_toStartOf="@id/viewTanks"/>
+
+    <TextView
+        android:id="@+id/textTotalTanks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textTank"
+        app:layout_constraintBottom_toBottomOf="@+id/viewTanks"
+        app:layout_constraintEnd_toEndOf="@+id/viewTanks"
+        app:layout_constraintStart_toStartOf="@+id/viewTanks"/>
+
+    <!-- Household -->
+    <View
+        android:id="@+id/viewHousehold"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toEndOf="@+id/viewTanks"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"/>
+
+    <ImageView
+        android:id="@+id/imageHousehold"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/households_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewHousehold"
+        app:layout_constraintStart_toStartOf="@+id/viewHousehold" />
+
+    <TextView
+        android:id="@+id/textHousehold"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_household_s"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintTop_toBottomOf="@+id/imageHousehold"
+        app:layout_constraintStart_toStartOf="@+id/viewHousehold"/>
+
+    <TextView
+        android:id="@+id/textTotalHousehold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textHousehold"
+        app:layout_constraintBottom_toBottomOf="@+id/viewHousehold"
+        app:layout_constraintEnd_toEndOf="@+id/viewHousehold"
+        app:layout_constraintStart_toStartOf="@+id/viewHousehold"/>
+
+    <!-- active -->
+    <View
+        android:id="@+id/viewActive"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPumps"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_3sdp">
+    </View>
+
+    <ImageView
+        android:id="@+id/imageActive"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/ic_active"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewActive"
+        app:layout_constraintStart_toStartOf="@+id/viewActive"/>
+
+    <TextView
+        android:id="@+id/textActive"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_active"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/imageActive"
+        app:layout_constraintStart_toStartOf="@+id/viewActive"/>
+
+    <TextView
+        android:id="@+id/textTotalActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textActive"
+        app:layout_constraintBottom_toBottomOf="@+id/viewActive"
+        app:layout_constraintEnd_toEndOf="@+id/viewActive"
+        app:layout_constraintStart_toStartOf="@+id/viewActive"/>
+
+    <!-- Disconnected -->
+    <View
+        android:id="@+id/ViewDisconnected"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toEndOf="@+id/viewActive"
+        app:layout_constraintTop_toBottomOf="@+id/viewTanks"
+        app:layout_constraintEnd_toStartOf="@+id/viewInActive"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"/>
+
+    <ImageView
+        android:id="@+id/imageDisconnected"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/ic_disconnected"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/ViewDisconnected"
+        app:layout_constraintStart_toStartOf="@+id/ViewDisconnected" />
+
+    <TextView
+        android:id="@+id/textDisconnected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_disconnect"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintTop_toBottomOf="@+id/imageDisconnected"
+        app:layout_constraintStart_toStartOf="@+id/ViewDisconnected"/>
+
+    <TextView
+        android:id="@+id/textTotalDisconnected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textDisconnected"
+        app:layout_constraintBottom_toBottomOf="@+id/ViewDisconnected"
+        app:layout_constraintEnd_toEndOf="@+id/ViewDisconnected"
+        app:layout_constraintStart_toStartOf="@+id/ViewDisconnected"/>
+
+    <!-- InActive -->
+    <View
+        android:id="@+id/viewInActive"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toEndOf="@+id/ViewDisconnected"
+        app:layout_constraintTop_toBottomOf="@+id/viewHousehold"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"/>
+
+    <ImageView
+        android:id="@+id/imageInActive"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/ic_inactive"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewInActive"
+        app:layout_constraintStart_toStartOf="@+id/viewInActive" />
+
+    <TextView
+        android:id="@+id/textInActive"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_inactive"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/imageInActive"
+        app:layout_constraintStart_toStartOf="@+id/viewInActive"/>
+
+    <TextView
+        android:id="@+id/textTotalInActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textInActive"
+        app:layout_constraintBottom_toBottomOf="@+id/viewInActive"
+        app:layout_constraintEnd_toEndOf="@+id/viewInActive"
+        app:layout_constraintStart_toStartOf="@+id/viewInActive"/>
+
+    <!-- Unread -->
+    <View
+        android:id="@+id/viewUnreadMeter"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_5sdp">
+    </View>
+
+    <ImageView
+        android:id="@+id/imageUnreadMeter"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:src="@drawable/unread_meter_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewUnreadMeter"
+        app:layout_constraintStart_toStartOf="@+id/viewUnreadMeter"/>
+
+    <TextView
+        android:id="@+id/textUnreadMeter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/unread_meter"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/imageUnreadMeter"
+        app:layout_constraintStart_toStartOf="@+id/viewUnreadMeter"/>
+
+    <TextView
+        android:id="@+id/textTotalUnReadMeter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_dark_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textUnreadMeter"
+        app:layout_constraintBottom_toBottomOf="@+id/viewUnreadMeter"
+        app:layout_constraintEnd_toEndOf="@+id/viewUnreadMeter"
+        app:layout_constraintStart_toStartOf="@+id/viewUnreadMeter"/>
+
+    <!-- ReadMeter -->
+    <View
+        android:id="@+id/ViewReadMeter"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toEndOf="@+id/viewUnreadMeter"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toStartOf="@+id/viewWaterConsumption"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"/>
+
+    <ImageView
+        android:id="@+id/imageReadMeter"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/read_meter_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/ViewReadMeter"
+        app:layout_constraintStart_toStartOf="@+id/ViewReadMeter" />
+
+    <TextView
+        android:id="@+id/textReadMeter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/read_meter"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/imageReadMeter"
+        app:layout_constraintStart_toStartOf="@+id/ViewReadMeter"/>
+
+    <TextView
+        android:id="@+id/textTotalReadMeter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_dark_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textReadMeter"
+        app:layout_constraintBottom_toBottomOf="@+id/ViewReadMeter"
+        app:layout_constraintEnd_toEndOf="@+id/ViewReadMeter"
+        app:layout_constraintStart_toStartOf="@+id/ViewReadMeter"/>
+
+    <!-- Water Consumption -->
+    <View
+        android:id="@+id/viewWaterConsumption"
+        android:layout_width="@dimen/_85sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@drawable/background_content_bottom_white"
+        app:layout_constraintStart_toEndOf="@+id/ViewReadMeter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"/>
+
+    <ImageView
+        android:id="@+id/imageWaterConsumption"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/water_consumption_icon"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintTop_toTopOf="@+id/viewWaterConsumption"
+        app:layout_constraintStart_toStartOf="@+id/viewWaterConsumption" />
+
+    <TextView
+        android:id="@+id/textWaterConsumption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/water_consumption"
+        android:textStyle="bold"
+        android:textSize="@dimen/_9ssp"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toBottomOf="@+id/imageWaterConsumption"
+        app:layout_constraintStart_toStartOf="@+id/viewWaterConsumption"/>
+
+    <TextView
+        android:id="@+id/textTotalWaterConsumption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_00000"
+        android:textColor="@color/home_dark_text"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/textWaterConsumption"
+        app:layout_constraintBottom_toBottomOf="@+id/viewWaterConsumption"
+        app:layout_constraintEnd_toEndOf="@+id/viewWaterConsumption"
+        app:layout_constraintStart_toStartOf="@+id/viewWaterConsumption"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+</androidx.constraintlayout.widget.ConstraintLayout>
