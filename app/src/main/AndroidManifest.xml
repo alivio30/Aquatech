@@ -15,9 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatApp"
         tools:targetApi="31">
+
         <activity
             android:name=".activities.ConsumerHomeActivity"
             android:exported="false" />
+        <activity
+            android:name=".ActivityEmpPage.MasterPage"
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".activities.ProfileDetailsActivity"
             android:exported="false" />

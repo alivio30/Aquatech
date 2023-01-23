@@ -98,6 +98,7 @@
     <string name="consumer">Consumer</string>
     <string name="meter_reader_">Meter Reader</string>
     <string name="water_consumption_">Water Consumption :</string>
+    <string name="total_line_s">Total Line/s</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>
