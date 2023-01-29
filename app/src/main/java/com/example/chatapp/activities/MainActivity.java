@@ -51,29 +51,6 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         getToken();
         setListener();
         listenConversations();
-
-        binding.bottomNavigationView.setSelectedItemId(R.id.chat);
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-
-            switch (item.getItemId()){
-
-                case R.id.home:
-                    startActivity(new Intent(getApplicationContext(), homeActivity.class));
-                    overridePendingTransition(0,0);
-                    return true;
-                case R.id.search:
-                    startActivity(new Intent(getApplicationContext(), searchActivity.class));
-                    overridePendingTransition(0,0);
-                    return true;
-                case R.id.chat:
-                    return true;
-                case R.id.profile:
-                    startActivity(new Intent(getApplicationContext(), profileActivity.class));
-                    overridePendingTransition(0,0);
-                    return true;
-            }
-            return false;
-        });
     }
 
 

@@ -78,7 +78,7 @@
         android:textColor="@color/primary_text"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        android:text="@string/admin"
+        android:text="@string/consumer"
         app:layout_constraintBottom_toTopOf="@+id/FragmentContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,5 +116,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/emp_page" />
+        app:menu="@menu/bottom_consumer_nav_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

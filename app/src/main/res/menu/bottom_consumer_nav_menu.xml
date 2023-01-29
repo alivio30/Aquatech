@@ -6,10 +6,6 @@
         android:icon="@drawable/ic_home"
         />
     <item
-        android:id="@+id/chat"
-        android:title="@string/chat"
-        android:icon="@drawable/ic_chat" />
-    <item
         android:id="@+id/profile"
         android:title="@string/profile"
         android:icon="@drawable/ic_person"/>

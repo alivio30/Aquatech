@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.databinding.ActivitySignInBinding;
 import com.example.chatapp.utilities.Constants;
@@ -27,7 +28,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         preferenceManager = new PreferenceManager(getApplicationContext());
         if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-            Intent intent = new Intent(getApplicationContext(), homeActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MasterPage.class);
             startActivity(intent);
             finish();
         }

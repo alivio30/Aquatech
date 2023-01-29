@@ -2,7 +2,6 @@ package com.example.chatapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -12,10 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
-import com.example.chatapp.databinding.ActivityHomeBinding;
 import com.example.chatapp.databinding.ActivityProfileBinding;
-import com.example.chatapp.fragments.ChangePassFragment;
-import com.example.chatapp.fragments.CreateAccountFragment;
+import com.example.chatapp.FragmentEmpPage.ChangePassFragment;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentReference;
@@ -77,8 +74,6 @@ public class profileActivity extends AppCompatActivity {
         });
     }
     private  void setListener() {
-        binding.buttonCreateNewAccount.setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(), CreateNewActivity.class)));
         binding.imageSignOut.setOnClickListener(view -> signOut());
     }
 

@@ -4,345 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.ProfileDetailsActivity">
+    tools:context=".FragmentEmpPage.ProfileDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <View
-            android:id="@+id/viewTop"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_191sdp"
-            android:background="@color/primary"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/imageProfile"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:background="@drawable/background_icon"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textProfileName"
-            app:riv_corner_radius="@dimen/_8sdp" />
-
-
-        <TextView
-            android:id="@+id/textProfileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_100sdp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:text="@string/name"
-            app:layout_constraintBottom_toTopOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/textAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:text="@string/address"
-            app:layout_constraintTop_toTopOf="@+id/textProfileName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/viewTop" />
-
-        <View
-            android:layout_width="@dimen/_180sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:translationX="-32dp"
-            android:translationY="-32dp"
-            android:background="@drawable/circle_design_top"
-            tools:ignore="MissingConstraints" />
-        <View
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_180sdp"
-            android:translationX="-32dp"
-            android:translationY="-32dp"
-            android:background="@drawable/circle_design"
-            tools:ignore="MissingConstraints" />
-
-
-        <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_490sdp"
+            android:layout_height="wrap_content"
             android:background="@drawable/background_water_drop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewTop" />
-
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_160sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_200sdp"
-            android:background="@drawable/background_content_bottom_white"
-            app:layout_constraintBottom_toTopOf="@id/frameLayoutReceipt"
-            app:layout_constraintTop_toBottomOf="@+id/viewTop"
-            tools:layout_editor_absoluteX="6dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/consumer_s_details"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginStart="@dimen/_5sdp" />
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/account_number" />
-                    <TextView
-                        android:id="@+id/textAccNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/contact_number" />
-                    <TextView
-                        android:id="@+id/textContactNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="60dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/meter_serial_number" />
-                    <TextView
-                        android:id="@+id/textMeterNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="75dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/tank_number" />
-                    <TextView
-                        android:id="@+id/textTank"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="90dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/pump_number" />
-                    <TextView
-                        android:id="@+id/textPump"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="105dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/line_number" />
-                    <TextView
-                        android:id="@+id/textLineNumber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/meter_stand" />
-                    <TextView
-                        android:id="@+id/textMeterStand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="135dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/date_applied" />
-                    <TextView
-                        android:id="@+id/textDateApplied"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="150dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/previous_water_consumption" />
-                    <TextView
-                        android:id="@+id/textPreviousConsumption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="165dp">
-
-                <TableRow tools:ignore="UselessParent">
-                    <TextView
-                        android:layout_width="@dimen/_200sdp"
-                        android:layout_marginStart="@dimen/_7sdp"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/_10ssp"
-                        android:textColor="@color/primary_text"
-                        android:text="@string/balance_payment" />
-                    <TextView
-                        android:id="@+id/textBalancePayment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/primary_text"
-                        android:textSize="15sp"
-                        android:text="@string/_00000" />
-                </TableRow>
-            </TableLayout>
-
-        </FrameLayout>
+            app:layout_constraintStart_toStartOf="parent"/>
         <Spinner
             android:id="@+id/spinnerMonth"
             android:layout_width="wrap_content"
@@ -353,7 +28,7 @@
             android:layout_marginStart="@dimen/_75sdp"
             android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frameLayout"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Spinner
             android:id="@+id/spinnerYear"
@@ -365,7 +40,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/frameLayout"/>
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/imageWaterMeter"
@@ -376,26 +51,26 @@
             android:layout_marginEnd="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/spinnerMonth"
-            app:layout_constraintTop_toBottomOf="@id/frameLayout"
             app:layout_constraintBottom_toTopOf="@id/frameLayoutReceipt"
             app:riv_corner_radius="@dimen/_8sdp" />
         <FrameLayout
             android:id="@+id/frameLayoutReceipt"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_205sdp"
+            android:layout_height="@dimen/_200sdp"
             android:layout_marginTop="@dimen/_70sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@drawable/background_content_bottom_white"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <View
                 android:id="@+id/viewBillTop"
-                android:layout_width="@dimen/_255sdp"
+                android:layout_width="@dimen/_270sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginEnd="@dimen/_9sdp"
                 android:background="@drawable/background_bill_white"/>
 
             <TextView
@@ -432,7 +107,7 @@
                         android:text="@string/_00000"
                         android:textStyle="bold"/>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
@@ -440,7 +115,6 @@
                         android:text="@string/meter_serial_no" />
                     <TextView
                         android:id="@+id/textSerialNo"
-                        android:layout_marginStart="@dimen/_2sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/primary_text"
@@ -465,7 +139,7 @@
                         android:text="@string/details"
                         android:textStyle="bold"/>
                     <TextView
-                        android:layout_width="@dimen/_70sdp"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_1sdp"
                         android:layout_height="wrap_content"
@@ -475,7 +149,6 @@
                     <TextView
                         android:id="@+id/textName"
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="@dimen/_2sdp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/primary_text"
                         android:textSize="@dimen/_9ssp"
@@ -499,7 +172,7 @@
                         android:textColor="@color/primary_text"
                         android:text="@string/current_charges" />
                     <TextView
-                        android:layout_width="@dimen/_72sdp"
+                        android:layout_width="@dimen/_80sdp"
                         android:layout_marginStart="@dimen/_7sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
@@ -537,7 +210,8 @@
                         android:textColor="@color/primary_text"
                         android:text="@string/_00000" />
                     <TextView
-                        android:layout_width="@dimen/_71sdp"
+                        android:layout_width="@dimen/_73sdp"
+
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
                         android:textColor="@color/primary_text"
@@ -545,6 +219,7 @@
                     <TextView
                         android:id="@+id/textMeterReaderName"
                         android:layout_width="@dimen/_75sdp"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
                         android:textColor="@color/primary_text"
@@ -575,7 +250,7 @@
                         android:textColor="@color/primary_text"
                         android:text="@string/_00000" />
                     <TextView
-                        android:layout_width="@dimen/_71sdp"
+                        android:layout_width="@dimen/_73sdp"
                         android:layout_marginStart="@dimen/_6sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
@@ -584,6 +259,7 @@
                     <TextView
                         android:id="@+id/textBilledName"
                         android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
                         android:textColor="@color/primary_text"
@@ -653,7 +329,7 @@
                         android:text="@string/_00000"
                         android:textStyle="bold"/>
                     <TextView
-                        android:layout_width="@dimen/_71sdp"
+                        android:layout_width="@dimen/_73sdp"
                         android:layout_marginStart="@dimen/_6sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_height="wrap_content"
@@ -663,6 +339,7 @@
                     <TextView
                         android:id="@+id/textBillingPeriod"
                         android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
@@ -685,7 +362,7 @@
                         android:textColor="@color/primary_text"
                         android:text="@string/other_charges" />
                     <TextView
-                        android:layout_width="@dimen/_71sdp"
+                        android:layout_width="@dimen/_73sdp"
                         android:layout_marginStart="@dimen/_8sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
@@ -694,6 +371,7 @@
                     <TextView
                         android:id="@+id/textDueDate"
                         android:layout_width="wrap_content"
+                        android:layout_marginStart="@dimen/_7sdp"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_9ssp"
                         android:textColor="@color/primary_text"
@@ -736,7 +414,7 @@
                 android:src="@android:drawable/divider_horizontal_dark"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_2sdp"
-                android:layout_marginStart="@dimen/_215sdp"
+                android:layout_marginStart="@dimen/_225sdp"
                 android:scaleType="fitXY"
                 android:background="@color/primary_text"
                 android:paddingLeft="5dp"
@@ -844,7 +522,7 @@
 
             <View
                 android:id="@+id/viewTotalBill"
-                android:layout_width="@dimen/_90sdp"
+                android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_25sdp"
                 android:layout_marginTop="@dimen/_140sdp"
                 android:layout_marginStart="@dimen/_195sdp"
@@ -853,7 +531,7 @@
             <TextView
                 android:id="@+id/textTotalBill"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/_225sdp"
+                android:layout_marginStart="@dimen/_232sdp"
                 android:layout_marginTop="@dimen/_140sdp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_15ssp"
@@ -863,10 +541,10 @@
 
             <View
                 android:id="@+id/viewNotes"
-                android:layout_width="@dimen/_140sdp"
+                android:layout_width="@dimen/_146sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_168sdp"
-                android:layout_marginStart="@dimen/_145sdp"
+                android:layout_marginStart="@dimen/_148sdp"
                 android:background="@drawable/background_bill_white"/>
 
             <TextView
@@ -878,15 +556,5 @@
                 android:textColor="@color/primary_text"
                 android:text="@string/pay_this_amount_on_or_before_due_date_to_get_discount_and_avoid_penalty" />
         </FrameLayout>
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/emp_page"
-            app:layout_constraintTop_toBottomOf="@id/frameLayoutReceipt"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
