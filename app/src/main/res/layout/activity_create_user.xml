@@ -55,42 +55,6 @@
         android:layout_height="@dimen/_450sdp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
 
-        <TextView
-            android:id="@+id/textviewCreateUserAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_85sdp"
-            android:text="Create User Account"
-            android:textSize="@dimen/_25ssp"
-            android:textColor="@color/primary_text"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
-        <Button
-            android:id="@+id/buttonConsumer"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:text="@string/consumer"
-            android:textSize="@dimen/_15ssp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_60sdp"/>
-
-        <Button
-            android:id="@+id/buttonMeterReader"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:text="@string/meter_reader_"
-            android:textSize="@dimen/_15ssp"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/buttonAdmin"
-            android:layout_width="@dimen/_200sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:text="@string/admin"
-            android:textSize="@dimen/_15ssp"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_60sdp"/>
     </FrameLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
