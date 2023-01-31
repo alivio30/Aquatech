@@ -237,7 +237,7 @@
                 android:hint="@string/_username"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:paddingStart="@dimen/_16sdp"
                 android:paddingEnd="@dimen/_16sdp"
                 android:textColor="@color/primary_text"

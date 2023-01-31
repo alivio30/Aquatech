@@ -23,10 +23,10 @@
             android:exported="false" />
         <activity
             android:name=".ActivityEmpPage.CreateUser"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ActivityEmpPage.MasterPage"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".activities.ProfileDetailsActivity"
             android:exported="false" />

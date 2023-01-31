@@ -50,11 +50,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <FrameLayout
+        android:id="@+id/FragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_450sdp"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView">
 
         <TextView
+            android:id="@+id/textviewCreateUserAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_85sdp"
