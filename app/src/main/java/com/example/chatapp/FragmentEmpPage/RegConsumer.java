@@ -133,7 +133,7 @@ public class RegConsumer extends Fragment {
         createUser.put("email", inputEmail.getText().toString());
         createUser.put("password", inputPassword.getText().toString());
         //createUser.put("availability", "not inputted");
-        createUser.put("status", "offline");
+        createUser.put("status", "Active");
 
         //save data to consumers table--
         db.collection("consumers")

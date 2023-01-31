@@ -71,7 +71,7 @@ public class RegMeterReader extends Fragment {
         createUser.put("email", inputEmail.getText().toString());
         createUser.put("password", inputPassword.getText().toString());
         //createUser.put("availabilitiy", "not inputted");
-        createUser.put("status", "offline");
+        createUser.put("status", "Active");
 
         //add to users table
         db.collection("users")
