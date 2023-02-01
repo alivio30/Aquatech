@@ -17,4 +17,6 @@
     <color name="sent_message">#0014FF</color>
     <color name="home_text">#3B7CFA</color>
     <color name="home_dark_text">#001584</color>
+    <color name="homepage_text_blue">#EB0029F4</color>
+    <color name="homepage_text_red">#B2FF0000</color>
 </resources>

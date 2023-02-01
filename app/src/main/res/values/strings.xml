@@ -101,6 +101,9 @@
     <string name="total_line_s">Total Line/s</string>
     <string name="submit">Submit</string>
     <string name="create_user_account">Create User Account</string>
+    <string name="_000000">000000</string>
+    <string name="household_s">Household/s</string>
+    <string name="contact_number__">CONTACT NUMBER :</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>

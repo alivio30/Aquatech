@@ -55,7 +55,7 @@
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_40sdp"
             android:background="@drawable/background_input"
-            android:hint="@string/username"
+            android:hint="@string/_username"
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"
