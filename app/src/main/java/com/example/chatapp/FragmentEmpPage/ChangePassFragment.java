@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import com.example.chatapp.R;
 
 public class ChangePassFragment extends Fragment {
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_change_pass, container, false);
+        view = inflater.inflate(R.layout.fragment_change_pass, container, false);
+
+        return view;
     }
 }

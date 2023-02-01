@@ -53,8 +53,10 @@ public class RegAdmin extends Fragment {
                 inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
                     toast = Toast.makeText(getContext(), "Please input necessary field/s", Toast.LENGTH_SHORT);
                     toast.show();
-                }
-                else{
+                }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
+                    toast = Toast.makeText(getContext(), "Password is not matched!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else{
                     newUserID = userID();
                     insertUser();
                 }
@@ -65,7 +67,7 @@ public class RegAdmin extends Fragment {
 
     public void insertUser(){
         Map<String, Object> createUser = new HashMap<>();
-        createUser.put("UserId", newUserID);
+        createUser.put("userId", String.valueOf(newUserID));
         createUser.put("userName", inputUsername.getText().toString());
         createUser.put("address", inputAddress.getText().toString());
         createUser.put("contactNumber", inputContactNumber.getText().toString());
@@ -80,11 +82,11 @@ public class RegAdmin extends Fragment {
         db.collection("users")
                 .add(createUser)
                 .addOnSuccessListener(documentReference -> {
-                    toast = Toast.makeText(getContext(), "Insert to users", Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
                     toast.show();
                 })
                 .addOnFailureListener(exception -> {
-                    toast = Toast.makeText(getContext(), "Insert to users failed", Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(getContext(), "Failed to Register", Toast.LENGTH_SHORT);
                     toast.show();
                 });
     }

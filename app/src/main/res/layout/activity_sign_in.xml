@@ -50,12 +50,12 @@
             android:src="@drawable/ic_login_image" />
 
         <EditText
-            android:id="@+id/inputEmail"
+            android:id="@+id/inputUsername"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_40sdp"
             android:background="@drawable/background_input"
-            android:hint="@string/email"
+            android:hint="@string/username"
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
             android:inputType="textEmailAddress"

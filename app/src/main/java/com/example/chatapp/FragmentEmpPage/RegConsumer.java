@@ -95,6 +95,9 @@ public class RegConsumer extends Fragment {
                         inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
                     toast = Toast.makeText(getContext(), "Please input necessary field/s", Toast.LENGTH_SHORT);
                     toast.show();
+                }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
+                    toast = Toast.makeText(getContext(), "Password is not matched!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
                     newUserID = userID();
                     newConsumerID = consumerID();
@@ -115,19 +118,19 @@ public class RegConsumer extends Fragment {
         createConsumer.put("pumpNumber", inputPumpNumber.getText().toString());
         createConsumer.put("lineNumber", inputLineNumber.getText().toString());
         createConsumer.put("meterStandNumber", inputMeterStand.getText().toString());
-        createConsumer.put("userId", newUserID);
-        createConsumer.put("consId", newConsumerID);
+        createConsumer.put("userId", String.valueOf(newUserID));
+        createConsumer.put("consId", String.valueOf(newConsumerID));
         createConsumer.put("status", "active");
         createConsumer.put("remarks", "unread");
         createConsumer.put("consumerType", "undecided");
 
         //user hash--
         Map<String, Object> createUser = new HashMap<>();
-        createUser.put("userId", newUserID);
+        createUser.put("userId", String.valueOf(newUserID));
         createUser.put("Name", inputName.getText().toString());
-        createUser.put("username", inputUsername.getText().toString());
+        createUser.put("userName", inputUsername.getText().toString());
         createUser.put("address", inputAddress.getText().toString());
-        createUser.put("contactnumber", inputContactNumber.getText().toString());
+        createUser.put("contactNumber", inputContactNumber.getText().toString());
         //image line--
         createUser.put("userType", "consumer");
         createUser.put("email", inputEmail.getText().toString());
@@ -139,11 +142,11 @@ public class RegConsumer extends Fragment {
         db.collection("consumers")
                 .add(createConsumer)
                 .addOnSuccessListener(documentReference -> {
-                    toast = Toast.makeText(getContext(), "Inserted to consumers", Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
                     toast.show();
                 })
                 .addOnFailureListener(exception -> {
-                    toast = Toast.makeText(getContext(), "Insert to consumers failed", Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(getContext(), "Failed to Register.", Toast.LENGTH_SHORT);
                     toast.show();
                 });
 
@@ -151,12 +154,12 @@ public class RegConsumer extends Fragment {
         db.collection("users")
                 .add(createUser)
                 .addOnSuccessListener(documentReference -> {
-                    toast = Toast.makeText(getContext(), "Inserted to users", Toast.LENGTH_SHORT);
-                    toast.show();
+                    //toast = Toast.makeText(getContext(), "Inserted to users", Toast.LENGTH_SHORT);
+                    //toast.show();
                 })
                 .addOnFailureListener(exception -> {
-                    toast = Toast.makeText(getContext(), "Insert to users failed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    //toast = Toast.makeText(getContext(), "Insert to users failed", Toast.LENGTH_SHORT);
+                    //toast.show();
                 });
     }
     //generate random ID to users
@@ -170,7 +173,7 @@ public class RegConsumer extends Fragment {
         Random consumerRandom = new Random();
         return ((1 + consumerRandom.nextInt(9)) * 10000 + consumerRandom.nextInt(10000));
     }
-
+    //generate random account number to consumers
     public int generateAccountNumber(){
         Random accountNumberRandom = new Random();
         return ((1 + accountNumberRandom.nextInt(9)) * 10000 + accountNumberRandom.nextInt(10000));
