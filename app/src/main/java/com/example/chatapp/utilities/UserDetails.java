@@ -20,6 +20,7 @@ public class UserDetails {
     private static String meterStandNumber;
     private static String consumerType;
 
+
     //set values
     public void setName(String name){
         this.name = name;

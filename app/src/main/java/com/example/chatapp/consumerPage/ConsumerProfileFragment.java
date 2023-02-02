@@ -25,6 +25,7 @@ public class ConsumerProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_consumer_profile, container, false);
         changePasswordButton = view.findViewById(R.id.buttonChangePassword);
 
+
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

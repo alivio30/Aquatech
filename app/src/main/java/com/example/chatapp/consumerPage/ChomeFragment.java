@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.chatapp.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class ChomeFragment extends Fragment {
     View view;
     @Override
@@ -19,4 +24,6 @@ public class ChomeFragment extends Fragment {
 
         return view;
     }
+
+
 }

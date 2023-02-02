@@ -2,6 +2,7 @@ package com.example.chatapp.FragmentEmpPage;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,16 +16,16 @@ import android.widget.TextView;
 import com.example.chatapp.R;
 
 public class CreateUserFragment extends Fragment {
-    View view;
+    View view, viewMasterPage;
     Button createConsumer, createMeterReader, createAdmin;
     RegConsumer consumer = new RegConsumer();
+
     RegMeterReader meterReader = new RegMeterReader();
     RegAdmin admin = new RegAdmin();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.fragment_create_user, container, false);
-
         TextView userAccounts = view.findViewById(R.id.textviewCreateUserAccount);
         createConsumer = view.findViewById(R.id.buttonConsumer);
         createMeterReader = view.findViewById(R.id.buttonMeterReader);

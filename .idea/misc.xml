@@ -3,12 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_cmaster_page2.xml" value="0.1947463768115942" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_create_user.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_master_page.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_profile_details.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_sign_in.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_users.xml" value="0.17074275362318841" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_change_pass.xml" value="0.17074275362318841" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_chome.xml" value="0.10182370820668693" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_create_user.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_profile_page.xml" value="0.1947463768115942" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reader_profile.xml" value="0.1947463768115942" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_admin.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_consumer.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_meter_reader.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_search_page.xml" value="0.17074275362318841" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/item_container_user.xml" value="0.17074275362318841" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/menu/bottom_consumer_nav_menu.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/menu/bottom_nav_menu.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/menu/emp_page.xml" value="0.209375" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/background_bill_white.xml" value="0.238" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/background_button_design.xml" value="0.26" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/background_chat_input.xml" value="0.2565" />

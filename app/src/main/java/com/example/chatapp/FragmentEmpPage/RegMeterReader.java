@@ -3,16 +3,20 @@ package com.example.chatapp.FragmentEmpPage;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +27,7 @@ public class RegMeterReader extends Fragment {
     EditText inputName, inputAddress, inputContactNumber, inputEmail;
     EditText inputUsername, inputPassword, inputConfirmPassword;
     Button createButton;
+    ImageView backButton;
     int newUserID;
 
     Toast toast;
@@ -33,6 +38,8 @@ public class RegMeterReader extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reg_meter_reader, container, false);
         view_activity_create_user = inflater.inflate(R.layout.activity_create_user, container, false);
+        backButton = view.findViewById(R.id.imageBack);
+        CreateUserFragment createUser = new CreateUserFragment();
 
         inputName = view.findViewById(R.id.inputName);
         inputAddress = view.findViewById(R.id.inputAddress);
@@ -58,13 +65,25 @@ public class RegMeterReader extends Fragment {
                 }else{
                     newUserID = userID();
                     insertUser();
+                    clearFields();
+                    inputName.requestFocus();
                 }
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                transaction.setReorderingAllowed(true);
+                transaction.replace(R.id.FragmentContainer, createUser);
+                transaction.commit();
             }
         });
         return view;
     }
     public void insertUser() {
         Map<String, Object> createUser = new HashMap<>();
+        createUser.put("name", inputName.getText().toString());
         createUser.put("userId", String.valueOf(newUserID));
         createUser.put("userName", inputUsername.getText().toString());
         createUser.put("address", inputAddress.getText().toString());
@@ -93,5 +112,14 @@ public class RegMeterReader extends Fragment {
     public int userID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
+    }
+    public void clearFields(){
+        inputName.setText(null);
+        inputAddress.setText(null);
+        inputContactNumber.setText(null);
+        inputEmail.setText(null);
+        inputUsername.setText(null);
+        inputPassword.setText(null);
+        inputConfirmPassword.setText(null);
     }
 }

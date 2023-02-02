@@ -63,6 +63,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageBack"
+                android:clickable="true"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginStart="@dimen/_16sdp"
@@ -75,6 +76,7 @@
 
             <EditText
                 android:id="@+id/inputName"
+                android:focusable="true"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:layout_marginStart="@dimen/_10sdp"

@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
@@ -31,14 +32,14 @@ import java.util.HashMap;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private ActivitySignInBinding binding;
+    //private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
     //UserDetails userDetails = new UserDetails();
 
     EditText username, password;
     Button button;
     String name;
-
+    ProgressBar progressBar;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -49,7 +50,7 @@ public class SignInActivity extends AppCompatActivity {
         username = findViewById(R.id.inputUsername);
         password = findViewById(R.id.inputPassword);
         button = findViewById(R.id.buttonSignIn);
-
+        progressBar = findViewById(R.id.progressBar);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,13 +68,14 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setListeners();*/
     }
-    public void signIn(){
+    public void signIn() {
+        progressBar.setVisibility(View.VISIBLE);
         UserDetails userDetails = new UserDetails();
         db.collection("users")
                 .whereEqualTo("userName", username.getText().toString())
                 .whereEqualTo("password", password.getText().toString())
                 .get()
-                .addOnCompleteListener(userTask ->{
+                .addOnCompleteListener(userTask -> {
                     if (userTask.isSuccessful() && userTask.getResult() != null && userTask.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = userTask.getResult().getDocuments().get(0);
                         userDetails.setName(documentUserSnapshot.getString("Name"));
@@ -89,42 +91,47 @@ public class SignInActivity extends AppCompatActivity {
                         toast = Toast.makeText(getApplicationContext(), userDetails.getUserType(), Toast.LENGTH_SHORT);
                         toast.show();
 
-                        if(documentUserSnapshot.getString("userType").equalsIgnoreCase("consumer")){
+                        if (documentUserSnapshot.getString("userType").equalsIgnoreCase("consumer")) {
                             db.collection("consumers")
-                                .whereEqualTo("userID", userDetails.getUserID())
-                                .get()
-                                .addOnCompleteListener(consumerTask ->{
-                                    if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
-                                        DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
-                                        userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
-                                        userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
-                                        userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
-                                        userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
-                                        userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
-                                        userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
-                                        userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
-                                    }
-                                });
+                                    .whereEqualTo("userID", userDetails.getUserID())
+                                    .get()
+                                    .addOnCompleteListener(consumerTask -> {
+                                        if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
+                                            DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
+                                            userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
+                                            userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
+                                            userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
+                                            userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
+                                            userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
+                                            userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
+                                            userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
+                                        }
+                                    });
                         }
-                        if(userDetails.getUserType().equalsIgnoreCase("admin")){
+                        clearFields();
+                        progressBar.setVisibility(View.GONE);
+                        if (userDetails.getUserType().equalsIgnoreCase("admin")) {
                             Intent intent = new Intent(this, MasterPage.class);
                             startActivity(intent);
                         }
-                        if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
+                        if (userDetails.getUserType().equalsIgnoreCase("meter reader")) {
                             Intent intent = new Intent(this, MasterPage.class);
                             startActivity(intent);
                         }
-                        if(userDetails.getUserType().equalsIgnoreCase("consumer")){
+                        if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
                             Intent intent = new Intent(this, CMasterPage.class);
                             startActivity(intent);
                         }
-                    }else {
+                    } else {
                         toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
     }
-
+    public void clearFields(){
+        username.setText(null);
+        password.setText(null);
+    }
     /**private void setListeners() {
         binding.textCreateNewAccount.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));

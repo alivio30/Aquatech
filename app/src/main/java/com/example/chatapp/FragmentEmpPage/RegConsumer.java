@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class RegConsumer extends Fragment {
     EditText inputName, inputAddress, inputContactNumber, inputEmail, inputSerialNumber;
     EditText inputTankNumber, inputPumpNumber, inputLineNumber, inputMeterStand, inputUsername, inputPassword, inputConfirmPassword;
     Button createButton;
+    ImageView backButton;
     int newUserID, newConsumerID;
     Calendar calendar = Calendar.getInstance();
     int year, month;
@@ -66,6 +68,8 @@ public class RegConsumer extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reg_consumer, container, false);
         view_activity_create_user = inflater.inflate(R.layout.activity_create_user, container, false);
+        backButton = view.findViewById(R.id.imageBack);
+        CreateUserFragment createUser = new CreateUserFragment();
 
         inputName = view.findViewById(R.id.inputName);
         inputAddress = view.findViewById(R.id.inputAddress);
@@ -102,7 +106,18 @@ public class RegConsumer extends Fragment {
                     newUserID = userID();
                     newConsumerID = consumerID();
                     insertUser();
+                    inputName.requestFocus();
+                    clearFields();
                 }
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                transaction.setReorderingAllowed(true);
+                transaction.replace(R.id.FragmentContainer, createUser);
+                transaction.commit();
             }
         });
 
@@ -127,7 +142,7 @@ public class RegConsumer extends Fragment {
         //user hash--
         Map<String, Object> createUser = new HashMap<>();
         createUser.put("userId", String.valueOf(newUserID));
-        createUser.put("Name", inputName.getText().toString());
+        createUser.put("name", inputName.getText().toString());
         createUser.put("userName", inputUsername.getText().toString());
         createUser.put("address", inputAddress.getText().toString());
         createUser.put("contactNumber", inputContactNumber.getText().toString());
@@ -177,5 +192,19 @@ public class RegConsumer extends Fragment {
     public int generateAccountNumber(){
         Random accountNumberRandom = new Random();
         return ((1 + accountNumberRandom.nextInt(9)) * 10000 + accountNumberRandom.nextInt(10000));
+    }
+    public void clearFields(){
+        inputName.setText(null);
+        inputAddress.setText(null);
+        inputContactNumber.setText(null);
+        inputEmail.setText(null);
+        inputSerialNumber.setText(null);
+        inputTankNumber.setText(null);
+        inputPumpNumber.setText(null);
+        inputLineNumber.setText(null);
+        inputMeterStand.setText(null);
+        inputUsername.setText(null);
+        inputPassword.setText(null);
+        inputConfirmPassword.setText(null);
     }
 }

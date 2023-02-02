@@ -56,7 +56,6 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:padding="@dimen/_10sdp"
-            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <ProgressBar
