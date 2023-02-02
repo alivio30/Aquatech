@@ -1,55 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".consumerPage.ConsumerProfileFragment">
-
+    android:id="@+id/container"
+    tools:context=".FragmentEmpPage.ConsumerDetails">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="0dp">
         <View
             android:id="@+id/view"
             android:layout_width="wrap_content"
-            android:layout_height="720dp"
+            android:layout_height="640dp"
             android:background="@drawable/background_water_drop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
         </View>
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageSignOut"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/background_design_circle"
-            android:padding="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="@color/white"/>
 
         <ImageView
-            android:id="@+id/imageLogout"
+            android:id="@+id/imageBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="17dp"
-            android:src="@drawable/logout"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/LinearContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imageSignOut">
+            app:layout_constraintTop_toBottomOf="@+id/imageBack">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -312,19 +299,5 @@
                     android:textColor="@color/primary_text"/>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
-        <Button
-            android:id="@+id/buttonChangePassword"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="wrap_content"
-            android:text="@string/change_password"
-            android:background="@color/primary"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@id/LinearContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
