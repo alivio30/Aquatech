@@ -46,7 +46,7 @@
     <string name="details">DETAILS :</string>
     <string name="name_">Name :</string>
     <string name="anianne_moyen">Anianne Moyen</string>
-    <string name="current_charges">Current Charges :</string>
+    <string name="current_charges">Current Charges</string>
     <string name="address_">Address :</string>
     <string name="aurelio_alivio_sr_st_purok_5_cubacub_mandaue_city">Aurelio Alivio Sr. St.Purok 5, Cubacub Mandaue City</string>
     <string name="present_reading">Present Reading :</string>
@@ -59,7 +59,7 @@
     <string name="this_month_s_bill">This Month\'s Bill :</string>
     <string name="billing_period">Billing Period :</string>
     <string name="jul_15_aug_15_22">Jul 15 - Aug 15, 22</string>
-    <string name="other_charges">Other Charges :</string>
+    <string name="other_charges">Other Charges</string>
     <string name="due_date">Due Date :</string>
     <string name="sept_3_2022">Sept. 3, 2022</string>
     <string name="previous_bill">Previous Bill :</string>
@@ -104,6 +104,9 @@
     <string name="_000000">000000</string>
     <string name="household_s">Household/s</string>
     <string name="contact_number__">CONTACT NUMBER :</string>
+    <string name="december_20_2023">December 20, 2023</string>
+    <string name="billing_details">BILLING DETAILS</string>
+    <string name="other_information">Other Information</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>
