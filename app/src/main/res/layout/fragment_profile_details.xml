@@ -122,22 +122,27 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp">
 
-        <TableRow tools:ignore="UselessParent">
-            <TextView
-                android:layout_width="@dimen/_200sdp"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/_10ssp"
-                android:textColor="@color/primary_text"
-                android:text="@string/account_number" />
-            <TextView
-                android:id="@+id/textAccNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:textSize="15sp"
-                android:text="@string/_00000" />
-        </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_7sdp"
+                    android:text="@string/account_number"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:id="@+id/textAccNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_00000"
+                    android:textColor="@color/primary_text"
+                    android:textSize="15sp" />
+            </TableRow>
         </TableLayout>
 
         <TableLayout

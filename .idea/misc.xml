@@ -7,13 +7,19 @@
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_create_user.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_master_page.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_profile_details.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.25" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_sign_in.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_users.xml" value="0.17074275362318841" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_admin_billing_details.xml" value="0.16847826086956522" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_change_pass.xml" value="0.17074275362318841" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_chome.xml" value="0.10182370820668693" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_consumer_details.xml" value="0.33" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_consumer_profile.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_create_user.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_profile_details.xml" value="0.387037037037037" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_profile_page.xml" value="0.1947463768115942" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reader_profile.xml" value="0.1947463768115942" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reader_profile_detail.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_admin.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_consumer.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_meter_reader.xml" value="0.209375" />
@@ -40,7 +46,6 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_add.xml" value="0.196" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_back.xml" value="0.196" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_home.xml" value="0.1215" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_info.xml" value="0.111" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_person.xml" value="0.1335" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/ic_search.xml" value="0.1335" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/drawable/nav_selector.xml" value="0.1335" />
@@ -57,18 +62,16 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_nav_bar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_profile_details.xml" value="0.2620519159456119" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.33" />
+        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.21875" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_search.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_users.xml" value="0.22" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/custom_spinner.xml" value="0.18478260869565216" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_a_change_password.xml" value="0.25" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_admin_billing_details.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_blank.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_change_pass.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_chome.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_consumer_details.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_consumer_home.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_consumer_profile.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_create_account.xml" value="0.2222222222222222" />

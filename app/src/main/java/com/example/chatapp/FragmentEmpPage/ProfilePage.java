@@ -21,14 +21,14 @@ import com.example.chatapp.utilities.UserDetails;
 public class ProfilePage extends Fragment {
     View view;
     Button changePassword, createNewAccount;
-    ImageView logout;
+    ImageView logoutButton;
     ChangePassFragment changePassFragment = new ChangePassFragment();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_profile_page, container, false);
-        logout = view.findViewById(R.id.imageLogout);
+        logoutButton = view.findViewById(R.id.imageLogout);
         UserDetails userDetails = new UserDetails();
         changePassword = view.findViewById(R.id.buttonChangePassword);
         createNewAccount = view.findViewById(R.id.buttonCreateNewAccount);
@@ -58,16 +58,34 @@ public class ProfilePage extends Fragment {
             }
         });
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //clear all data after logging out
-                //insert here -----
+                clearData();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }
         });
 
         return view;
+    }
+    public void clearData(){
+        UserDetails userDetails = new UserDetails();
+        userDetails.setName("");
+        userDetails.setUsername("");
+        userDetails.setPassword("");
+        userDetails.setEmail("");
+        userDetails.setAddress("");
+        userDetails.setContactNumber("");
+        //userDetails.setImage("");
+        userDetails.setUserType("");
+        userDetails.setUserID("");
+        userDetails.setConsumerID("");
+        userDetails.setSerialNumber("");
+        userDetails.setTankNumber("");
+        userDetails.setPumpNumber("");
+        userDetails.setLineNumber("");
+        userDetails.setMeterStandNumber("");
+        userDetails.setConsumerType("");
     }
 }

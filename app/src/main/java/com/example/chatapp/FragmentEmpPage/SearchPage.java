@@ -1,10 +1,13 @@
 package com.example.chatapp.FragmentEmpPage;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.chatapp.ActivityEmpPage.MasterPage;
+import com.example.chatapp.ActivityEmpPage.ReaderProfileDetails;
 import com.example.chatapp.R;
+import com.example.chatapp.activities.ProfileDetailsActivity;
+import com.example.chatapp.adapters.RecyclerViewInterface;
 import com.example.chatapp.adapters.searchUserAdapter;
 import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
@@ -28,8 +35,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class SearchPage extends Fragment {
+public class SearchPage extends Fragment implements RecyclerViewInterface {
     View view;
+    UserDetails userDetails = new UserDetails();
+    UserDetailsRecyclerView userDetailsRecyclerView = new UserDetailsRecyclerView();
     ProgressDialog progressDialog;
     ProgressBar progressBar;
     RecyclerView recyclerView;
@@ -54,7 +63,7 @@ public class SearchPage extends Fragment {
         db = FirebaseFirestore.getInstance();
         usersArrayList = new ArrayList<UserDetailsRecyclerView>();
 
-        myAdapter = new searchUserAdapter(SearchPage.this.getContext(),usersArrayList);
+        myAdapter = new searchUserAdapter(SearchPage.this.getContext(),usersArrayList, this);
         recyclerView.setAdapter(myAdapter);
         EventChangeListener();
         return view;
@@ -85,5 +94,20 @@ public class SearchPage extends Fragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent intent;
+        if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
+            intent = new Intent(this.getContext(), ReaderProfileDetails.class);
+            intent.putExtra("serialNumber", usersArrayList.get(position).getMeterSerialNumber());
+            startActivity(intent);
+        }
+        if(userDetails.getUserType().equalsIgnoreCase("admin")){
+            intent = new Intent(this.getContext(), ProfileDetailsActivity.class);
+            intent.putExtra("serialNumber", usersArrayList.get(position).getMeterSerialNumber());
+            startActivity(intent);
+        }
     }
 }

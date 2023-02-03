@@ -21,6 +21,7 @@
 
         <ImageView
             android:id="@+id/imageBack"
+            android:clickable="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"

@@ -34,8 +34,6 @@ public class SignInActivity extends AppCompatActivity {
 
     //private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
-    //UserDetails userDetails = new UserDetails();
-
     EditText username, password;
     Button button;
     String name;

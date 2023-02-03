@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.MainActivity;
 import com.example.chatapp.activities.UsersActivity;
@@ -30,7 +31,7 @@ import java.util.Deque;
 import java.util.function.Consumer;
 
 public class CMasterPage extends AppCompatActivity {
-    ChomeFragment consumerHome = new ChomeFragment();
+    AdminBillingDetails consumerHome = new AdminBillingDetails();
     ConsumerProfileFragment consumerProfileFragment = new ConsumerProfileFragment();
     BottomNavigationView navigationView;
     ImageView chatIcon;
