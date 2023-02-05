@@ -56,6 +56,7 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_create_new.xml" value="0.2" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_create_new_account.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_create_user.xml" value="0.33" />
+        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_forgot_password.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_master_page.xml" value="0.33" />
@@ -77,6 +78,7 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_create_account.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_create_meter_reader.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_create_user.xml" value="0.18704710144927536" />
+        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_forgot_password.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_home.xml" value="0.15" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_home_page.xml" value="0.33" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_new_consumer.xml" value="0.25" />
