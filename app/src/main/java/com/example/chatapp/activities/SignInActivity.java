@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -32,7 +35,6 @@ import java.util.HashMap;
 
 public class SignInActivity extends AppCompatActivity {
 
-    //private ActivitySignInBinding binding;
     private PreferenceManager preferenceManager;
     EditText username, password;
     Button button;
@@ -40,6 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     ProgressBar progressBar;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore db1 = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class SignInActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                    signIn();
             }
         });
 
@@ -76,7 +79,7 @@ public class SignInActivity extends AppCompatActivity {
                 .addOnCompleteListener(userTask -> {
                     if (userTask.isSuccessful() && userTask.getResult() != null && userTask.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = userTask.getResult().getDocuments().get(0);
-                        userDetails.setName(documentUserSnapshot.getString("Name"));
+                        userDetails.setName(documentUserSnapshot.getString("name"));
                         userDetails.setUsername(documentUserSnapshot.getString("userName"));
                         userDetails.setPassword(documentUserSnapshot.getString("password"));
                         userDetails.setAddress(documentUserSnapshot.getString("address"));
@@ -85,13 +88,14 @@ public class SignInActivity extends AppCompatActivity {
                         //userDetails.setImage(task.getResult().getString("image"));
                         userDetails.setUserType(documentUserSnapshot.getString("userType"));
                         userDetails.setUserID(documentUserSnapshot.getString("userId"));
+                        userDetails.setImage(documentUserSnapshot.getString("image"));
                         //testing if user detail is fetched
                         toast = Toast.makeText(getApplicationContext(), userDetails.getUserType(), Toast.LENGTH_SHORT);
                         toast.show();
 
-                        if (documentUserSnapshot.getString("userType").equalsIgnoreCase("consumer")) {
-                            db.collection("consumers")
-                                    .whereEqualTo("userID", userDetails.getUserID())
+                        if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
+                            db1.collection("consumers")
+                                    .whereEqualTo("userId", userDetails.getUserID().toString())
                                     .get()
                                     .addOnCompleteListener(consumerTask -> {
                                         if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
@@ -103,10 +107,11 @@ public class SignInActivity extends AppCompatActivity {
                                             userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
                                             userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
                                             userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
+                                            toast = Toast.makeText(getApplicationContext(), userDetails.getSerialNumber(), Toast.LENGTH_SHORT);
+                                            toast.show();
                                         }
                                     });
                         }
-                        clearFields();
                         progressBar.setVisibility(View.GONE);
                         if (userDetails.getUserType().equalsIgnoreCase("admin")) {
                             Intent intent = new Intent(this, MasterPage.class);
@@ -120,6 +125,7 @@ public class SignInActivity extends AppCompatActivity {
                             Intent intent = new Intent(this, CMasterPage.class);
                             startActivity(intent);
                         }
+                        //clearFields();
                     } else {
                         toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);
                         toast.show();
@@ -138,9 +144,9 @@ public class SignInActivity extends AppCompatActivity {
                signIn();
             }
         });
-    }
+    }*/
 
-    private void signIn() {
+    /**private void signIn() {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)

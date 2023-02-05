@@ -1,139 +1,141 @@
 package com.example.chatapp.utilities;
 
 public class ConsumerProfileDetails {
-    public static String name;
-    public static String userID;
-    public static String consID;
-    public static String accountNumber;
-    public static String meterSerialNumber;
-    public static String tankNumber;
-    public static String pumpNumber;
-    public static String lineNumber;
-    public static String meterStandNumber;
-    public static String remarks;
-    public static String status;
-    public static String consumerType;
-    public static String contactNumber;
-    public static String address;
-    public static String email;
+    private static String name;
+    private static String userID;
+    private static String consID;
+    private static String accountNumber;
+    private static String meterSerialNumber;
+    private static String tankNumber;
+    private static String pumpNumber;
+    private static String lineNumber;
+    private static String meterStandNumber;
+    private static String remarks;
+    private static String status;
+    private static String consumerType;
+    private static String contactNumber;
+    private static String address;
+    private static String email;
 
-    public static String getEmail(){
-        return email;
-    }
-
-    public static void setEmail(String email){
-        ConsumerProfileDetails.email = email;
-    }
-
-    public static String getContactNumber(){
-        return contactNumber;
-    }
-
-    public static void setContactNumber(String contactNumber){
-        ConsumerProfileDetails.contactNumber = contactNumber;
-    }
-
-    public static String getAddress(){
-        return address;
-    }
-
-    public static void setAddress(String address){
-        ConsumerProfileDetails.address = address;
-    }
-
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static void setName(String name) {
-        ConsumerProfileDetails.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static String getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public static void setUserID(String userID) {
-        ConsumerProfileDetails.userID = userID;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public static String getConsID() {
+    public String getConsID() {
         return consID;
     }
 
-    public static void setConsID(String consID) {
-        ConsumerProfileDetails.consID = consID;
+    public void setConsID(String consID) {
+        this.consID = consID;
     }
 
-    public static String getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public static void setAccountNumber(String accountNumber) {
-        ConsumerProfileDetails.accountNumber = accountNumber;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
-    public static String getMeterSerialNumber() {
+    public String getMeterSerialNumber() {
         return meterSerialNumber;
     }
 
-    public static void setMeterSerialNumber(String meterSerialNumber) {
-        ConsumerProfileDetails.meterSerialNumber = meterSerialNumber;
+    public void setMeterSerialNumber(String meterSerialNumber) {
+        this.meterSerialNumber = meterSerialNumber;
     }
 
-    public static String getTankNumber() {
+    public String getTankNumber() {
         return tankNumber;
     }
 
-    public static void setTankNumber(String tankNumber) {
-        ConsumerProfileDetails.tankNumber = tankNumber;
+    public void setTankNumber(String tankNumber) {
+        this.tankNumber = tankNumber;
     }
 
-    public static String getPumpNumber() {
+    public String getPumpNumber() {
         return pumpNumber;
     }
 
-    public static void setPumpNumber(String pumpNumber) {
-        ConsumerProfileDetails.pumpNumber = pumpNumber;
+    public void setPumpNumber(String pumpNumber) {
+        this.pumpNumber = pumpNumber;
     }
 
-    public static String getLineNumber() {
+    public String getLineNumber() {
         return lineNumber;
     }
 
-    public static void setLineNumber(String lineNumber) {
-        ConsumerProfileDetails.lineNumber = lineNumber;
+    public void setLineNumber(String lineNumber) {
+        this.lineNumber = lineNumber;
     }
 
-    public static String getMeterStandNumber() {
+    public String getMeterStandNumber() {
         return meterStandNumber;
     }
 
-    public static void setMeterStandNumber(String meterStandNumber) {
-        ConsumerProfileDetails.meterStandNumber = meterStandNumber;
+    public void setMeterStandNumber(String meterStandNumber) {
+        this.meterStandNumber = meterStandNumber;
     }
 
-    public static String getRemarks() {
+    public String getRemarks() {
         return remarks;
     }
 
-    public static void setRemarks(String remarks) {
-        ConsumerProfileDetails.remarks = remarks;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
-    public static String getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public static void setStatus(String status) {
-        ConsumerProfileDetails.status = status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public static String getConsumerType() {
+    public String getConsumerType() {
         return consumerType;
     }
 
-    public static void setConsumerType(String consumerType) {
-        ConsumerProfileDetails.consumerType = consumerType;
+    public void setConsumerType(String consumerType) {
+        this.consumerType = consumerType;
     }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 }

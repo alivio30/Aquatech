@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.ActivityEmpPage.ReaderProfileDetails;
@@ -23,10 +24,12 @@ import com.example.chatapp.R;
 import com.example.chatapp.activities.ProfileDetailsActivity;
 import com.example.chatapp.adapters.RecyclerViewInterface;
 import com.example.chatapp.adapters.searchUserAdapter;
+import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 public class SearchPage extends Fragment implements RecyclerViewInterface {
     View view;
     UserDetails userDetails = new UserDetails();
+    ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     UserDetailsRecyclerView userDetailsRecyclerView = new UserDetailsRecyclerView();
     ProgressDialog progressDialog;
     ProgressBar progressBar;
@@ -45,6 +49,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     ArrayList<UserDetailsRecyclerView> usersArrayList;
     searchUserAdapter myAdapter;
     FirebaseFirestore db;
+    Toast toast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,7 +98,6 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                         }
                     }
                 });
-
     }
 
     @Override
@@ -101,12 +105,19 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
         Intent intent;
         if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
             intent = new Intent(this.getContext(), ReaderProfileDetails.class);
-            intent.putExtra("serialNumber", usersArrayList.get(position).getMeterSerialNumber());
+            intent.putExtra("name", usersArrayList.get(position).getName());
+            intent.putExtra("accountNumber", usersArrayList.get(position).getAccountNumber());
+            intent.putExtra("meterStandNumber", usersArrayList.get(position).getMeterStandNumber());
+            intent.putExtra("pumpNumber", usersArrayList.get(position).getPumpNumber());
+            intent.putExtra("tankNumber", usersArrayList.get(position).getTankNumber());
+            intent.putExtra("meterSerialNumber", usersArrayList.get(position).getMeterSerialNumber());
+            intent.putExtra("lineNumber", usersArrayList.get(position).getLineNumber());
             startActivity(intent);
         }
         if(userDetails.getUserType().equalsIgnoreCase("admin")){
             intent = new Intent(this.getContext(), ProfileDetailsActivity.class);
-            intent.putExtra("serialNumber", usersArrayList.get(position).getMeterSerialNumber());
+            intent.putExtra("name", usersArrayList.get(position).getName());
+            intent.putExtra("userID", usersArrayList.get(position).getUserId());
             startActivity(intent);
         }
     }

@@ -7,12 +7,12 @@
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_create_user.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_master_page.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_profile_details.xml" value="0.209375" />
-        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.25" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.33" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_sign_in.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/activity_users.xml" value="0.17074275362318841" />
-        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_admin_billing_details.xml" value="0.16847826086956522" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_admin_billing_details.xml" value="0.21" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_change_pass.xml" value="0.17074275362318841" />
-        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_chome.xml" value="0.10182370820668693" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_chome.xml" value="0.33" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_consumer_details.xml" value="0.33" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_consumer_profile.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_create_user.xml" value="0.209375" />
@@ -20,7 +20,7 @@
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_profile_page.xml" value="0.1947463768115942" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reader_profile.xml" value="0.1947463768115942" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reader_profile_detail.xml" value="0.209375" />
-        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_admin.xml" value="0.209375" />
+        <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_admin.xml" value="0.18" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_consumer.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_reg_meter_reader.xml" value="0.209375" />
         <entry key="..\:/4th year subjects/ELDROID/Aquatech/app/src/main/res/layout/fragment_search_page.xml" value="0.17074275362318841" />

@@ -22,6 +22,9 @@ public class UserDetails {
 
 
     //set values
+    public void setImage(String image){
+        this.image = image;
+    }
     public void setName(String name){
         this.name = name;
     }
@@ -40,9 +43,6 @@ public class UserDetails {
     public void setContactNumber(String contactNumber){
         this.contactNumber = contactNumber;
     }
-    /**public void setImage(String image){
-        this.image = image;
-    }*/
     public void setUserType(String userType){
         this.userType = userType;
     }
@@ -72,6 +72,9 @@ public class UserDetails {
     }
 
     //get values
+    public String getImage(){
+        return image;
+    }
     public String getName(){
         return name;
     }
@@ -90,9 +93,6 @@ public class UserDetails {
     public String getContactNumber(){
         return contactNumber;
     }
-    /**public String getImage(){
-        return username;
-    }*/
     public String getUserType(){
         return userType;
     }

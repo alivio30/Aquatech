@@ -1,6 +1,9 @@
 package com.example.chatapp.FragmentEmpPage;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,26 +43,36 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
 public class RegConsumer extends Fragment {
     View view, view_activity_create_user;
+    StorageReference storageReference;
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
     EditText inputName, inputAddress, inputContactNumber, inputEmail, inputSerialNumber;
     EditText inputTankNumber, inputPumpNumber, inputLineNumber, inputMeterStand, inputUsername, inputPassword, inputConfirmPassword;
     Button createButton;
-    ImageView backButton;
+    Uri imageUri;
+    ProgressDialog progressDialog;
+    ImageView backButton, profile;
     int newUserID, newConsumerID;
     Calendar calendar = Calendar.getInstance();
     int year, month;
-    String consumerAccountNumber;
+    String consumerAccountNumber, image;
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -70,7 +84,7 @@ public class RegConsumer extends Fragment {
         view_activity_create_user = inflater.inflate(R.layout.activity_create_user, container, false);
         backButton = view.findViewById(R.id.imageBack);
         CreateUserFragment createUser = new CreateUserFragment();
-
+        profile = view.findViewById(R.id.imageProfile);
         inputName = view.findViewById(R.id.inputName);
         inputAddress = view.findViewById(R.id.inputAddress);
         inputContactNumber = view.findViewById(R.id.inputContactNumber);
@@ -89,7 +103,12 @@ public class RegConsumer extends Fragment {
         month = calendar.get(Calendar.MONTH)+1;
         consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
         //randomly generated
-
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,9 +124,7 @@ public class RegConsumer extends Fragment {
                 }else{
                     newUserID = userID();
                     newConsumerID = consumerID();
-                    insertUser();
-                    inputName.requestFocus();
-                    clearFields();
+                    uploadImage();
                 }
             }
         });
@@ -123,59 +140,108 @@ public class RegConsumer extends Fragment {
 
         return view;
     }
-    public void insertUser() {
-        //consumer hash--
-        Map<String, Object> createConsumer = new HashMap<>();
-        createConsumer.put("name", inputName.getText().toString());
-        createConsumer.put("accountNumber", consumerAccountNumber);
-        createConsumer.put("meterSerialNumber", inputSerialNumber.getText().toString());
-        createConsumer.put("tankNumber", inputTankNumber.getText().toString());
-        createConsumer.put("pumpNumber", inputPumpNumber.getText().toString());
-        createConsumer.put("lineNumber", inputLineNumber.getText().toString());
-        createConsumer.put("meterStandNumber", inputMeterStand.getText().toString());
-        createConsumer.put("userId", String.valueOf(newUserID));
-        createConsumer.put("consId", String.valueOf(newConsumerID));
-        createConsumer.put("status", "active");
-        createConsumer.put("remarks", "unread");
-        createConsumer.put("consumerType", "undecided");
+    public void uploadImage(){
+        progressDialog = new ProgressDialog(this.getContext());
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.show();
 
-        //user hash--
-        Map<String, Object> createUser = new HashMap<>();
-        createUser.put("userId", String.valueOf(newUserID));
-        createUser.put("name", inputName.getText().toString());
-        createUser.put("userName", inputUsername.getText().toString());
-        createUser.put("address", inputAddress.getText().toString());
-        createUser.put("contactNumber", inputContactNumber.getText().toString());
-        //image line--
-        createUser.put("userType", "consumer");
-        createUser.put("email", inputEmail.getText().toString());
-        createUser.put("password", inputPassword.getText().toString());
-        //createUser.put("availability", "not inputted");
-        createUser.put("status", "Active");
+        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+        Date now = new Date();
+        String fileName = formatter.format(now);
+        storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+        storageReference.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //binding.imageProfile.setImageURI(null);
+                        Toast.makeText(getContext(), "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        if(progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                image = uri.toString();
+                                Toast.makeText(getContext(), image, Toast.LENGTH_SHORT).show();
+                                Map<String, Object> createConsumer = new HashMap<>();
+                                createConsumer.put("name", inputName.getText().toString());
+                                createConsumer.put("accountNumber", consumerAccountNumber);
+                                createConsumer.put("meterSerialNumber", inputSerialNumber.getText().toString());
+                                createConsumer.put("tankNumber", inputTankNumber.getText().toString());
+                                createConsumer.put("pumpNumber", inputPumpNumber.getText().toString());
+                                createConsumer.put("lineNumber", inputLineNumber.getText().toString());
+                                createConsumer.put("meterStandNumber", inputMeterStand.getText().toString());
+                                createConsumer.put("userId", String.valueOf(newUserID));
+                                createConsumer.put("consId", String.valueOf(newConsumerID));
+                                createConsumer.put("status", "active");
+                                createConsumer.put("remarks", "unread");
+                                createConsumer.put("consumerType", "undecided");
 
-        //save data to consumers table--
-        db.collection("consumers")
-                .add(createConsumer)
-                .addOnSuccessListener(documentReference -> {
-                    toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
-                    toast.show();
+                                //user hash--
+                                Map<String, Object> createUser = new HashMap<>();
+                                createUser.put("userId", String.valueOf(newUserID));
+                                createUser.put("name", inputName.getText().toString());
+                                createUser.put("userName", inputUsername.getText().toString());
+                                createUser.put("address", inputAddress.getText().toString());
+                                createUser.put("contactNumber", inputContactNumber.getText().toString());
+                                createUser.put("userType", "consumer");
+                                createUser.put("email", inputEmail.getText().toString());
+                                createUser.put("password", inputPassword.getText().toString());
+                                //createUser.put("availability", "not inputted");
+                                createUser.put("status", "Active");
+                                createUser.put("image", image);
+                                createUser.put("Date Created", month+" - "+year);
+
+                                //save data to consumers table--
+                                db.collection("consumers")
+                                        .add(createConsumer)
+                                        .addOnSuccessListener(documentReference -> {
+                                            toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                        })
+                                        .addOnFailureListener(exception -> {
+                                            toast = Toast.makeText(getContext(), "Failed to Register.", Toast.LENGTH_SHORT);
+                                            toast.show();
+                                        });
+
+                                //save data to users table--
+                                db.collection("users")
+                                        .add(createUser)
+                                        .addOnSuccessListener(documentReference -> {
+                                            inputName.requestFocus();
+                                            clearFields();
+                                        })
+                                        .addOnFailureListener(exception -> {
+
+                                        });
+                            }
+                        });
+
+                    }
                 })
-                .addOnFailureListener(exception -> {
-                    toast = Toast.makeText(getContext(), "Failed to Register.", Toast.LENGTH_SHORT);
-                    toast.show();
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if(progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+                        Toast.makeText(getContext(), "failed to uploaded", Toast.LENGTH_SHORT).show();
+                    }
                 });
-
-        //save data to users table--
-        db.collection("users")
-                .add(createUser)
-                .addOnSuccessListener(documentReference -> {
-                    //toast = Toast.makeText(getContext(), "Inserted to users", Toast.LENGTH_SHORT);
-                    //toast.show();
-                })
-                .addOnFailureListener(exception -> {
-                    //toast = Toast.makeText(getContext(), "Insert to users failed", Toast.LENGTH_SHORT);
-                    //toast.show();
-                });
+    }
+    public void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, RESULT_OK);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+            profile.setImageURI(imageUri);
+        }
     }
     //generate random ID to users
     public int userID() {

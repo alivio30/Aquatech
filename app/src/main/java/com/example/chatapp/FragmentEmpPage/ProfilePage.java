@@ -16,6 +16,7 @@ import com.example.chatapp.ActivityEmpPage.CreateUser;
 import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.SignInActivity;
+import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
 
 public class ProfilePage extends Fragment {
@@ -29,7 +30,6 @@ public class ProfilePage extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_profile_page, container, false);
         logoutButton = view.findViewById(R.id.imageLogout);
-        UserDetails userDetails = new UserDetails();
         changePassword = view.findViewById(R.id.buttonChangePassword);
         createNewAccount = view.findViewById(R.id.buttonCreateNewAccount);
         CreateUserFragment createUserFragment = new CreateUserFragment();
@@ -71,6 +71,7 @@ public class ProfilePage extends Fragment {
     }
     public void clearData(){
         UserDetails userDetails = new UserDetails();
+        ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
         userDetails.setName("");
         userDetails.setUsername("");
         userDetails.setPassword("");
@@ -87,5 +88,21 @@ public class ProfilePage extends Fragment {
         userDetails.setLineNumber("");
         userDetails.setMeterStandNumber("");
         userDetails.setConsumerType("");
+
+        consumerProfileDetails.setName("");
+        consumerProfileDetails.setUserID("");
+        consumerProfileDetails.setConsID("");
+        consumerProfileDetails.setAccountNumber("");
+        consumerProfileDetails.setMeterSerialNumber("");
+        consumerProfileDetails.setTankNumber("");
+        consumerProfileDetails.setPumpNumber("");
+        consumerProfileDetails.setLineNumber("");
+        consumerProfileDetails.setMeterStandNumber("");
+        consumerProfileDetails.setRemarks("");
+        consumerProfileDetails.setStatus("");
+        consumerProfileDetails.setConsumerType("");
+        consumerProfileDetails.setContactNumber("");
+        consumerProfileDetails.setAddress("");
+        consumerProfileDetails.setEmail("");
     }
 }

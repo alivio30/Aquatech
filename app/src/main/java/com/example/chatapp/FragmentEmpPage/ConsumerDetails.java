@@ -13,24 +13,24 @@ import android.widget.TextView;
 
 import com.example.chatapp.R;
 import com.example.chatapp.activities.ProfileDetailsActivity;
+import com.example.chatapp.adapters.searchUserAdapter;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
 
 public class ConsumerDetails extends Fragment {
     View view;
-    ProfileDetailsFragment profileDetailsFragment = new ProfileDetailsFragment();
-    UserDetails userDetails = new UserDetails();
+    AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     TextView name, accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied;
     TextView contactNumber, email;
     ImageView back;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_consumer_details, container, false);
         back = view.findViewById(R.id.imageBack);
-        //name = view.findViewById(R.id.textName);
         accountNumber = view.findViewById(R.id.textAccountNumber);
         serialNumber = view.findViewById(R.id.textSerialNumber);
         pumpNumber = view.findViewById(R.id.textPumpNumber);
@@ -50,15 +50,16 @@ public class ConsumerDetails extends Fragment {
         contactNumber.setText(consumerProfileDetails.getContactNumber());
         email.setText(consumerProfileDetails.getEmail());
 
+        //back.setOnClickListener(v -> getActivity().onBackPressed());
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
                 transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.FragmentContainer, profileDetailsFragment);
+                transaction.replace(R.id.FragmentContainer, adminBillingDetails);
                 transaction.commit();
             }
-            });
+        });
 
         return view;
     }
