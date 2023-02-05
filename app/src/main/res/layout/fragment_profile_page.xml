@@ -62,15 +62,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EMPLOYEE ID :"
+                android:text="@string/employee_id"
                 android:textSize="10sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/primary_text"/>
             <TextView
+                android:id="@+id/textEmployeeId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00000"
+                android:text="@string/_000000"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginTop="25dp"
@@ -97,6 +98,7 @@
                 android:layout_marginStart="12dp"
                 android:textColor="@color/primary_text"/>
             <TextView
+                android:id="@+id/textAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cubacub"
@@ -125,6 +127,7 @@
                 android:layout_marginStart="12dp"
                 android:textColor="@color/primary_text"/>
             <TextView
+                android:id="@+id/textContactNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="09151709843"
@@ -147,15 +150,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EMAIL ADDRESS :"
+                android:text="@string/email_address"
                 android:textSize="10sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="12dp"
                 android:textColor="@color/primary_text"/>
             <TextView
+                android:id="@+id/textEmailAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="joseph.alivio9@gmail.com"
+                android:text="@string/jo_gmail_com"
                 android:textSize="25sp"
                 android:textStyle="bold"
                 android:layout_marginTop="25dp"

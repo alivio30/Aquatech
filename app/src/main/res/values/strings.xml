@@ -107,6 +107,8 @@
     <string name="december_20_2023">December 20, 2023</string>
     <string name="billing_details">BILLING DETAILS</string>
     <string name="other_information">Other Information</string>
+    <string name="send">Send</string>
+    <string name="employee_id">EMPLOYEE ID :</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>
