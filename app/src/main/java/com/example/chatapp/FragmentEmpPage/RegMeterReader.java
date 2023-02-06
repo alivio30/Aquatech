@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.chatapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -51,7 +52,7 @@ public class RegMeterReader extends Fragment {
     Uri imageUri;
     int newUserID;
     Calendar calendar = Calendar.getInstance();
-    int year, month;
+    int year, month,day;
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,6 +75,7 @@ public class RegMeterReader extends Fragment {
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +97,33 @@ public class RegMeterReader extends Fragment {
                     toast.show();
                 }else{
                     newUserID = userID();
-                    uploadImage();
+                    db.collection("users")
+                            .whereEqualTo("password", inputPassword.getText().toString())
+                            .get()
+                            .addOnCompleteListener(passwordTask -> {
+                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
+                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
+                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else{
+                                    toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    db.collection("users")
+                                            .whereEqualTo("userId", String.valueOf(newUserID))
+                                            .get()
+                                            .addOnCompleteListener(userIdTask ->{
+                                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
+                                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
+                                                    toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                }else{
+                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                    insertUser();
+                                                }
+                                            });
+                                }
+                            });
                 }
             }
         });
@@ -110,7 +138,7 @@ public class RegMeterReader extends Fragment {
         });
         return view;
     }
-    public void uploadImage(){
+    public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading File...");
         progressDialog.show();
@@ -146,7 +174,7 @@ public class RegMeterReader extends Fragment {
                                 //createUser.put("availability", "not inputted");
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
-                                createUser.put("Date Created", month+" - "+year);
+                                createUser.put("Date Created", month+"-"+day+"-"+year);
 
                                 //save data to users table--
                                 db.collection("users")
@@ -186,34 +214,6 @@ public class RegMeterReader extends Fragment {
             profile.setImageURI(imageUri);
         }
     }
-    /**public void insertUser() {
-        Map<String, Object> createUser = new HashMap<>();
-        createUser.put("name", inputName.getText().toString());
-        createUser.put("userId", String.valueOf(newUserID));
-        createUser.put("userName", inputUsername.getText().toString());
-        createUser.put("address", inputAddress.getText().toString());
-        createUser.put("contactNumber", inputContactNumber.getText().toString());
-        //image line
-        createUser.put("userType", "Meter Reader");
-        createUser.put("email", inputEmail.getText().toString());
-        createUser.put("password", inputPassword.getText().toString());
-        //createUser.put("availabilitiy", "not inputted");
-        createUser.put("status", "Active");
-
-        //add to users table
-        db.collection("users")
-                .add(createUser)
-                .addOnSuccessListener(documentReference -> {
-                    toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
-                    toast.show();
-                })
-                .addOnFailureListener(exception -> {
-                    toast = Toast.makeText(getContext(), "Failed to Register", Toast.LENGTH_SHORT);
-                    toast.show();
-                });
-
-
-    }*/
     public int userID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));

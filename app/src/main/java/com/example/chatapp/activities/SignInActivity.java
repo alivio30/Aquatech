@@ -14,12 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.consumerPage.CMasterPage;
 import com.example.chatapp.databinding.ActivitySignInBinding;
+import com.example.chatapp.firebase.MessagingService;
+import com.example.chatapp.fragments.ForgotPassword;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.example.chatapp.utilities.UserDetails;
@@ -36,7 +39,9 @@ import java.util.HashMap;
 public class SignInActivity extends AppCompatActivity {
 
     private PreferenceManager preferenceManager;
+    ForgotPassword forgotPassword = new ForgotPassword();
     EditText username, password;
+    TextView forgotPass;
     Button button;
     String name;
     ProgressBar progressBar;
@@ -51,6 +56,7 @@ public class SignInActivity extends AppCompatActivity {
         username = findViewById(R.id.inputUsername);
         password = findViewById(R.id.inputPassword);
         button = findViewById(R.id.buttonSignIn);
+        forgotPass = findViewById(R.id.textForgotPassword);
         progressBar = findViewById(R.id.progressBar);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +65,15 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        /**preferenceManager = new PreferenceManager(getApplicationContext());
-        if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, forgotPassword).commit();
+            }
+        });
+
+        preferenceManager = new PreferenceManager(getApplicationContext());
+        /**if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
             Intent intent = new Intent(getApplicationContext(), MasterPage.class);
             startActivity(intent);
             finish();
@@ -71,6 +84,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void signIn() {
         progressBar.setVisibility(View.VISIBLE);
+        button.setVisibility((View.INVISIBLE));
         UserDetails userDetails = new UserDetails();
         db.collection("users")
                 .whereEqualTo("userName", username.getText().toString())
@@ -79,18 +93,21 @@ public class SignInActivity extends AppCompatActivity {
                 .addOnCompleteListener(userTask -> {
                     if (userTask.isSuccessful() && userTask.getResult() != null && userTask.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = userTask.getResult().getDocuments().get(0);
+                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                        preferenceManager.putString(Constants.KEY_USER_ID, documentUserSnapshot.getString("userId"));
+                        preferenceManager.putString(Constants.KEY_NAME, documentUserSnapshot.getString(Constants.KEY_NAME));
+                        preferenceManager.putString(Constants.KEY_IMAGE, documentUserSnapshot.getString(Constants.KEY_IMAGE));
+
                         userDetails.setName(documentUserSnapshot.getString("name"));
                         userDetails.setUsername(documentUserSnapshot.getString("userName"));
                         userDetails.setPassword(documentUserSnapshot.getString("password"));
                         userDetails.setAddress(documentUserSnapshot.getString("address"));
                         userDetails.setEmail(documentUserSnapshot.getString("email"));
                         userDetails.setContactNumber(documentUserSnapshot.getString("contactNumber"));
-                        //userDetails.setImage(task.getResult().getString("image"));
                         userDetails.setUserType(documentUserSnapshot.getString("userType"));
                         userDetails.setUserID(documentUserSnapshot.getString("userId"));
                         userDetails.setImage(documentUserSnapshot.getString("image"));
-                        //testing if user detail is fetched
-                        toast = Toast.makeText(getApplicationContext(), userDetails.getUserType(), Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(getApplicationContext(), preferenceManager.getString(Constants.KEY_IMAGE), Toast.LENGTH_SHORT);
                         toast.show();
 
                         if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
@@ -113,20 +130,35 @@ public class SignInActivity extends AppCompatActivity {
                                     });
                         }
                         progressBar.setVisibility(View.GONE);
+                        button.setVisibility((View.VISIBLE));
                         if (userDetails.getUserType().equalsIgnoreCase("admin")) {
-                            Intent intent = new Intent(this, MasterPage.class);
-                            startActivity(intent);
+                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                Intent intent = new Intent(this, MasterPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                         if (userDetails.getUserType().equalsIgnoreCase("meter reader")) {
-                            Intent intent = new Intent(this, MasterPage.class);
-                            startActivity(intent);
+                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                Intent intent = new Intent(this, MasterPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                         if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
-                            Intent intent = new Intent(this, CMasterPage.class);
-                            startActivity(intent);
+                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                Intent intent = new Intent(this, CMasterPage.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
                         //clearFields();
                     } else {
+                        progressBar.setVisibility(View.GONE);
+                        button.setVisibility((View.VISIBLE));
                         toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);
                         toast.show();
                     }

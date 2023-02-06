@@ -11,10 +11,12 @@ import com.example.chatapp.FragmentEmpPage.ConsumerDetails;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
+import com.squareup.picasso.Picasso;
 
 public class ReaderProfileDetails extends AppCompatActivity {
     TextView txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
-    String name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, address;
+    String name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image;
+    ImageView imageProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
         tankNumber = getIntent().getStringExtra("tankNumber");
         meterSerialNumber = getIntent().getStringExtra("meterSerialNumber");
         lineNumber = getIntent().getStringExtra("lineNumber");
+        image = getIntent().getStringExtra("image");
 
+        imageProfile = findViewById(R.id.imageProfile);
         txtname = findViewById(R.id.textProfileName);
         txtaccountNumber = findViewById(R.id.textAccountNumber);
         txtserialNumber = findViewById(R.id.textSerialNumber);
@@ -35,6 +39,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txtlineNumber = findViewById(R.id.textLineNumber);
         txtmeterStandNumber = findViewById(R.id.textMeterStand);
 
+        String imageUrl = null;
+        imageUrl = image;
+        Picasso.get().load(imageUrl).into(imageProfile);
         txtname.setText(name);
         txtaccountNumber.setText(accountNumber);
         txtserialNumber.setText(meterSerialNumber);

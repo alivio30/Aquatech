@@ -112,12 +112,14 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
             intent.putExtra("tankNumber", usersArrayList.get(position).getTankNumber());
             intent.putExtra("meterSerialNumber", usersArrayList.get(position).getMeterSerialNumber());
             intent.putExtra("lineNumber", usersArrayList.get(position).getLineNumber());
+            intent.putExtra("image", usersArrayList.get(position).getImage());
             startActivity(intent);
         }
         if(userDetails.getUserType().equalsIgnoreCase("admin")){
             intent = new Intent(this.getContext(), ProfileDetailsActivity.class);
             intent.putExtra("name", usersArrayList.get(position).getName());
             intent.putExtra("userID", usersArrayList.get(position).getUserId());
+            intent.putExtra("image", usersArrayList.get(position).getImage());
             startActivity(intent);
         }
     }

@@ -34,13 +34,13 @@ public class UserDetailsRecyclerView {
         this.email = email;
     }
 
-    /**public String getImage() {
+    public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }*/
+    }
 
     public String getAddress() {
         return address;

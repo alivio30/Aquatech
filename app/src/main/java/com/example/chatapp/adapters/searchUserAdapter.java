@@ -1,19 +1,29 @@
 package com.example.chatapp.adapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.MyViewHolder>{
@@ -39,6 +49,11 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         UserDetailsRecyclerView userDetailsRecyclerView = usersArrayList.get(position);
         holder.name.setText("Name: "+userDetailsRecyclerView.getName());
         holder.meterSerialNumber.setText("Serial Number: "+userDetailsRecyclerView.getMeterSerialNumber());
+
+        String imageUrl = null;
+        imageUrl = userDetailsRecyclerView.getImage();
+        Picasso.get().load(imageUrl).into(holder.image);
+
     }
 
     @Override
@@ -49,10 +64,12 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView name, meterSerialNumber;
+        ImageView image;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             name = itemView.findViewById(R.id.textName);
             meterSerialNumber = itemView.findViewById(R.id.textSerialNumber);
+            image = itemView.findViewById(R.id.imageProfile);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -67,4 +84,36 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
             });
         }
     }
+    /**public class fetchImage extends Thread {
+        String URL;
+        Bitmap bitmap;
+        ImageView image;
+
+        fetchImage(String URL) {
+            this.URL = URL;
+        }
+
+        @Override
+        public void run() {
+            try {
+                InputStream inputStream = new java.net.URL(URL).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+                    image = view.findViewById(R.id.imageProfile);
+                    image.setImageBitmap(bitmap);
+                }
+            });
+        }
+    }*/
 }
+
+

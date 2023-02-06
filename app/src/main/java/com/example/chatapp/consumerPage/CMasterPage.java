@@ -62,8 +62,8 @@ public class CMasterPage extends AppCompatActivity {
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
                 startActivity(intent);
             }
 

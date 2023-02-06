@@ -16,6 +16,7 @@ import com.example.chatapp.ActivityEmpPage.CreateUser;
 import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.SignInActivity;
+import com.example.chatapp.fragments.ForgotPassword;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
 
@@ -51,10 +52,6 @@ public class ProfilePage extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), CreateUser.class);
                 startActivity(intent);
-                /**FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.FragmentContainer, createUserFragment);
-                transaction.commit();*/
             }
         });
 

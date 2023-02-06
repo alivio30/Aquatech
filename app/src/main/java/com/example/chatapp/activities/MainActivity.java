@@ -17,7 +17,9 @@ import com.example.chatapp.listeners.ConversationListener;
 import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
+import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.example.chatapp.utilities.UserDetails;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -31,13 +33,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements ConversationListener {
+public class MainActivity extends BaseActivity{ //implements ConversationListener {
 
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
     private List<ChatMessage> conversations;
     private RecentConversionsAdapter conversionsAdapter;
-    private FirebaseFirestore database;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     Intent intent;
 
     @Override
@@ -46,19 +48,99 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
-        init();
+        getToken();
+        /**init();
         loadUserDetails();
         getToken();
-        setListener();
-        listenConversations();
+        setListeners();
+        listenConversations();*/
+        setListeners();
+    }
+    private void setListeners(){
+        binding.imageSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signOut();
+            }
+        });
+        binding.fabNewChat.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+    }
+    private void signOut(){
+        showToast("Signing out...");
+        clearData();
+        DocumentReference documentReference =
+                db.collection(Constants.KEY_COLLECTION_USERS).document(
+                        preferenceManager.getString(Constants.KEY_USER_ID)
+                );
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+        documentReference.update(updates)
+                .addOnSuccessListener(unused -> {
+                    preferenceManager.clear();
+                    startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                    finish();
+                })
+                .addOnFailureListener(e -> showToast("Unable to sign out"));
+    }
+    private void getToken() {
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
+    }
+    private void updateToken(String token) {
+        preferenceManager.putString(Constants.KEY_FCM_TOKEN, token);
+        DocumentReference documentReference =
+                db.collection(Constants.KEY_COLLECTION_USERS).document(
+                        preferenceManager.getString(Constants.KEY_USER_ID)
+                );
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnSuccessListener(unused -> showToast("Token updated successfully"))
+                .addOnFailureListener(e -> showToast("Unable to update token"));
+    }
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    public void clearData(){
+        UserDetails userDetails = new UserDetails();
+        ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
+        userDetails.setName("");
+        userDetails.setUsername("");
+        userDetails.setPassword("");
+        userDetails.setEmail("");
+        userDetails.setAddress("");
+        userDetails.setContactNumber("");
+        //userDetails.setImage("");
+        userDetails.setUserType("");
+        userDetails.setUserID("");
+        userDetails.setConsumerID("");
+        userDetails.setSerialNumber("");
+        userDetails.setTankNumber("");
+        userDetails.setPumpNumber("");
+        userDetails.setLineNumber("");
+        userDetails.setMeterStandNumber("");
+        userDetails.setConsumerType("");
 
-    private void init() {
+        consumerProfileDetails.setName("");
+        consumerProfileDetails.setUserID("");
+        consumerProfileDetails.setConsID("");
+        consumerProfileDetails.setAccountNumber("");
+        consumerProfileDetails.setMeterSerialNumber("");
+        consumerProfileDetails.setTankNumber("");
+        consumerProfileDetails.setPumpNumber("");
+        consumerProfileDetails.setLineNumber("");
+        consumerProfileDetails.setMeterStandNumber("");
+        consumerProfileDetails.setRemarks("");
+        consumerProfileDetails.setStatus("");
+        consumerProfileDetails.setConsumerType("");
+        consumerProfileDetails.setContactNumber("");
+        consumerProfileDetails.setAddress("");
+        consumerProfileDetails.setEmail("");
+    }
+    /*private void init() {
         conversations = new ArrayList<>();
         conversionsAdapter = new RecentConversionsAdapter(conversations, this);
         binding.conversationRecyclerView.setAdapter(conversionsAdapter);
-        database = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     private  void setListener() {
@@ -79,10 +161,10 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     }
 
     private void listenConversations() {
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
+        db.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
                 .addSnapshotListener(eventListener);
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
+        db.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
                 .addSnapshotListener(eventListener);
     }
@@ -169,5 +251,5 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
-    }
+    }*/
 }

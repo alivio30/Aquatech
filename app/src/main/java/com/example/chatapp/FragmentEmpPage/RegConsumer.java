@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.homeActivity;
 import com.example.chatapp.utilities.Constants;
+import com.example.chatapp.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,6 +62,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class RegConsumer extends Fragment {
+    PreferenceManager preferenceManager;
     View view, view_activity_create_user;
     StorageReference storageReference;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
@@ -71,8 +74,9 @@ public class RegConsumer extends Fragment {
     ImageView backButton, profile;
     int newUserID, newConsumerID;
     Calendar calendar = Calendar.getInstance();
-    int year, month;
+    int year, month, day;
     String consumerAccountNumber, image;
+    LocalDate currentDate;
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -98,9 +102,12 @@ public class RegConsumer extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
+
+        preferenceManager = new PreferenceManager(getContext());
         //for account number of a consumer
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
         consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
         //randomly generated
         profile.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +131,70 @@ public class RegConsumer extends Fragment {
                 }else{
                     newUserID = userID();
                     newConsumerID = consumerID();
-                    uploadImage();
+                    db.collection("users")
+                            .whereEqualTo("password", inputPassword.getText().toString())
+                            .get()
+                            .addOnCompleteListener(passwordTask -> {
+                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
+                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
+                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else{
+                                    toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    db.collection("users")
+                                            .whereEqualTo("userId", String.valueOf(newUserID))
+                                            .get()
+                                            .addOnCompleteListener(userIdTask ->{
+                                                if (userIdTask.isSuccessful() && userIdTask.getResult() != null && userIdTask.getResult().getDocuments().size() > 0) {
+                                                    DocumentSnapshot documentUserSnapshot = userIdTask.getResult().getDocuments().get(0);
+                                                    toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                }else{
+                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                    db.collection("consumers")
+                                                            .whereEqualTo("consId", String.valueOf(newConsumerID))
+                                                            .get()
+                                                            .addOnCompleteListener(consIdTask -> {
+                                                                if (consIdTask.isSuccessful() && consIdTask.getResult() != null && consIdTask.getResult().getDocuments().size() > 0) {
+                                                                    DocumentSnapshot documentUserSnapshot = consIdTask.getResult().getDocuments().get(0);
+                                                                    toast = Toast.makeText(getContext(), "consId already existed", Toast.LENGTH_SHORT);
+                                                                    toast.show();
+                                                                }else{
+                                                                    toast = Toast.makeText(getContext(), "consId is new", Toast.LENGTH_SHORT);
+                                                                    toast.show();
+                                                                    db.collection("consumers")
+                                                                            .whereEqualTo("accountNumber", consumerAccountNumber)
+                                                                            .get()
+                                                                            .addOnCompleteListener(accountNumberTask ->{
+                                                                                if (accountNumberTask.isSuccessful() && accountNumberTask.getResult() != null && accountNumberTask.getResult().getDocuments().size() > 0) {
+                                                                                    DocumentSnapshot documentUserSnapshot = accountNumberTask.getResult().getDocuments().get(0);
+                                                                                    toast = Toast.makeText(getContext(), "accountNumber already existed", Toast.LENGTH_SHORT);
+                                                                                    toast.show();
+                                                                                }else{
+                                                                                    db.collection("consumers")
+                                                                                        .whereEqualTo("meterSerialNumber", inputSerialNumber.getText().toString())
+                                                                                        .get()
+                                                                                        .addOnCompleteListener(lineNumberTask ->{
+                                                                                                if (lineNumberTask.isSuccessful() && lineNumberTask.getResult() != null && lineNumberTask.getResult().getDocuments().size() > 0) {
+                                                                                                    DocumentSnapshot documentUserSnapshot = lineNumberTask.getResult().getDocuments().get(0);
+                                                                                                    toast = Toast.makeText(getContext(), "serialnumber already existed", Toast.LENGTH_SHORT);
+                                                                                                    toast.show();
+                                                                                                }else{
+                                                                                                    toast = Toast.makeText(getContext(), "serialnumber is new", Toast.LENGTH_SHORT);
+                                                                                                    toast.show();
+                                                                                                    insertUser();
+                                                                                                }
+                                                                                        });
+                                                                                }
+                                                                            });
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                            });
                 }
             }
         });
@@ -140,7 +210,7 @@ public class RegConsumer extends Fragment {
 
         return view;
     }
-    public void uploadImage(){
+    public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading File...");
         progressDialog.show();
@@ -175,6 +245,7 @@ public class RegConsumer extends Fragment {
                                 createConsumer.put("consId", String.valueOf(newConsumerID));
                                 createConsumer.put("status", "active");
                                 createConsumer.put("remarks", "unread");
+                                createConsumer.put("image", image);
                                 createConsumer.put("consumerType", "undecided");
 
                                 //user hash--
@@ -190,7 +261,7 @@ public class RegConsumer extends Fragment {
                                 //createUser.put("availability", "not inputted");
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
-                                createUser.put("Date Created", month+" - "+year);
+                                createUser.put("Date Created", month+"-"+day+"-"+year);
 
                                 //save data to consumers table--
                                 db.collection("consumers")

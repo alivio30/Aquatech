@@ -29,9 +29,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
+import com.example.chatapp.consumerPage.CMasterPage;
 import com.example.chatapp.databinding.ActivitySignInBinding;
 import com.example.chatapp.databinding.FragmentRegAdminBinding;
+import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.Image;
 import com.example.chatapp.utilities.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +42,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -71,8 +75,7 @@ public class RegAdmin extends Fragment {
     ImageView backButton, profile;
     int newUserID;
     Calendar calendar = Calendar.getInstance();
-    int year, month;
-
+    int year, month, day;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -95,6 +98,7 @@ public class RegAdmin extends Fragment {
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
+        day = calendar.get(Calendar.DAY_OF_MONTH);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,8 +119,33 @@ public class RegAdmin extends Fragment {
                     toast.show();
                 }else{
                     newUserID = userID();
-                    uploadImage();
-                    //insertUser();
+                    db.collection("users")
+                            .whereEqualTo("password", inputPassword.getText().toString())
+                            .get()
+                            .addOnCompleteListener(passwordTask -> {
+                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
+                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
+                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else{
+                                    toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    db.collection("users")
+                                            .whereEqualTo("userId", String.valueOf(newUserID))
+                                            .get()
+                                            .addOnCompleteListener(userIdTask ->{
+                                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
+                                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
+                                                    toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                }else{
+                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
+                                                    toast.show();
+                                                    insertUser();
+                                                }
+                                            });
+                                }
+                            });
                 }
             }
         });
@@ -133,7 +162,7 @@ public class RegAdmin extends Fragment {
         return view;
 
     }
-    public void uploadImage(){
+    public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading File...");
         progressDialog.show();
@@ -169,7 +198,7 @@ public class RegAdmin extends Fragment {
                                 //createUser.put("availabilitiy", "not inputted");
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
-                                createUser.put("Date Created", month+" - "+year);
+                                createUser.put("Date Created", month+"-"+day+"-"+year);
 
                                 //add to users table
                                 db.collection("users")

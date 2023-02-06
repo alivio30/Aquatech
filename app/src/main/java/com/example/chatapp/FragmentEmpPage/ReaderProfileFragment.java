@@ -29,6 +29,7 @@ public class ReaderProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_reader_profile, container, false);
         buttonChangePassword = view.findViewById(R.id.buttonChangePassword);
+        logout = view.findViewById(R.id.imageLogout);
         buttonChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,15 +39,14 @@ public class ReaderProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
-        logout = view.findViewById(R.id.imageLogout);
-        logout.setOnClickListener(new View.OnClickListener() {
+        /**logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clearData();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
         return view;
     }
     public void clearData(){

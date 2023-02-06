@@ -26,13 +26,15 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
+        Log.d("FCM", "Token: "+token);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        User user = new User();
+        Log.d("FCM", "Token: "+remoteMessage.getNotification().getBody());
+        /**User user = new User();
         user.id = remoteMessage.getData().get(Constants.KEY_USER_ID);
         user.name = remoteMessage.getData().get(Constants.KEY_NAME);
         user.token = remoteMessage.getData().get(Constants.KEY_FCM_TOKEN);
@@ -67,6 +69,6 @@ public class MessagingService extends FirebaseMessagingService {
         }
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(notificationId, builder.build());
+        notificationManagerCompat.notify(notificationId, builder.build());*/
     }
 }

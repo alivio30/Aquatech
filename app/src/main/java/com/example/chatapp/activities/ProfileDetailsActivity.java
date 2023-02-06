@@ -20,6 +20,7 @@ import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerDetails consumerDetails = new ConsumerDetails();
-    String name, userID;
+    String name, userID, image;
     Toast toast;
     TextView txtname, txtaddress;
     ImageView consumerProfile;
@@ -36,10 +37,14 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
-        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminBillingDetails).commit();
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", getIntent().getStringExtra("userID"));
+        AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
+        adminBillingDetails.setArguments(bundle);
+
         name = getIntent().getStringExtra("name");
         this.userID = getIntent().getStringExtra("userID");
-
+        image = getIntent().getStringExtra("image");
         //initiation of variables
         consumerProfile = findViewById(R.id.imageProfile);
         txtname = findViewById(R.id.textProfileName);
@@ -49,9 +54,12 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         retrieveConsumerData();
 
         //display data of a consumer
+        String imageUrl = null;
+        imageUrl = image;
+        Picasso.get().load(imageUrl).into(consumerProfile);
         txtname.setText(name);
         txtaddress.setText(consumerProfileDetails.getAddress());
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminBillingDetails).commit();
         consumerProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

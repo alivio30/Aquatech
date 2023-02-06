@@ -38,6 +38,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation files('materials*')
     implementation 'com.google.firebase:firebase-storage:20.1.0'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0' //asd
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
@@ -59,4 +60,7 @@ dependencies {
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.8'
 }
