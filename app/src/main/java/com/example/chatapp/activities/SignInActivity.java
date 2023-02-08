@@ -110,25 +110,6 @@ public class SignInActivity extends AppCompatActivity {
                         toast = Toast.makeText(getApplicationContext(), preferenceManager.getString(Constants.KEY_IMAGE), Toast.LENGTH_SHORT);
                         toast.show();
 
-                        if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
-                            db1.collection("consumers")
-                                    .whereEqualTo("userId", userDetails.getUserID().toString())
-                                    .get()
-                                    .addOnCompleteListener(consumerTask -> {
-                                        if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
-                                            DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
-                                            userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
-                                            userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
-                                            userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
-                                            userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
-                                            userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
-                                            userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
-                                            userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
-                                            toast = Toast.makeText(getApplicationContext(), userDetails.getSerialNumber(), Toast.LENGTH_SHORT);
-                                            toast.show();
-                                        }
-                                    });
-                        }
                         progressBar.setVisibility(View.GONE);
                         button.setVisibility((View.VISIBLE));
                         if (userDetails.getUserType().equalsIgnoreCase("admin")) {

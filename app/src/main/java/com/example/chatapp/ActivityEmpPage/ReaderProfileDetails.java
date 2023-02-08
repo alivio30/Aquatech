@@ -14,8 +14,8 @@ import com.example.chatapp.utilities.UserDetails;
 import com.squareup.picasso.Picasso;
 
 public class ReaderProfileDetails extends AppCompatActivity {
-    TextView txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
-    String name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image;
+    TextView txtaddres, txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
+    String name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image, address;
     ImageView imageProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         meterSerialNumber = getIntent().getStringExtra("meterSerialNumber");
         lineNumber = getIntent().getStringExtra("lineNumber");
         image = getIntent().getStringExtra("image");
+        address = getIntent().getStringExtra("address");
 
         imageProfile = findViewById(R.id.imageProfile);
         txtname = findViewById(R.id.textProfileName);
@@ -38,6 +39,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txttankNumber = findViewById(R.id.textTankNumber);
         txtlineNumber = findViewById(R.id.textLineNumber);
         txtmeterStandNumber = findViewById(R.id.textMeterStand);
+        txtaddres = findViewById(R.id.textAddress);
 
         String imageUrl = null;
         imageUrl = image;
@@ -49,6 +51,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txttankNumber.setText(tankNumber);
         txtlineNumber.setText(lineNumber);
         txtmeterStandNumber.setText(meterStandNumber);
+        txtaddres.setText(address);
     }
 
 

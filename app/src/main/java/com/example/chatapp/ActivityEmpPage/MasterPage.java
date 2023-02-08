@@ -171,14 +171,15 @@ public class MasterPage extends AppCompatActivity {
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 return new SearchPage();
             case R.id.profilebar:
-                if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
+                return new ProfilePage();
+                /**if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                     return new ReaderProfileFragment();
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("admin")){
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                     return new ProfilePage();
-                }
+                }*/
         }
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         return new HomePage();

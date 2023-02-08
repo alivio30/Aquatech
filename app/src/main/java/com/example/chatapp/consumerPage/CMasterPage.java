@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
@@ -31,6 +32,8 @@ import com.example.chatapp.utilities.UserDetails;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,9 +46,10 @@ public class CMasterPage extends AppCompatActivity {
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
     UserDetails userDetails = new UserDetails();
-    ConsumerProfileFragment consumerProfileFragment = new ConsumerProfileFragment();
     BottomNavigationView navigationView;
     ImageView chatIcon, profile;
+    Toast toast;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     Deque<Integer> integerDeque = new ArrayDeque<>(2);
     boolean flag = true;
     @Override
@@ -55,6 +59,7 @@ public class CMasterPage extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerHome).commit();
         chatIcon = findViewById(R.id.imageMessenger);
         profile = findViewById(R.id.imageProfile);
+        setConsumerData();
         //display image from url
         String url = userDetails.getImage();
         new fetchImage(url).start();
@@ -63,7 +68,6 @@ public class CMasterPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                //Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
                 startActivity(intent);
             }
 
@@ -89,6 +93,26 @@ public class CMasterPage extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void setConsumerData(){
+        db.collection("consumers")
+                .whereEqualTo("userId", userDetails.getConsumerID())
+                .get()
+                .addOnCompleteListener(consumerTask -> {
+                    if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
+                        DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
+                        userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
+                        userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
+                        userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
+                        userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
+                        userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
+                        userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
+                        userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
+                        toast = Toast.makeText(getApplicationContext(), "consId: "+userDetails.getConsumerID(), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
     }
     public class fetchImage extends Thread{
         String URL;

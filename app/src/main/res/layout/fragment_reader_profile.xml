@@ -47,12 +47,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/account_number"
+            android:text="@string/employee_id"
             android:textStyle="bold"
             android:textColor="@color/primary_text"/>
 
         <TextView
-            android:id="@+id/TextAccNumber"
+            android:id="@+id/textEmployeeId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"

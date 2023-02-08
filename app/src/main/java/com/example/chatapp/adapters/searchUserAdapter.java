@@ -36,6 +36,15 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         this.usersArrayList = usersArrayList;
         this.recyclerViewInterface = recyclerViewInterface;
     }
+    public void setFilteredList(ArrayList<UserDetailsRecyclerView> filteredList){
+        this.usersArrayList = filteredList;
+        notifyDataSetChanged();
+    }
+
+    /**public searchUserAdapter(Context context, ArrayList<UserDetailsRecyclerView> usersArrayList) {
+        this.context = context;
+        this.usersArrayList = usersArrayList;
+    }*/
 
     @NonNull
     @Override

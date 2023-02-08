@@ -2,7 +2,9 @@ package com.example.chatapp.FragmentEmpPage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -19,7 +21,6 @@ import com.example.chatapp.utilities.UserDetails;
 
 public class ConsumerDetails extends Fragment {
     View view;
-    AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     TextView name, accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied;
     TextView contactNumber, email;
@@ -30,6 +31,7 @@ public class ConsumerDetails extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_consumer_details, container, false);
+        AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
         back = view.findViewById(R.id.imageBack);
         accountNumber = view.findViewById(R.id.textAccountNumber);
         serialNumber = view.findViewById(R.id.textSerialNumber);
@@ -38,6 +40,7 @@ public class ConsumerDetails extends Fragment {
         lineNumber = view.findViewById(R.id.textLineNumber);
         meterStandNumber = view.findViewById(R.id.textMeterStand);
         contactNumber = view.findViewById(R.id.textContactNumber);
+        dateApplied = view.findViewById(R.id.textDateApplied);
         email = view.findViewById(R.id.textEmailAddress);
 
         //name.setText(consumerProfileDetails.getName());
@@ -48,19 +51,17 @@ public class ConsumerDetails extends Fragment {
         lineNumber.setText(consumerProfileDetails.getLineNumber());
         meterStandNumber.setText(consumerProfileDetails.getMeterStandNumber());
         contactNumber.setText(consumerProfileDetails.getContactNumber());
+        dateApplied.setText(consumerProfileDetails.getDateApplied());
         email.setText(consumerProfileDetails.getEmail());
 
         //back.setOnClickListener(v -> getActivity().onBackPressed());
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.FragmentContainer, adminBillingDetails);
-                transaction.commit();
+                FragmentManager fm = getFragmentManager();
+                fm.popBackStack();
             }
         });
-
         return view;
     }
 }

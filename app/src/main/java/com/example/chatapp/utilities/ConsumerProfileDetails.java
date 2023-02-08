@@ -16,7 +16,15 @@ public class ConsumerProfileDetails {
     private static String contactNumber;
     private static String address;
     private static String email;
+    private static String dateApplied;
 
+    public String getDateApplied(){
+        return dateApplied;
+    }
+
+    public void setDateApplied(String dateApplied){
+        this.dateApplied = dateApplied;
+    }
     public String getName() {
         return name;
     }

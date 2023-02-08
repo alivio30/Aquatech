@@ -29,7 +29,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerDetails consumerDetails = new ConsumerDetails();
-    String name, userID, image;
+    String name, userID, image, address;
     Toast toast;
     TextView txtname, txtaddress;
     ImageView consumerProfile;
@@ -37,14 +37,15 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
-        Bundle bundle = new Bundle();
-        bundle.putString("userId", getIntent().getStringExtra("userID"));
-        AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
-        adminBillingDetails.setArguments(bundle);
 
         name = getIntent().getStringExtra("name");
         this.userID = getIntent().getStringExtra("userID");
         image = getIntent().getStringExtra("image");
+        address = getIntent().getStringExtra("address");
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userID);
+        AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
+        adminBillingDetails.setArguments(bundle);
         //initiation of variables
         consumerProfile = findViewById(R.id.imageProfile);
         txtname = findViewById(R.id.textProfileName);
@@ -58,12 +59,12 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         imageUrl = image;
         Picasso.get().load(imageUrl).into(consumerProfile);
         txtname.setText(name);
-        txtaddress.setText(consumerProfileDetails.getAddress());
+        txtaddress.setText(address);
         getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminBillingDetails).commit();
         consumerProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerDetails).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerDetails).addToBackStack(null).commit();
             }
         });
     }
@@ -100,8 +101,9 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                                         consumerProfileDetails.setContactNumber(documentUserSnapshot1.getString("contactNumber"));
                                         consumerProfileDetails.setAddress(documentUserSnapshot1.getString("address"));
                                         consumerProfileDetails.setEmail(documentUserSnapshot1.getString("email"));
+                                        consumerProfileDetails.setDateApplied((documentUserSnapshot1.getString("Date Created")));
                                         //testing if consumer detail is fetched
-                                        toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getEmail(), Toast.LENGTH_SHORT);
+                                        toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getDateApplied(), Toast.LENGTH_SHORT);
                                         toast.show();
                                     } else {
                                         toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);

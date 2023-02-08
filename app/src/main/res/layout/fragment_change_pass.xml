@@ -52,23 +52,6 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/inputUsername"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:background="@drawable/background_input"
-            android:hint="@string/_username"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp" />
-
-        <EditText
             android:id="@+id/inputOldPass"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
@@ -122,6 +105,7 @@
     </FrameLayout>
 
     <Button
+        android:id="@+id/buttonChangeNewPassword"
         android:layout_width="@dimen/_200sdp"
         android:layout_height="wrap_content"
         android:text="@string/change_password"

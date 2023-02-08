@@ -26,10 +26,10 @@ public class AdminBillingDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_admin_billing_details, container, false);
-        String userID = getArguments().getString("userId");
         serialNumber = view.findViewById(R.id.textSerialNo);
 
         if(userDetails.getUserType().equalsIgnoreCase("admin")){
+            String userID = getArguments().getString("userId");
             toast = Toast.makeText(getContext(), "id: "+userID, Toast.LENGTH_SHORT);
             toast.show();
             db.collection("consumers")
@@ -47,13 +47,13 @@ public class AdminBillingDetails extends Fragment {
                             userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
                             toast = Toast.makeText(getContext(), "address: "+userDetails.getSerialNumber(), Toast.LENGTH_SHORT);
                             toast.show();
-                            serialNumber.setText(userDetails.getSerialNumber());
+                            //serialNumber.setText(userDetails.getSerialNumber());
                         }
                     });
         }
         if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
             db.collection("consumers")
-                    .whereEqualTo("userId", userDetails.getUserID().toString())
+                    .whereEqualTo("userId", userDetails.getUserID())
                     .get()
                     .addOnCompleteListener(consumerTask -> {
                         if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
@@ -67,7 +67,7 @@ public class AdminBillingDetails extends Fragment {
                             userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
                             toast = Toast.makeText(getContext(), "address: "+userDetails.getSerialNumber(), Toast.LENGTH_SHORT);
                             toast.show();
-                            serialNumber.setText(userDetails.getSerialNumber());
+                            //serialNumber.setText(userDetails.getSerialNumber());
                         }
                     });
         }

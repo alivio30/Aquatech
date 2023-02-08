@@ -50,7 +50,7 @@ public class UserDetails {
         this.userID = userID;
     }
     public void setConsumerID(String consumerID){
-        this.username = username;
+        this.consumerID = consumerID;
     }
     public void setSerialNumber(String serialNumber){
         this.serialNumber = serialNumber;

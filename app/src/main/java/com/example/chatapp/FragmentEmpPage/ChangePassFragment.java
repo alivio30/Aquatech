@@ -2,6 +2,7 @@ package com.example.chatapp.FragmentEmpPage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -9,16 +10,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.chatapp.R;
 import com.example.chatapp.consumerPage.ConsumerProfileFragment;
+import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.UserDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class ChangePassFragment extends Fragment {
     UserDetails userDetails = new UserDetails();
     View view;
     ImageView backButton;
+    EditText oldPassword, newPassword, confirmPassword;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Button changePass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,14 +44,29 @@ public class ChangePassFragment extends Fragment {
         ConsumerProfileFragment consumerProfile = new ConsumerProfileFragment();
         ProfilePage adminProfile = new ProfilePage();
         ReaderProfileFragment readerProfile = new ReaderProfileFragment();
-
+        changePass = view.findViewById(R.id.buttonChangeNewPassword);
+        oldPassword = view.findViewById(R.id.inputOldPass);
+        newPassword = view.findViewById(R.id.inputNewPassword);
+        confirmPassword = view.findViewById(R.id.inputConfirmPassword);
+        showToast(userDetails.getUserID());
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(oldPassword.getText().toString().trim().isEmpty() || newPassword.getText().toString().trim().isEmpty() || confirmPassword.getText().toString().trim().isEmpty()){
+                    showToast("Please input necessary fields!");
+                }else if(!oldPassword.getText().toString().equals(userDetails.getPassword())){
+                    showToast("Old password doesn't match on your account.");
+                }else if (!newPassword.getText().toString().equals(confirmPassword.getText().toString())) {
+                    showToast("New password did not match to your confirm password.");
+                }else{
+                    detailsValidator();
+                }
+            }
+        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
-                /**transaction.setReorderingAllowed(true);
-                transaction.replace(R.id.FragmentContainer, profilePage);
-                transaction.commit();*/
                 if(userDetails.getUserType().equalsIgnoreCase("consumer")){
                     transaction.setReorderingAllowed(true);
                     transaction.replace(R.id.FragmentContainer, consumerProfile);
@@ -54,7 +84,17 @@ public class ChangePassFragment extends Fragment {
                 }
             }
         });
-
         return view;
+    }
+    public void detailsValidator(){
+        DocumentReference documentReference =
+                db.collection("users")
+                        .document(userDetails.getUserID());
+        documentReference.update("password", newPassword.getText().toString())
+                .addOnSuccessListener(unused -> showToast("password updated successfully"))
+                .addOnFailureListener(e -> showToast("Unable to update password"));
+    }
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
