@@ -276,6 +276,7 @@
                 android:textColor="@color/primary_text"/>
         </androidx.cardview.widget.CardView>
             <Button
+                android:id="@+id/buttonScan"
                 android:layout_width="@dimen/_300sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:text="Scan The Meter"
@@ -427,6 +428,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/buttonSubmit"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_50sdp"
             android:text="@string/submit"

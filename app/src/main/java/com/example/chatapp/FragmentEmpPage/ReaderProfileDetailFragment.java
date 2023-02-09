@@ -17,5 +17,6 @@ public class ReaderProfileDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_reader_profile_detail, container, false);
+
     }
 }

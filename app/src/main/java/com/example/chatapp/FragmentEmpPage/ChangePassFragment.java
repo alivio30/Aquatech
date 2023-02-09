@@ -27,6 +27,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ChangePassFragment extends Fragment {
     UserDetails userDetails = new UserDetails();
     View view;
@@ -87,12 +90,38 @@ public class ChangePassFragment extends Fragment {
         return view;
     }
     public void detailsValidator(){
-        DocumentReference documentReference =
-                db.collection("users")
-                        .document(userDetails.getUserID());
-        documentReference.update("password", newPassword.getText().toString())
-                .addOnSuccessListener(unused -> showToast("password updated successfully"))
-                .addOnFailureListener(e -> showToast("Unable to update password"));
+        Map<String, Object> changePassword = new HashMap<>();
+        changePassword.put("password", newPassword.getText().toString());
+
+        db.collection("users")
+                .whereEqualTo("userId", userDetails.getUserID())
+                .whereEqualTo("password", oldPassword.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()){
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            String documentID = documentSnapshot.getId();
+                            db.collection("users")
+                                    .document(documentID)
+                                    .update(changePassword)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            userDetails.setPassword(newPassword.getText().toString());
+                                            showToast("Your password has been updated!");
+                                            clearFields();
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+    private void clearFields(){
+        oldPassword.setText("");
+        newPassword.setText("");
+        confirmPassword.setText("");
     }
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
