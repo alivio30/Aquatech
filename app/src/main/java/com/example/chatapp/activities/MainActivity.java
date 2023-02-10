@@ -45,7 +45,6 @@ public class MainActivity extends BaseActivity implements ConversationListener {
 
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
-    ChatMessage chatMessage = new ChatMessage();
     private List<ChatMessage> conversations;
     private RecentConversionsAdapter conversionsAdapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -132,13 +131,15 @@ public class MainActivity extends BaseActivity implements ConversationListener {
                 if(documentChange.getType() == DocumentChange.Type.ADDED) {
                     String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
                     String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+                    ChatMessage chatMessage = new ChatMessage();
                     chatMessage.senderId = senderId;
                     chatMessage.receiverId = receiverId;
                     if(preferenceManager.getString(Constants.KEY_USER_ID).equals(senderId)) {
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                    }else {
+                        //run
+                    }else if(preferenceManager.getString(Constants.KEY_USER_ID).equals(receiverId)){
                         chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE);
                         chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_SENDER_NAME);
                         chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
@@ -167,17 +168,12 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     };
     private void listenConversations() {
         db.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
+                .whereEqualTo(Constants.KEY_SENDER_ID, userDetails.getUserID())
                 .addSnapshotListener(eventListener);
-        db.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
-                .addSnapshotListener(eventListener);
-    }
 
-    @Override
-    public void finish() {
-        super.finish();
-        Toast.makeText(getApplicationContext(), "pinish", Toast.LENGTH_SHORT).show();
+        db.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
+                .whereEqualTo(Constants.KEY_RECEIVER_ID, userDetails.getUserID())
+                .addSnapshotListener(eventListener);
     }
 
     private void getToken() {
