@@ -175,6 +175,7 @@ public class RegMeterReader extends Fragment {
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
                                 createUser.put("Date Created", month+"-"+day+"-"+year);
+                                createUser.put("availability", "0");
 
                                 //save data to users table--
                                 db.collection("users")

@@ -199,6 +199,7 @@ public class RegAdmin extends Fragment {
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
                                 createUser.put("Date Created", month+"-"+day+"-"+year);
+                                createUser.put("availability", "0");
 
                                 //add to users table
                                 db.collection("users")

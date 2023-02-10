@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.chatapp.databinding.ItemContainerUserBinding;
 import com.example.chatapp.listeners.UserListener;
 import com.example.chatapp.models.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -58,15 +59,17 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         }
 
         void setUserData(User user) {
-            binding.textName.setText(user.name);
-            binding.textSerialNumber.setText(user.email);
-            binding.imageProfile.setImageBitmap(getUserImage(user.image));
+            binding.textName.setText(user.getName());
+            binding.textSerialNumber.setText(user.getType());
+            String imageUrl = null;
+            imageUrl = user.getImage();
+            Picasso.get().load(imageUrl).into(binding.imageProfile);
             binding.getRoot().setOnClickListener(view -> userListener.onUserClicked(user));
         }
     }
 
-    private Bitmap getUserImage(String encodedImage) {
+    /**private Bitmap getUserImage(String encodedImage) {
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
+    }*/
 }

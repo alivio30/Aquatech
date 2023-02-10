@@ -10,23 +10,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.chatapp.databinding.ItemContainerSentMessageBinding;
 import com.example.chatapp.databinding.ItemContatinerReceivedMessageBinding;
 import com.example.chatapp.models.ChatMessage;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<ChatMessage> chatMessages;
-    private Bitmap receiverProfileImage;
+    private String receiverProfileImage;
     private final String senderId;
 
     public static final int VIEW_TYPE_SENT = 1;
     public static final int VIEW_TYPE_RECEIVED = 2;
 
-    public void setReceiverProfileImage(Bitmap bitmap) {
-        receiverProfileImage = bitmap;
+    public void setReceiverProfileImage(String image) {
+        receiverProfileImage = image;
     }
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
+    public ChatAdapter(List<ChatMessage> chatMessages, String receiverProfileImage, String senderId) {
         this.chatMessages = chatMessages;
         this.receiverProfileImage = receiverProfileImage;
         this.senderId = senderId;
@@ -101,11 +102,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding = itemContatinerReceivedMessageBinding;
         }
 
-        void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
+        void setData(ChatMessage chatMessage, String receiverProfileImage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
             if(receiverProfileImage != null) {
-                binding.imageProfile.setImageBitmap(receiverProfileImage);
+                String imageUrl = null;
+                imageUrl = receiverProfileImage;
+                Picasso.get().load(imageUrl).into(binding.imageProfile);
+                //binding.imageProfile.setImageBitmap(receiverProfileImage);
             }
         }
     }

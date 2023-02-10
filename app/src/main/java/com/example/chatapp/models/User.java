@@ -3,7 +3,15 @@ package com.example.chatapp.models;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    public String name, image, email, token, id;
+    public String name, image, email, token, id, type;
+
+    public String getType(){
+        return type;
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
 
     public String getName() {
         return name;

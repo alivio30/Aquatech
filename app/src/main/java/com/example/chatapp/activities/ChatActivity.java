@@ -74,7 +74,7 @@ public class ChatActivity extends BaseActivity {
         chatMessages = new ArrayList<>();
         chatAdapter = new ChatAdapter(
                 chatMessages,
-                getBitmapFromEncodedString(receiverUser.image),
+                receiverUser.image,
                 preferenceManager.getString(Constants.KEY_USER_ID)
         );
         binding.chatRecyclerView.setAdapter(chatAdapter);
@@ -179,7 +179,7 @@ public class ChatActivity extends BaseActivity {
                 receiverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
                 if (receiverUser.image == null) {
                     receiverUser.image = value.getString(Constants.KEY_IMAGE);
-                    chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(receiverUser.image));
+                    chatAdapter.setReceiverProfileImage(receiverUser.image);
                     chatAdapter.notifyItemRangeChanged(0, chatMessages.size());
                 }
             }
@@ -268,6 +268,12 @@ public class ChatActivity extends BaseActivity {
         DocumentReference documentReference =
                 database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversationId);
         documentReference.update(
+                //Constants.KEY_RECEIVER_ID, receiverUser.id,
+                //Constants.KEY_RECEIVER_NAME, receiverUser.name,
+                //Constants.KEY_RECEIVER_IMAGE, receiverUser.image,
+                //Constants.KEY_SENDER_NAME, preferenceManager.getString(Constants.KEY_IMAGE),
+                //Constants.KEY_SENDER_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE),
+                //Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID),
                 Constants.KEY_LAST_MESSAGE, message,
                 Constants.KEY_TIMESTAMP, new Date()
         );

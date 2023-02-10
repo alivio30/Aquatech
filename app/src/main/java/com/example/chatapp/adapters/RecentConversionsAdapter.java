@@ -13,6 +13,7 @@ import com.example.chatapp.databinding.ItemContainerRecentConversationBinding;
 import com.example.chatapp.listeners.ConversationListener;
 import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,10 +56,12 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
         ConversionViewHolder(ItemContainerRecentConversationBinding itemContainerRecentConversationBinding){
             super(itemContainerRecentConversationBinding.getRoot());
             binding = itemContainerRecentConversationBinding;
-    }
+        }
 
         void setData(ChatMessage chatMessage) {
-            binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
+            String imageUrl = null;
+            imageUrl = chatMessage.conversionImage;
+            Picasso.get().load(imageUrl).into(binding.imageProfile);
             binding.textName.setText(chatMessage.conversionName);
             binding.textRecentMessage.setText(chatMessage.message);
             binding.getRoot().setOnClickListener(view -> {
@@ -70,8 +73,8 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
             });
         }
     }
-    private Bitmap getConversionImage(String encodedImage) {
+    /**private Bitmap getConversionImage(String encodedImage) {
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
+    }*/
 }
