@@ -243,10 +243,10 @@ public class RegConsumer extends Fragment {
                                 createConsumer.put("meterStandNumber", inputMeterStand.getText().toString());
                                 createConsumer.put("userId", String.valueOf(newUserID));
                                 createConsumer.put("consId", String.valueOf(newConsumerID));
-                                createConsumer.put("status", "active");
-                                createConsumer.put("remarks", "unread");
+                                createConsumer.put("status", "Active");
+                                createConsumer.put("remarks", "Unread");
                                 createConsumer.put("image", image);
-                                createConsumer.put("consumerType", "undecided");
+                                createConsumer.put("consumerType", "Undecided");
 
                                 //user hash--
                                 Map<String, Object> createUser = new HashMap<>();
@@ -255,7 +255,7 @@ public class RegConsumer extends Fragment {
                                 createUser.put("userName", inputUsername.getText().toString());
                                 createUser.put("address", inputAddress.getText().toString());
                                 createUser.put("contactNumber", inputContactNumber.getText().toString());
-                                createUser.put("userType", "consumer");
+                                createUser.put("userType", "Consumer");
                                 createUser.put("email", inputEmail.getText().toString());
                                 createUser.put("password", inputPassword.getText().toString());
                                 //createUser.put("availability", "not inputted");

@@ -1,5 +1,6 @@
 package com.example.chatapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -22,6 +23,7 @@ import com.example.chatapp.network.ApiService;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -128,6 +130,10 @@ public class ChatActivity extends BaseActivity {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void sendNotification(String messageBody) {
         ApiClient.getClient().create(ApiService.class).sendMessage(
@@ -163,32 +169,45 @@ public class ChatActivity extends BaseActivity {
     }
 
     private void listenAvailabilityOfReceiver() {
-        database.collection(Constants.KEY_COLLECTION_USERS).document(
-                receiverUser.id
-        ).addSnapshotListener(ChatActivity.this, (value, error) -> {
-            if(error != null) {
-                return;
-            }
-            if (value != null) {
-                if(value.getLong(Constants.KEY_AVAILABILITY) != null) {
-                    int availability = Objects.requireNonNull(
-                            value.getLong(Constants.KEY_AVAILABILITY)
-                    ).intValue();
-                    isReceiverAvailable = availability == 1;
-                }
-                receiverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
-                if (receiverUser.image == null) {
-                    receiverUser.image = value.getString(Constants.KEY_IMAGE);
-                    chatAdapter.setReceiverProfileImage(receiverUser.image);
-                    chatAdapter.notifyItemRangeChanged(0, chatMessages.size());
-                }
-            }
-            if(isReceiverAvailable) {
-                binding.textAvailability.setVisibility(View.VISIBLE);
-            }else {
-                binding.textAvailability.setVisibility(View.GONE);
-            }
-        });
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo("userId", receiverUser.id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            String documentID = documentSnapshot.getId();
+                            database.collection(Constants.KEY_COLLECTION_USERS)
+                                    .document(documentID)
+                                    .addSnapshotListener(ChatActivity.this, (value, error) -> {
+                                        if(error != null) {
+                                            return;
+                                        }
+                                        if (value != null) {
+                                            if(value.getLong(Constants.KEY_AVAILABILITY) != null) {
+                                                int availability = Objects.requireNonNull(
+                                                        value.getLong(Constants.KEY_AVAILABILITY)
+                                                ).intValue();
+                                                isReceiverAvailable = availability == 1;
+                                            }
+                                            receiverUser.token = value.getString(Constants.KEY_FCM_TOKEN);
+                                            if (receiverUser.image == null) {
+                                                receiverUser.image = value.getString(Constants.KEY_IMAGE);
+                                                chatAdapter.setReceiverProfileImage(receiverUser.image);
+                                                chatAdapter.notifyItemRangeChanged(0, chatMessages.size());
+                                            }
+                                        }
+                                        if(isReceiverAvailable) {
+                                            binding.textAvailability.setVisibility(View.VISIBLE);
+                                        }else {
+                                            binding.textAvailability.setVisibility(View.GONE);
+                                        }
+                                    });
+                        }
+
+                    }
+                });
     }
 
     //sends the message to correct acc.

@@ -15,6 +15,7 @@ import com.example.chatapp.listeners.UserListener;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Logout;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.example.chatapp.utilities.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,10 +59,18 @@ public class UsersActivity extends BaseActivity implements UserListener {
             getAdmin();
         }
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     private void setListener() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        binding.imageSignOut.setOnClickListener(v -> signOut());
+        binding.imageSignOut.setOnClickListener(v -> {
+            Logout logout = new Logout();
+            logout.clearAllData();
+            signOut();
+        });
     }
     private void signOut(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();

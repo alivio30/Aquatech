@@ -157,6 +157,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                                 intent.putExtra("address", documentUserSnapshot.getString("address"));
                                 intent.putExtra("contactNumber", documentUserSnapshot.getString("contactNumber"));
                                 intent.putExtra("mail", documentUserSnapshot.getString("email"));
+                                intent.putExtra("consID", usersArrayList.get(position).getConsId());
                                 startActivity(intent);
                             });
             //startActivity(intent);

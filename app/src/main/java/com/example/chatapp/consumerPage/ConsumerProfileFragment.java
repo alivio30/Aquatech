@@ -18,6 +18,7 @@ import com.example.chatapp.R;
 import com.example.chatapp.activities.SignInActivity;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Logout;
 import com.example.chatapp.utilities.UserDetails;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -63,7 +64,8 @@ public class ConsumerProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearData();
+                Logout logout = new Logout();
+                logout.clearAllData();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }

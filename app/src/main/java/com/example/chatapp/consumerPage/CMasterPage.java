@@ -169,12 +169,7 @@ public class CMasterPage extends AppCompatActivity {
                 .commit();
     }
     @Override
-    public void onBackPressed(){
-        integerDeque.pop();
-        if(!integerDeque.isEmpty()){
-            loadFragment(getFragment(integerDeque.peek()));
-        }else{
-            finish();
-        }
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

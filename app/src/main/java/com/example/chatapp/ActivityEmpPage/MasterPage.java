@@ -171,6 +171,7 @@ public class MasterPage extends AppCompatActivity {
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 return new SearchPage();
             case R.id.profilebar:
+                bottomNavigationView.getMenu().getItem(2).setChecked(true);
                 return new ProfilePage();
                 /**if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
@@ -191,12 +192,7 @@ public class MasterPage extends AppCompatActivity {
                 .commit();
     }
     @Override
-    public void onBackPressed(){
-        integerDeque.pop();
-        if(!integerDeque.isEmpty()){
-            loadFragment(getFragment(integerDeque.peek()));
-        }/**else{
-            finish();
-        }*/
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

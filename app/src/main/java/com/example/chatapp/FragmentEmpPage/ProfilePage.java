@@ -20,6 +20,7 @@ import com.example.chatapp.R;
 import com.example.chatapp.activities.SignInActivity;
 import com.example.chatapp.fragments.ForgotPassword;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Logout;
 import com.example.chatapp.utilities.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,6 +33,7 @@ public class ProfilePage extends Fragment {
     UserDetails userDetails = new UserDetails();
     Button changePassword, createNewAccount;
     ImageView logoutButton;
+    Logout logout = new Logout();
     ChangePassFragment changePassFragment = new ChangePassFragment();
     TextView userId, address, contactNumber, email;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,7 +76,7 @@ public class ProfilePage extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clearData();
+                logout.clearAllData();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }

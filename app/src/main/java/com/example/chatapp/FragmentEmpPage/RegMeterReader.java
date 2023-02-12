@@ -168,7 +168,7 @@ public class RegMeterReader extends Fragment {
                                 createUser.put("userName", inputUsername.getText().toString());
                                 createUser.put("address", inputAddress.getText().toString());
                                 createUser.put("contactNumber", inputContactNumber.getText().toString());
-                                createUser.put("userType", "consumer");
+                                createUser.put("userType", "Meter Reader");
                                 createUser.put("email", inputEmail.getText().toString());
                                 createUser.put("password", inputPassword.getText().toString());
                                 //createUser.put("availability", "not inputted");

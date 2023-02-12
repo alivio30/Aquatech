@@ -20,6 +20,7 @@ import com.example.chatapp.models.ChatMessage;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Logout;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.example.chatapp.utilities.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,11 +68,17 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         binding.imageSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logout logout = new Logout();
+                logout.clearAllData();
                 signOut();
             }
         });
         binding.fabNewChat.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
     private void signOut(){
         showToast("Signing out...");

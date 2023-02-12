@@ -86,6 +86,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setListeners();*/
     }
+
     public void signIn() {
         progressBar.setVisibility(View.VISIBLE);
         button.setVisibility((View.INVISIBLE));
