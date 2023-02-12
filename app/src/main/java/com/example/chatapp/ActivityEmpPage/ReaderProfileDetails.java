@@ -36,6 +36,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,8 +86,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
     String billingNumber;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    int billingID, watercharge=10;
+    int billingID = 1, watercharge=10;
     double tax =0;
+    //String id="asdasdas";
     double billAmountInvoice=0, billAmount=0, netAmount=100, credit=0, penalty=0, discount=0, previousBalance=0, reconnectionFee=0, others=0;
     String meterImage, bill_no, readingDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
@@ -161,8 +163,125 @@ public class ReaderProfileDetails extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
+    public void getPrevReading(){
+        db.collection("billing")
+                .whereEqualTo("consId", consId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        double maxValue = Double.NEGATIVE_INFINITY;
+                        for(DocumentSnapshot ds : task.getResult()){
+                            double value = ds.getDouble("bill_no");
+                            maxValue = Math.max(maxValue, value);
+                        }
+                        int value = (int)maxValue;
+                        db.collection("billing")
+                            .whereEqualTo("consId", consId)
+                            .whereEqualTo("bill_no", value)
+                            .get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                                        DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                                        txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
+                                        StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
+                                    }
+                                }
+                            });
+                        Toast.makeText(getApplicationContext(), String.valueOf(value), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
     public void validation(){
         Date now = new Date();
+        db.collection("billing")
+                .whereEqualTo("consId", consId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        double maxValue = Double.NEGATIVE_INFINITY;
+                        for(DocumentSnapshot ds : task.getResult()){
+                            double value = ds.getDouble("bill_no");
+                            maxValue = Math.max(maxValue, value);
+                        }
+                        int value = (int)maxValue;
+                        db.collection("billing")
+                                .whereEqualTo("consId", consId)
+                                .whereEqualTo("bill_no", value)
+                                .get()
+                                .addOnCompleteListener(task1 ->{
+                                    if (task1.isSuccessful() && task1.getResult() != null && task1.getResult().getDocuments().size() > 0) {
+                                        DocumentSnapshot documentUserSnapshot = task1.getResult().getDocuments().get(0);
+                                        String stringDate = documentUserSnapshot.getString("dueDate");
+                                        try {
+                                            Date dueDate = sdf.parse(stringDate);
+                                            if(dueDate.after(now)){
+                                                scanButton.setClickable(false);
+                                                submitButton.setClickable(false);
+                                                txtInputPresentReading.setEnabled(false);
+                                                scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                                                submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                                                txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
+                                                StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
+                                                db.collection("billing")
+                                                        .whereEqualTo("consId", consId)
+                                                        .whereEqualTo("bill_no", value-1)
+                                                        .get()
+                                                        .addOnCompleteListener(task2 ->{
+                                                            if (task2.isSuccessful() && task2.getResult() != null && task2.getResult().getDocuments().size() > 0) {
+                                                                DocumentSnapshot documentUserSnapshot1 = task2.getResult().getDocuments().get(0);
+                                                                txtPreviousReading.setText(documentUserSnapshot1.getString("presentReading"));
+                                                                StringToBitMap(previousScannedMeter, documentUserSnapshot1.getString("meterImage"));
+                                                            }
+                                                        });
+                                            }else{
+                                                db.collection("billing")
+                                                        .whereEqualTo("consId", consId)
+                                                        .whereEqualTo("bill_no", value-1)
+                                                        .get()
+                                                        .addOnCompleteListener(updateTask ->{
+                                                            if (updateTask.isSuccessful() && updateTask.getResult() != null && updateTask.getResult().getDocuments().size() > 0) {
+                                                                DocumentSnapshot documentUserSnapshot1 = updateTask.getResult().getDocuments().get(0);
+                                                                Map<String, Object> updateBilling = new HashMap<>();
+                                                                updateBilling.put("previousReading", documentUserSnapshot1.getString("presentReading"));
+                                                                updateBilling.put("meterImage", documentUserSnapshot1.getString("meterImage"));
+                                                                db.collection("billing")
+                                                                        .whereEqualTo("consId", consId)
+                                                                        .whereEqualTo("bill_no", value)
+                                                                        .get()
+                                                                        .addOnCompleteListener(getIDTask ->{
+                                                                            if (getIDTask.isSuccessful() && getIDTask.getResult() != null && getIDTask.getResult().getDocuments().size() > 0) {
+                                                                                DocumentSnapshot documentUserSnapshot2 = getIDTask.getResult().getDocuments().get(0);
+                                                                                String docID = documentUserSnapshot2.getId();
+                                                                                db.collection("billing")
+                                                                                        .document(docID)
+                                                                                        .update(updateBilling)
+                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
+                                                                                            }
+                                                                                        });
+                                                                            }
+                                                                        });
+                                                            }
+                                                        });
+                                                scanButton.setClickable(true);
+                                                submitButton.setClickable(true);
+                                                txtInputPresentReading.setEnabled(true);
+                                                getPrevReading();
+                                            }
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                    }
+                });
+        /**Date now = new Date();
         db.collection("billing")
                 .whereEqualTo("consId", consId)
                 .get()
@@ -215,17 +334,17 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 })
                 .addOnFailureListener(task ->{
                     scanButton.setClickable(true);
-                });
+                });*/
     }
 
     public int billingID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
     }
-    public int generateBillingNumber(){
+    /**public int generateBillingNumber(){
         Random billingNumberRandom = new Random();
         return ((1 + billingNumberRandom.nextInt(9)) * 10000 + billingNumberRandom.nextInt(10000));
-    }
+    }*/
     public Date getDueDate(int date){
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
@@ -237,7 +356,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
     public void calculateBill(){
         billingID = billingID();
-        billingNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateBillingNumber();
+        billingNumber = Integer.toString(year)+ "" +Integer.toString(month);
         Date now = new Date();
 
         billAmount = Integer.parseInt(txtWaterConsumption.getText().toString()) * watercharge;
@@ -256,13 +375,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
         reconnectionFee = 0; // reconnectionFee
         others = 0; // others
         billAmountInvoice = 0 + 0 + 0;// billAmountInvoice + reconnectionFee + others;
-
-        //Toast.makeText(getApplicationContext(), image, Toast.LENGTH_SHORT).show();
+        int temp = 1;
+        String finalBillingNumber= billingNumber + temp;
         Map<String, Object> createBilling = new HashMap<>();
-        createBilling.put("billingId", String.valueOf(billingID));
+        createBilling.put("billingId", billingID);
         createBilling.put("consId", consId);
         createBilling.put("invoiceId", "null");
-        createBilling.put("bill_no", billingNumber);
+        createBilling.put("bill_no", Integer.parseInt(finalBillingNumber));
         createBilling.put("readingDate", readingDate);
         createBilling.put("presentReading", txtInputPresentReading.getText().toString());
         createBilling.put("previousReading", txtPreviousReading.getText().toString());
@@ -286,36 +405,106 @@ public class ReaderProfileDetails extends AppCompatActivity {
         }else{
             //add to billing table
             db.collection("billing")
-                    .add(createBilling)
-                    .addOnSuccessListener(documentReference -> {
-                        toast = Toast.makeText(getApplicationContext(), "Saved to billing!", Toast.LENGTH_SHORT);
-                        toast.show();
-                        db.collection("consumers")
-                                .whereEqualTo("consId", consId)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                                            String documentID = documentSnapshot.getId();
+                .whereEqualTo("consId", consId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            int counter=00001;
+                            for(DocumentSnapshot ds : task.getResult()){
+                                counter = counter + 1;
+                            }
+                            String stringTemp = billingNumber + String.valueOf(counter);
+                            Map<String, Object> createBilling = new HashMap<>();
+                            createBilling.put("billingId", String.valueOf(billingID));
+                            createBilling.put("consId", consId);
+                            createBilling.put("invoiceId", "null");
+                            createBilling.put("bill_no", Integer.parseInt(stringTemp));
+                            createBilling.put("readingDate", readingDate);
+                            createBilling.put("presentReading", txtInputPresentReading.getText().toString());
+                            createBilling.put("previousReading", txtPreviousReading.getText().toString());
+                            createBilling.put("ConsumptionUnit", txtWaterConsumption.getText().toString());
+                            createBilling.put("waterCharge", watercharge);
+                            createBilling.put("tax", tax);
+                            createBilling.put("billAmount", billAmount);
+                            createBilling.put("others", others);
+                            createBilling.put("previousBalance", previousBalance);
+                            createBilling.put("reconnectionFee", reconnectionFee);
+                            createBilling.put("penalty", penalty);
+                            createBilling.put("discount", discount);
+                            createBilling.put("credit", credit);
+                            createBilling.put("netAmount", netAmount);
+                            createBilling.put("dueDate", dueDate);
+                            createBilling.put("meterImage", meterImage);
+                            createBilling.put("status", status);
+                            db.collection("billing")
+                                    .add(createBilling)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
                                             db.collection("consumers")
-                                                    .document(documentID)
-                                                    .update("remarks", "read")
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    .whereEqualTo("consId", consId)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                         @Override
-                                                        public void onSuccess(Void unused) {
-                                                            notifyBill();
+                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                                                String documentID = documentSnapshot.getId();
+                                                                db.collection("consumers")
+                                                                        .document(documentID)
+                                                                        .update("remarks", "read")
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void unused) {
+                                                                                notifyBill();
+                                                                            }
+                                                                        });
+                                                            }
                                                         }
                                                     });
                                         }
-                                    }
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        db.collection("billing")
+                                .add(createBilling)
+                                .addOnSuccessListener(documentReference -> {
+                                    toast = Toast.makeText(getApplicationContext(), "Saved to billing!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    db.collection("consumers")
+                                            .whereEqualTo("consId", consId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                                        String documentID = documentSnapshot.getId();
+                                                        db.collection("consumers")
+                                                                .document(documentID)
+                                                                .update("remarks", "read")
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void unused) {
+                                                                        notifyBill();
+                                                                    }
+                                                                });
+                                                    }
+                                                }
+                                            });
+                                })
+                                .addOnFailureListener(exception -> {
+                                    toast = Toast.makeText(getApplicationContext(), "Failed to Register", Toast.LENGTH_SHORT);
+                                    toast.show();
                                 });
-                    })
-                    .addOnFailureListener(exception -> {
-                        toast = Toast.makeText(getApplicationContext(), "Failed to Register", Toast.LENGTH_SHORT);
-                        toast.show();
-                    });
+                    }
+                });
         }
     }
 
