@@ -32,15 +32,6 @@
             android:name=".activities.ProfileDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.profileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.searchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.homeActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
@@ -57,10 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.SignUpActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true" />

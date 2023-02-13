@@ -109,6 +109,12 @@
     <string name="other_information">Other Information</string>
     <string name="send">Send</string>
     <string name="employee_id">EMPLOYEE ID :</string>
+    <string name="emailalone">Email</string>
+    <string name="preferred_bill_notification">Preferred Bill Notification :</string>
+    <string name="sms">SMS</string>
+    <string name="house_house_delivery">House-House Delivery</string>
+    <string name="scan_the_meter">Scan The Meter</string>
+    <string name="update_consumer_details">Update Consumer Details</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>

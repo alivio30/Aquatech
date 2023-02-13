@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    tools:context=".activities.profileActivity">
+    tools:context=".FragmentEmpPage.ProfilePage">
 
     <View
         android:id="@+id/view"
@@ -99,7 +99,7 @@
                 android:textColor="@color/primary_text"/>
             <TextView
                 android:id="@+id/textAddress"
-                android:layout_width="wrap_content"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:text="@string/cubacub"
                 android:textSize="25sp"

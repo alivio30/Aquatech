@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentEmpPage.RegConsumer">
+    tools:context=".consumerPage.UpdateConsumerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -333,7 +333,7 @@
             android:id="@+id/buttonCreateNewAccount"
             android:layout_width="@dimen/_200sdp"
             android:layout_height="wrap_content"
-            android:text="@string/create_new_account"
+            android:text="@string/update_consumer_details"
             android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintTop_toBottomOf="@+id/frameLayout"
             app:layout_constraintStart_toStartOf="parent"

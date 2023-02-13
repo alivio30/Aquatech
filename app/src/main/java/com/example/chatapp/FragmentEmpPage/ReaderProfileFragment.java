@@ -38,8 +38,6 @@ public class ReaderProfileFragment extends Fragment {
         userId = view.findViewById(R.id.textEmployeeId);
         userName = view.findViewById(R.id.inputUsername);
         address = view.findViewById(R.id.inputAddress);
-        contactNumber = view.findViewById(R.id.inputNumber);
-        email = view.findViewById(R.id.textEmail);
         logout = view.findViewById(R.id.imageLogout);
 
         displayData();

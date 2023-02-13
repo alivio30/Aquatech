@@ -2,7 +2,6 @@ package com.example.chatapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,18 +10,11 @@ import android.widget.Toast;
 
 import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
 import com.example.chatapp.FragmentEmpPage.ConsumerDetails;
-import com.example.chatapp.FragmentEmpPage.ProfileDetailsFragment;
-import com.example.chatapp.FragmentEmpPage.SearchPage;
 import com.example.chatapp.R;
-import com.example.chatapp.adapters.RecyclerViewInterface;
-import com.example.chatapp.adapters.searchUserAdapter;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
-import com.example.chatapp.utilities.UserDetailsRecyclerView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 public class ProfileDetailsActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();

@@ -9,191 +9,163 @@
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/background_water_drop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
     </View>
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_220sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:background="@drawable/background_content_bottom_white"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageSignOut"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/background_design_circle"
+        android:padding="6dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/white"/>
 
-        <!-- Output -->
-        <!-- Account Number -->
-        <ImageView
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="fitXY"
-            android:background="@color/white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:layout_marginTop="@dimen/_47sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/employee_id"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"/>
+    <ImageView
+        android:id="@+id/imageLogout"
+        android:clickable="true"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="17dp"
+        android:src="@drawable/logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textEmployeeId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_20ssp"
-            android:text="@string/_0123456"
-            android:textColor="@color/primary_text"
-            android:background="@null"/>
-        <!-- Username -->
-        <ImageView
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="fitXY"
-            android:background="@color/white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:layout_marginTop="@dimen/_85sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/username"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"/>
+    <LinearLayout
+        android:id="@+id/LinearContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageLogout">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="1dp"
+            app:cardCornerRadius="30dp"
+            app:cardBackgroundColor="@android:color/transparent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_content_bottom_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/employee_id"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/textEmployeeId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_000000"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/primary_text"/>
+        </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/inputUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_60sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_20ssp"
-            android:text="@string/joseph123"
-            android:textColor="@color/primary_text"
-            android:background="@null"/>
-
-        <!-- Address -->
-        <TextView
-            android:id="@+id/inputAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_100sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_20ssp"
-            android:text="@string/cubacub"
-            android:textColor="@color/primary_text"
-            android:background="@null"/>
-
-        <ImageView
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="fitXY"
-            android:background="@color/white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:layout_marginTop="@dimen/_123sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_90sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/address_"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"/>
-
-        <!-- Contact Number -->
-        <TextView
-            android:id="@+id/inputNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_140sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_20ssp"
-            android:text="@string/_09151709842"
-            android:textColor="@color/primary_text"
-            android:background="@null"/>
-
-        <ImageView
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="fitXY"
-            android:background="@color/white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:layout_marginTop="@dimen/_164sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_130sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/contact_number"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"/>
-
-        <!-- Email Address -->
-        <TextView
-            android:id="@+id/textEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_180sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="@dimen/_20ssp"
-            android:text="@string/jo_gmail_com"
-            android:textColor="@color/primary_text"
-            android:background="@null"/>
-
-        <ImageView
-            android:src="@android:drawable/divider_horizontal_dark"
-            android:layout_width="@dimen/_270sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:scaleType="fitXY"
-            android:background="@color/white"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="2dp"
-            android:paddingTop="2dp"
-            android:layout_marginTop="@dimen/_207sdp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_170sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="@string/email_address"
-            android:textStyle="bold"
-            android:textColor="@color/primary_text"/>
-
-    </FrameLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="1dp"
+            app:cardCornerRadius="30dp"
+            app:cardBackgroundColor="@android:color/transparent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_content_bottom_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ADDRESS :"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/textAddress"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:text="@string/cubacub"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/primary_text"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="1dp"
+            app:cardCornerRadius="30dp"
+            app:cardBackgroundColor="@android:color/transparent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_content_bottom_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_number__"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/textContactNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09151709843"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/primary_text"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="1dp"
+            app:cardCornerRadius="30dp"
+            app:cardBackgroundColor="@android:color/transparent">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_content_bottom_white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email_address"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/primary_text"/>
+            <TextView
+                android:id="@+id/textEmailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/jo_gmail_com"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/primary_text"/>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
     <Button
         android:id="@+id/buttonChangePassword"
         android:layout_width="@dimen/_120sdp"
@@ -202,7 +174,7 @@
         android:background="@color/primary"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@id/frameLayout"
+        app:layout_constraintTop_toBottomOf="@id/LinearContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

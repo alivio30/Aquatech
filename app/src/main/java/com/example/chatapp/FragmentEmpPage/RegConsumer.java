@@ -31,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
-import com.example.chatapp.activities.homeActivity;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
 import com.google.android.gms.tasks.OnCompleteListener;

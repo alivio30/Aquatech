@@ -6,19 +6,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".FragmentEmpPage.CreateUserFragment">
 
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_50sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/background_content_bottom_white">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageBack"
+            android:clickable="true"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_23sdp"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/ic_back"
+            android:tint="@color/primary_text" />
+
     <TextView
         android:id="@+id/textviewCreateUserAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_90sdp"
         android:text="@string/create_user_account"
+        android:layout_marginTop="@dimen/_20sdp"
         android:textSize="@dimen/_25ssp"
         android:textColor="@color/primary_text"
         android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:gravity="center" />
 
     <Button
         android:id="@+id/buttonConsumer"
@@ -26,10 +47,8 @@
         android:layout_height="@dimen/_60sdp"
         android:text="@string/consumer"
         android:textSize="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_30sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textviewCreateUserAccount"/>
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"/>
 
     <Button
         android:id="@+id/buttonMeterReader"
@@ -37,10 +56,8 @@
         android:layout_height="@dimen/_60sdp"
         android:text="@string/meter_reader_"
         android:textSize="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonConsumer"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"/>
 
     <Button
         android:id="@+id/buttonAdmin"
@@ -48,8 +65,8 @@
         android:layout_height="@dimen/_60sdp"
         android:text="@string/admin"
         android:textSize="@dimen/_15ssp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMeterReader"/>
+        android:layout_marginTop="110dp"
+        android:layout_gravity="center" />
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

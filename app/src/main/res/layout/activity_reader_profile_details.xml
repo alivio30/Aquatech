@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".FragmentEmpPage.ReaderProfileDetailFragment">
+    tools:context=".FragmentEmpPage.ReaderProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -23,13 +23,13 @@
             android:id="@+id/imageProfile"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
-            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:background="@drawable/background_icon"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textProfileName"
+            app:layout_constraintBottom_toBottomOf="@+id/viewTop"
             app:riv_corner_radius="@dimen/_8sdp" />
 
 
@@ -37,7 +37,7 @@
             android:id="@+id/textProfileName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_marginBottom="@dimen/_60sdp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
@@ -48,21 +48,22 @@
             app:layout_constraintBottom_toTopOf="@+id/linearContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageProfile"
             tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/textAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold"
             android:text="@string/address"
-            app:layout_constraintTop_toTopOf="@+id/textProfileName"
+
+            app:layout_constraintTop_toBottomOf="@+id/textProfileName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/viewTop" />
@@ -92,12 +93,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewTop" />
+        <ImageView
+            android:id="@+id/imageBack"
+            android:clickable="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintTop_toBottomOf="@id/viewTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/linearContainer"/>
         <LinearLayout
             android:id="@+id/linearContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewTop">
@@ -279,7 +291,9 @@
                 android:id="@+id/buttonScan"
                 android:layout_width="@dimen/_300sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:text="Scan The Meter"
+                android:text="@string/scan_the_meter"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_gravity="center" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -359,15 +373,15 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textPreviousReading"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
                         android:textSize="30sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="35dp"
                         android:textAlignment="center"
-                        android:textColor="@color/primary_text"/>
+                        android:textColor="@color/primary_text"
+                        android:layout_gravity="center"/>
                     <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/imagePrevWaterMeter"
                         android:layout_width="@dimen/_60sdp"
@@ -391,8 +405,7 @@
                 android:paddingTop="2dp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_45sdp"
-                android:layout_marginEnd="@dimen/_10sdp"/>
+                android:layout_gravity="center"/>
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_50sdp"
@@ -414,14 +427,14 @@
                     android:textColor="@color/primary_text" />
                 <TextView
                     android:id="@+id/textWaterConsumption"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/_000000"
+                    android:text="@string/_00000"
                     android:textSize="30sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
                     android:textAlignment="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/primary_text"/>
             </androidx.cardview.widget.CardView>
 
@@ -434,18 +447,9 @@
             android:text="@string/submit"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearContainer"
             android:layout_marginEnd="@dimen/_10sdp"/>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigationView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/emp_page" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

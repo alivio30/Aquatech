@@ -65,14 +65,6 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         listenConversations();
     }
     private void setListeners(){
-        binding.imageSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Logout logout = new Logout();
-                logout.clearAllData();
-                signOut();
-            }
-        });
         binding.fabNewChat.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
     }
