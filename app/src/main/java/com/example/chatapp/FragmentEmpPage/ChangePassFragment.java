@@ -77,7 +77,7 @@ public class ChangePassFragment extends Fragment {
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     transaction.setReorderingAllowed(true);
-                    transaction.replace(R.id.FragmentContainer, readerProfile);
+                    transaction.replace(R.id.FragmentContainer, adminProfile);
                     transaction.commit();
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("admin")){

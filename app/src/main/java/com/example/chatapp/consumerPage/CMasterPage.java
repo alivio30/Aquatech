@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
@@ -49,6 +50,7 @@ public class CMasterPage extends AppCompatActivity {
     BottomNavigationView navigationView;
     ImageView chatIcon, profile;
     Toast toast;
+    TextView userName;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Deque<Integer> integerDeque = new ArrayDeque<>(2);
     boolean flag = true;
@@ -59,11 +61,13 @@ public class CMasterPage extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerHome).commit();
         chatIcon = findViewById(R.id.imageMessenger);
         profile = findViewById(R.id.imageProfile);
+        userName = findViewById(R.id.textName);
         setConsumerData();
         //display image from url
         String url = userDetails.getImage();
         new fetchImage(url).start();
 
+        userName.setText(userDetails.getName());
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

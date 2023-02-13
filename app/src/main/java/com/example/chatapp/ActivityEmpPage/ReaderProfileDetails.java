@@ -281,70 +281,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 });
                     }
                 });
-        /**Date now = new Date();
-        db.collection("billing")
-                .whereEqualTo("consId", consId)
-                .get()
-                .addOnCompleteListener(task ->{
-                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                        DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                        if(documentUserSnapshot.getString("dueDate").equals(sdf.format(now))){
-                            db.collection("consumers").whereEqualTo("consId", consId)
-                                .get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                                            if(documentUserSnapshot.getString("remarks").equalsIgnoreCase("unread")){
-                                                scanButton.setClickable(true);
-                                                submitButton.setClickable(true);
-                                                txtInputPresentReading.setEnabled(true);
-                                                txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
-                                                StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
-                                            }
-                                        }
-                                    }
-                                });
-                            db.collection("consumers")
-                                    .whereEqualTo("consId", consId)
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                                                DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                                                String documentId = documentUserSnapshot.getId();
-                                                db.collection("consumers")
-                                                        .document(documentId)
-                                                        .update("remarks", "unread");
-                                            }
-                                        }
-                                    });
-                        }else{
-                            scanButton.setClickable(false);
-                            submitButton.setClickable(false);
-                            txtInputPresentReading.setEnabled(false);
-                            scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
-                            submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
-                            txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
-                            StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
-                        }
-                    }
-                })
-                .addOnFailureListener(task ->{
-                    scanButton.setClickable(true);
-                });*/
     }
 
     public int billingID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
     }
-    /**public int generateBillingNumber(){
-        Random billingNumberRandom = new Random();
-        return ((1 + billingNumberRandom.nextInt(9)) * 10000 + billingNumberRandom.nextInt(10000));
-    }*/
     public Date getDueDate(int date){
         Date now = new Date();
         Calendar cal = Calendar.getInstance();
@@ -603,24 +545,4 @@ public class ReaderProfileDetails extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         bitImage.setImageBitmap(bitmap);
     }
-
-    /**public void retrievePreviousReading(){
-        db.collection("billing")
-                .whereEqualTo("consId", getIntent().getStringExtra("consID"))
-                .get()
-                .addOnCompleteListener(task ->{
-                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                        DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                        txtPreviousReading.setText(documentUserSnapshot.getString("previousReading"));
-                        StringToBitMap(documentUserSnapshot.getString("meterImage"));
-                        txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }*/
 }

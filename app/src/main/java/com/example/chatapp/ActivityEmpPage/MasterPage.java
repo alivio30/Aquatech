@@ -40,7 +40,7 @@ public class MasterPage extends AppCompatActivity {
     ActivityMasterPageBinding binding;
     BottomNavigationView bottomNavigationView;
     ImageView chatIcon, profile;
-    TextView userType;
+    TextView userType, userName;
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
     HomePage homePage = new HomePage();
@@ -59,15 +59,20 @@ public class MasterPage extends AppCompatActivity {
         setContentView(R.layout.activity_master_page);
         userType = findViewById(R.id.textPosition);
         profile = findViewById(R.id.imageProfile);
+        userName = findViewById(R.id.textName);
+
 
         //display image profile
         //toast = Toast.makeText(getApplicationContext(), userDetails.getImage(), Toast.LENGTH_SHORT);
         //toast.show(
         String url = userDetails.getImage();
         new fetchImage(url).start();
+
         //set text if user is reader or admin
         if(userDetails.getUserType().equalsIgnoreCase("admin")) userType.setText("Admin");
         if(userDetails.getUserType().equalsIgnoreCase("meter reader")) userType.setText("Meter Reader");
+        userName.setText(userDetails.getName());
+
         //chat icon
         chatIcon = findViewById(R.id.imageMessenger);
         chatIcon.setOnClickListener(new View.OnClickListener() {
@@ -102,29 +107,6 @@ public class MasterPage extends AppCompatActivity {
                 return false;
             }
         });
-        /**bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.homebar:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, homePage).addToBackStack(null).commit();
-                        return true;
-                    case R.id.searchbar:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, searchPage).addToBackStack(null).commit();
-                        return true;
-                    case R.id.profilebar:
-                        if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
-                            getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, readerProfilePage).addToBackStack(null).commit();
-                        }
-                        if(userDetails.getUserType().equalsIgnoreCase("admin")){
-                            getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminProfilePage).addToBackStack(null).commit();
-                        }
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, profilePage).addToBackStack(null).commit();
-                        return true;
-                }
-                return false;
-            }
-        });*/
     }
     public class fetchImage extends Thread{
         String URL;
