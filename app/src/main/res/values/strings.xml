@@ -117,6 +117,9 @@
     <string name="update_consumer_details">Update Consumer Details</string>
     <string name="first_meter_read">First Meter Read</string>
     <string name="first_meter_read_">First Meter Read :</string>
+    <string name="others">Others :</string>
+    <string name="discount">Discount :</string>
+    <string name="credit">Credit :</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>
