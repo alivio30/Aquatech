@@ -17,6 +17,60 @@ public class ConsumerProfileDetails {
     private static String address;
     private static String email;
     private static String dateApplied;
+    private static String notifyEmail;
+    private static String notifySMS;
+    private static String notifyHouse;
+    private static String userName;
+    private static String password;
+    private static String image;
+
+    public String getImage(){
+        return image;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
+    public String getUserName(){
+        return userName;
+    }
+
+    public void setUserName(String userName){
+        this.userName = userName;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = password;
+    }
+
+    public String getNotifyEmail(){
+        return notifyEmail;
+    }
+
+    public void setNotifyEmail(String notifyEmail){
+        this.notifyEmail = notifyEmail;
+    }
+
+    public String getNotifySMS(){
+        return notifySMS;
+    }
+
+    public void setNotifySMS(String notifySMS){
+        this.notifySMS = notifySMS;
+    }
+
+    public String getNotifyHouse(){
+        return notifyHouse;
+    }
+
+    public void setNotifyHouse(String notifyHouse){
+        this.notifyHouse = notifyHouse;
+    }
 
     public String getDateApplied(){
         return dateApplied;

@@ -389,7 +389,7 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
         <Button
-            android:id="@+id/buttonChangePassword"
+            android:id="@+id/buttonUpdate"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="wrap_content"
             android:text="@string/update_consumer_details"

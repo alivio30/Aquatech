@@ -25,7 +25,7 @@ public class ReaderProfileFragment extends Fragment {
     View view;
     Button buttonChangePassword;
     ImageView logout;
-    TextView userId, userName, address, contactNumber, email;
+    TextView userId, address, contactNumber, email;
     ChangePassFragment changePassFragment = new ChangePassFragment();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserDetails userDetails = new UserDetails();
@@ -36,10 +36,10 @@ public class ReaderProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_reader_profile, container, false);
         buttonChangePassword = view.findViewById(R.id.buttonChangePassword);
         userId = view.findViewById(R.id.textEmployeeId);
-        userName = view.findViewById(R.id.inputUsername);
-        address = view.findViewById(R.id.inputAddress);
+        contactNumber = view.findViewById(R.id.textContactNumber);
+        address = view.findViewById(R.id.textAddress);
+        email = view.findViewById(R.id.textEmailAddress);
         logout = view.findViewById(R.id.imageLogout);
-
         displayData();
 
         buttonChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -51,14 +51,14 @@ public class ReaderProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
-        /**logout.setOnClickListener(new View.OnClickListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clearData();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
         return view;
     }
     public void displayData(){
@@ -69,7 +69,6 @@ public class ReaderProfileFragment extends Fragment {
                     if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                         userId.setText(documentUserSnapshot.getString("userId"));
-                        userName.setText(documentUserSnapshot.getString("userName"));
                         address.setText(documentUserSnapshot.getString("address"));
                         contactNumber.setText(documentUserSnapshot.getString("contactNumber"));
                         email.setText(documentUserSnapshot.getString("email"));

@@ -123,6 +123,7 @@
         <item>Admin</item>
     </string-array>
     <string-array name="spinnerYear">
+        <item>Year</item>
         <item>2020</item>
         <item>2021</item>
         <item>2022</item>
@@ -132,6 +133,7 @@
         <item>2026</item>
     </string-array>
     <string-array name="spinnerMonth">
+        <item>Month</item>
         <item>January</item>
         <item>February</item>
         <item>March</item>
@@ -144,5 +146,10 @@
         <item>October</item>
         <item>November</item>
         <item>December</item>
+    </string-array>
+    <string-array name="spinnerType">
+        <item>Select Type</item>
+        <item>Residential</item>
+        <item>Commercial</item>
     </string-array>
 </resources>

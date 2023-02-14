@@ -2,6 +2,7 @@ package com.example.chatapp.FragmentEmpPage;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,22 +17,35 @@ import android.widget.Toast;
 
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.UserDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class AdminBillingDetails extends Fragment {
     View view;
     UserDetails userDetails = new UserDetails();
-    TextView serialNumber;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Spinner spinnerYear, spinnerMonth;
     String getYear, getMonth, filter;
+    TextView presentReading, previousReading, waterConsumed, billAmount, penalty, reconnectionFee, serialNumber, meterReader, dueDate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_admin_billing_details, container, false);
+        presentReading = view.findViewById(R.id.textPresentReading);
+        previousReading = view.findViewById(R.id.textPreviousReading);
+        waterConsumed = view.findViewById(R.id.textWaterConsumed);
+        billAmount = view.findViewById(R.id.textBillAmount);
+        penalty = view.findViewById(R.id.textPenalty);
+        reconnectionFee = view.findViewById(R.id.textReconnectionFee);
         serialNumber = view.findViewById(R.id.textSerialNo);
+        meterReader = view.findViewById(R.id.textMeterReader);
+        dueDate = view.findViewById(R.id.textDueDate);
+        //spinners
         spinnerYear = view.findViewById(R.id.spinnerYear);
         spinnerMonth = view.findViewById(R.id.spinnerMonth);
         //spinner year
@@ -42,6 +56,7 @@ public class AdminBillingDetails extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 getYear = adapterView.getItemAtPosition(i).toString();
+                displayBillingDetails();
             }
 
             @Override
@@ -57,6 +72,7 @@ public class AdminBillingDetails extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 getMonth = adapterView.getItemAtPosition(i).toString();
+                displayBillingDetails();
             }
 
             @Override
@@ -64,7 +80,8 @@ public class AdminBillingDetails extends Fragment {
 
             }
         });
-        filter = getMonth+" "+getYear;
+        //filter = getMonth+"-"+getYear;
+        //displayBillingDetails();
 
         if(userDetails.getUserType().equalsIgnoreCase("admin")){
             String userID = getArguments().getString("userId");
@@ -110,6 +127,51 @@ public class AdminBillingDetails extends Fragment {
                     });
         }
         return view;
+    }
+    public void displayBillingDetails(){
+        filter = getMonth+"-"+getYear;
+        presentReading.setText("");
+        previousReading.setText("");
+        waterConsumed.setText("");
+        billAmount.setText("");
+        penalty.setText("");
+        reconnectionFee.setText("");
+        meterReader.setText("");
+        dueDate.setText("");
+        serialNumber.setText("");
+        Toast.makeText(getContext(), filter, Toast.LENGTH_LONG).show();
+        db.collection("billing")
+                .whereEqualTo("readingDate", filter)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                            DocumentSnapshot documentSnapshot1 = task.getResult().getDocuments().get(0);
+                            presentReading.setText(documentSnapshot1.getString("presentReading"));
+                            previousReading.setText(documentSnapshot1.getString("previousReading"));
+                            waterConsumed.setText(documentSnapshot1.getString("ConsumptionUnit"));
+                            billAmount.setText(documentSnapshot1.getLong("billAmount").toString());
+                            penalty.setText(documentSnapshot1.getLong("penalty").toString());
+                            reconnectionFee.setText(documentSnapshot1.getLong("reconnectionFee").toString());
+                            meterReader.setText(documentSnapshot1.getString("MeterReader"));
+                            dueDate.setText(documentSnapshot1.getString("dueDate"));
+                            db.collection("consumers")
+                                    .whereEqualTo("consId", documentSnapshot1.getString("consId"))
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
+                                                serialNumber.setText(documentSnapshot2.getString("meterSerialNumber"));
+                                            }
+                                        }
+                                    });
+
+                        }
+                    }
+                });
     }
 
 }
