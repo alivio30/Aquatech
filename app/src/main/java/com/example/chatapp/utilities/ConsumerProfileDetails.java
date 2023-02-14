@@ -23,6 +23,15 @@ public class ConsumerProfileDetails {
     private static String userName;
     private static String password;
     private static String image;
+    private static String firstRead;
+
+    public String getFirstRead(){
+        return firstRead;
+    }
+
+    public void setFirstRead(String firstRead){
+        this.firstRead = firstRead;
+    }
 
     public String getImage(){
         return image;

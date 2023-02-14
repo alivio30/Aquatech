@@ -24,6 +24,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class AdminBillingDetails extends Fragment {
     View view;
     UserDetails userDetails = new UserDetails();
@@ -31,11 +36,15 @@ public class AdminBillingDetails extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Spinner spinnerYear, spinnerMonth;
     String getYear, getMonth, filter;
-    TextView presentReading, previousReading, waterConsumed, billAmount, penalty, reconnectionFee, serialNumber, meterReader, dueDate;
+    String startBillingPeriod, endBillingPeriod;
+    String date;
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    TextView period, totalBill, billingNumber, presentReading, previousReading, waterConsumed, billAmount, penalty, reconnectionFee, serialNumber, meterReader, dueDate;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_admin_billing_details, container, false);
+        billingNumber = view.findViewById(R.id.textBillNo);
         presentReading = view.findViewById(R.id.textPresentReading);
         previousReading = view.findViewById(R.id.textPreviousReading);
         waterConsumed = view.findViewById(R.id.textWaterConsumed);
@@ -45,6 +54,8 @@ public class AdminBillingDetails extends Fragment {
         serialNumber = view.findViewById(R.id.textSerialNo);
         meterReader = view.findViewById(R.id.textMeterReader);
         dueDate = view.findViewById(R.id.textDueDate);
+        totalBill = view.findViewById(R.id.textTotalBill);
+        period = view.findViewById(R.id.textBillingPeriod);
         //spinners
         spinnerYear = view.findViewById(R.id.spinnerYear);
         spinnerMonth = view.findViewById(R.id.spinnerMonth);
@@ -130,6 +141,7 @@ public class AdminBillingDetails extends Fragment {
     }
     public void displayBillingDetails(){
         filter = getMonth+"-"+getYear;
+        billingNumber.setText("");
         presentReading.setText("");
         previousReading.setText("");
         waterConsumed.setText("");
@@ -139,7 +151,6 @@ public class AdminBillingDetails extends Fragment {
         meterReader.setText("");
         dueDate.setText("");
         serialNumber.setText("");
-        Toast.makeText(getContext(), filter, Toast.LENGTH_LONG).show();
         db.collection("billing")
                 .whereEqualTo("readingDate", filter)
                 .get()
@@ -148,14 +159,27 @@ public class AdminBillingDetails extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot documentSnapshot1 = task.getResult().getDocuments().get(0);
+                            billingNumber.setText(documentSnapshot1.getLong("bill_no").toString());
                             presentReading.setText(documentSnapshot1.getString("presentReading"));
                             previousReading.setText(documentSnapshot1.getString("previousReading"));
                             waterConsumed.setText(documentSnapshot1.getString("ConsumptionUnit"));
-                            billAmount.setText(documentSnapshot1.getLong("billAmount").toString());
-                            penalty.setText(documentSnapshot1.getLong("penalty").toString());
-                            reconnectionFee.setText(documentSnapshot1.getLong("reconnectionFee").toString());
+                            billAmount.setText(documentSnapshot1.getString("billAmount"));
+                            penalty.setText(documentSnapshot1.getString("penalty"));
+                            reconnectionFee.setText(documentSnapshot1.getString("reconnectionFee"));
                             meterReader.setText(documentSnapshot1.getString("MeterReader"));
                             dueDate.setText(documentSnapshot1.getString("dueDate"));
+                            totalBill.setText(documentSnapshot1.getString("netAmount"));
+                            date = documentSnapshot1.getString("dueDate");
+                            try {
+                                startBillingPeriod = format.format(getBillingPeriod(-30));
+                                endBillingPeriod = format.format(getBillingPeriod(-1));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            period.setText(startBillingPeriod+" -- "+endBillingPeriod);
+
+
+
                             db.collection("consumers")
                                     .whereEqualTo("consId", documentSnapshot1.getString("consId"))
                                     .get()
@@ -172,6 +196,14 @@ public class AdminBillingDetails extends Fragment {
                         }
                     }
                 });
+    }
+    public Date getBillingPeriod(int date) throws ParseException {
+        Date d = format.parse(this.date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.DATE, date);
+
+        return cal.getTime();
     }
 
 }

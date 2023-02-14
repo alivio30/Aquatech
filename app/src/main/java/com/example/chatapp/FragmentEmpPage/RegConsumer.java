@@ -69,7 +69,7 @@ public class RegConsumer extends Fragment {
     View view, view_activity_create_user;
     StorageReference storageReference;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
-    EditText inputName, inputAddress, inputContactNumber, inputEmail, inputSerialNumber;
+    EditText firstRead, inputName, inputAddress, inputContactNumber, inputEmail, inputSerialNumber;
     EditText inputTankNumber, inputPumpNumber, inputLineNumber, inputMeterStand, inputUsername, inputPassword, inputConfirmPassword;
     Button createButton;
     Uri imageUri;
@@ -108,6 +108,7 @@ public class RegConsumer extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
+        firstRead = view.findViewById(R.id.inputFirstMeterRead);
 
         //checkbox preferred notification method
         chkEmail = view.findViewById(R.id.checkBoxEmail);
@@ -285,6 +286,7 @@ public class RegConsumer extends Fragment {
                                 createConsumer.put("notifyEmail", email);
                                 createConsumer.put("notifySMS", sms);
                                 createConsumer.put("notifyHouse", house);
+                                createConsumer.put("firstReading", firstRead.getText().toString());
 
                                 //user hash--
                                 Map<String, Object> createUser = new HashMap<>();

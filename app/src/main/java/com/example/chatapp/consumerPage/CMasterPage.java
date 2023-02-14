@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.MainActivity;
 import com.example.chatapp.activities.UsersActivity;
@@ -21,12 +22,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.function.Consumer;
 
 public class CMasterPage extends AppCompatActivity {
     ChomeFragment consumerHome = new ChomeFragment();
+    AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerProfileFragment consumerProfileFragment = new ConsumerProfileFragment();
     BottomNavigationView navigationView;
     ImageView chatIcon;
@@ -36,7 +40,7 @@ public class CMasterPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cmaster_page2);
-        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerHome).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminBillingDetails).commit();
         chatIcon = findViewById(R.id.imageMessenger);
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,13 +92,13 @@ public class CMasterPage extends AppCompatActivity {
         switch(itemId){
             case R.id.chome:
                 navigationView.getMenu().getItem(0).setChecked(true);
-                return new ChomeFragment();
+                return new AdminBillingDetails();
             case R.id.cprofile:
                 navigationView.getMenu().getItem(1).setChecked(true);
                 return new ConsumerProfileFragment();
         }
-        navigationView.getMenu().getItem(1).setChecked(true);
-        return new ChomeFragment();
+        navigationView.getMenu().getItem(0).setChecked(true);
+        return new AdminBillingDetails();
     }
     private void loadFragment(Fragment fragment){
         getSupportFragmentManager()

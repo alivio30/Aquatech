@@ -31,7 +31,8 @@ public class ConsumerProfileFragment extends Fragment {
     UserDetails userDetails = new UserDetails();
     ImageView logout;
     TextView accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied, contactNumber, email;
-    TextView billNotification, consumerType;
+    TextView firstRead, billNotification, consumerType;
+    String notifyVia="";
     ChangePassFragment changePassFragment = new ChangePassFragment();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +48,9 @@ public class ConsumerProfileFragment extends Fragment {
         dateApplied = view.findViewById(R.id.textDateApplied);
         contactNumber = view.findViewById(R.id.textContactNumber);
         email = view.findViewById(R.id.textEmailAddress);
+        consumerType = view.findViewById(R.id.textConsumerType);
+        billNotification = view.findViewById(R.id.textBillNotification);
+        firstRead = view.findViewById(R.id.textFirstMeterRead);
 
 
         displayData();
@@ -86,7 +90,7 @@ public class ConsumerProfileFragment extends Fragment {
                     }
                 });
         dbConsumers.collection("consumers")
-                .whereEqualTo("consId", userDetails.getConsumerID())
+                .whereEqualTo("userId", userDetails.getUserID())
                 .get()
                 .addOnCompleteListener(task ->{
                     if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
@@ -97,6 +101,12 @@ public class ConsumerProfileFragment extends Fragment {
                         tankNumber.setText(documentUserSnapshot.getString("tankNumber"));
                         lineNumber.setText(documentUserSnapshot.getString("lineNumber"));
                         meterStandNumber.setText(documentUserSnapshot.getString("meterStandNumber"));
+                        consumerType.setText(documentUserSnapshot.getString("consumerType"));
+                        if(documentUserSnapshot.getString("notifyEmail").equals("1")) notifyVia += "Email, ";
+                        if(documentUserSnapshot.getString("notifySMS").equals("1")) notifyVia += "SMS, ";
+                        if(documentUserSnapshot.getString("notifyHouse").equals("1")) notifyVia += "House, ";
+                        billNotification.setText(notifyVia);
+                        firstRead.setText(documentUserSnapshot.getString("firstReading"));
                     }
                 });
     }

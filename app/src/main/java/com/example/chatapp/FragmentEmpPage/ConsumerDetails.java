@@ -26,7 +26,7 @@ public class ConsumerDetails extends Fragment {
     UpdateConsumerFragment updateConsumerFragment = new UpdateConsumerFragment();
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     TextView name, accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied;
-    TextView contactNumber, email, consumerType, notify;
+    TextView firstRead, contactNumber, email, consumerType, notify;
     ImageView back;
     Button update;
     String notifyVia="", notifyEmail="", notifySMS="", notifyHouse="";
@@ -50,6 +50,7 @@ public class ConsumerDetails extends Fragment {
         update = view.findViewById(R.id.buttonUpdate);
         consumerType = view.findViewById(R.id.textConsumerType);
         notify = view.findViewById(R.id.textBillNotification);
+        firstRead = view.findViewById(R.id.textFirstMeterRead);
         if(consumerProfileDetails.getNotifyEmail().equals("1")) notifyVia += "Email, ";
         if(consumerProfileDetails.getNotifySMS().equals("1")) notifyVia += "SMS, ";
         if(consumerProfileDetails.getNotifyHouse().equals("1")) notifyVia += "House, ";
@@ -76,6 +77,7 @@ public class ConsumerDetails extends Fragment {
         email.setText(consumerProfileDetails.getEmail());
         consumerType.setText(consumerProfileDetails.getConsumerType());
         notify.setText(notifyVia);
+        firstRead.setText(consumerProfileDetails.getFirstRead());
 
 
         back.setOnClickListener(new View.OnClickListener() {

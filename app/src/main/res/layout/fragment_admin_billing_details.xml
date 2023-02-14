@@ -393,6 +393,7 @@
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
+                    android:id="@+id/textBillingPeriod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/jul_15_aug_15_22"
@@ -438,6 +439,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textTotalBill"
                         android:layout_width="150dp"
                         android:layout_height="50dp"
                         android:textStyle="bold"

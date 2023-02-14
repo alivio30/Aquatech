@@ -97,6 +97,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                         consumerProfileDetails.setNotifyEmail(documentUserSnapshot.getString("notifyEmail"));
                         consumerProfileDetails.setNotifySMS(documentUserSnapshot.getString("notifySMS"));
                         consumerProfileDetails.setNotifyHouse(documentUserSnapshot.getString("notifyHouse"));
+                        consumerProfileDetails.setFirstRead(documentUserSnapshot.getString("firstReading"));
                         //testing if consumer detail is fetched
                         toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getUserID(), Toast.LENGTH_SHORT);
                         toast.show();
