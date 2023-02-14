@@ -87,7 +87,7 @@
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="920dp"
             android:background="@drawable/background_water_drop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -289,11 +289,11 @@
         </androidx.cardview.widget.CardView>
             <Button
                 android:id="@+id/buttonScan"
-                android:layout_width="@dimen/_300sdp"
+                android:layout_width="@dimen/_280sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:text="@string/scan_the_meter"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
                 android:layout_gravity="center" />
             <LinearLayout
                 android:layout_width="match_parent"
@@ -437,7 +437,20 @@
                     android:layout_gravity="center"
                     android:textColor="@color/primary_text"/>
             </androidx.cardview.widget.CardView>
-
+            <EditText
+                android:id="@+id/InputRemarks"
+                android:layout_width="350dp"
+                android:layout_height="90dp"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/_15ssp"
+                android:background="@drawable/background_input"
+                android:layout_gravity="center"
+                android:hint="Remarks"
+                android:textAlignment="center"
+                android:layout_marginStart="@dimen/_50sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp" />
         </LinearLayout>
 
         <Button
@@ -446,6 +459,7 @@
             android:layout_height="@dimen/_50sdp"
             android:text="@string/submit"
             android:gravity="center"
+            android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearContainer"

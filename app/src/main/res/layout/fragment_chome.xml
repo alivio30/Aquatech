@@ -12,11 +12,21 @@
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="930dp"
+            android:layout_height="1040dp"
             android:background="@drawable/background_water_drop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+            android:id="@+id/imageBack"
+            android:clickable="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <Spinner
             android:id="@+id/spinnerYear"
             android:layout_width="wrap_content"
@@ -26,7 +36,7 @@
             android:spinnerMode="dropdown"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageBack"
             app:layout_constraintTop_toTopOf="parent"/>
         <Spinner
             android:id="@+id/spinnerMonth"
@@ -45,7 +55,6 @@
             android:layout_height="@dimen/_60sdp"
             android:background="@drawable/background_icon"
             android:scaleType="centerCrop"
-            android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/spinnerMonth"
@@ -63,13 +72,13 @@
             android:layout_marginTop="10dp">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="820dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 app:cardCornerRadius="30dp"
                 app:cardBackgroundColor="@android:color/transparent">
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="930dp"
                     android:background="@drawable/background_content_bottom_white"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,6 +178,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textWaterConsumed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -203,6 +213,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textBillAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -233,6 +244,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textPreviousBill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -254,6 +266,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textPenalty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -288,6 +301,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textTotalPrevious"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -304,20 +318,93 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/reconnection_fee"
+                        android:text="@string/others"
                         android:textSize="25sp"
                         android:textStyle="bold"
                         android:layout_marginTop="385dp"
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textOther"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:text="@string/_000000"
                         android:textSize="25sp"
                         android:layout_marginTop="385dp"
+                        android:layout_marginStart="140dp"
+                        android:textColor="@color/primary_text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reconnection_fee"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="420dp"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/primary_text"/>
+                    <TextView
+                        android:id="@+id/textReconnectionFee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@string/_000000"
+                        android:textSize="25sp"
+                        android:layout_marginTop="420dp"
                         android:layout_marginStart="15dp"
+                        android:textColor="@color/primary_text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/discount"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="455dp"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/primary_text"/>
+                    <TextView
+                        android:id="@+id/textDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@string/_000000"
+                        android:textSize="25sp"
+                        android:layout_marginTop="455dp"
+                        android:layout_marginStart="116dp"
+                        android:textColor="@color/primary_text"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/credit"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="490dp"
+                        android:layout_marginStart="20dp"
+                        android:textColor="@color/primary_text"/>
+                    <TextView
+                        android:id="@+id/textCredit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="@string/_000000"
+                        android:textSize="25sp"
+                        android:layout_marginTop="490dp"
+                        android:layout_marginStart="148dp"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
                 <TextView
@@ -325,7 +412,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/other_information"
                     android:textSize="25sp"
-                    android:layout_marginTop="420dp"
+                    android:layout_marginTop="525dp"
                     android:layout_marginStart="11dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -333,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/meter_serial_number"
                     android:textSize="25sp"
-                    android:layout_marginTop="450dp"
+                    android:layout_marginTop="555dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -342,7 +429,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/_0123456"
                     android:textSize="25sp"
-                    android:layout_marginTop="480dp"
+                    android:layout_marginTop="585dp"
                     android:layout_marginStart="40dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -350,15 +437,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/meter_reader"
                     android:textSize="25sp"
-                    android:layout_marginTop="510dp"
+                    android:layout_marginTop="615dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
+                    android:id="@+id/textMeterReader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_0123456"
                     android:textSize="25sp"
-                    android:layout_marginTop="540dp"
+                    android:layout_marginTop="645dp"
                     android:layout_marginStart="40dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -366,7 +454,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/billed_by"
                     android:textSize="25sp"
-                    android:layout_marginTop="570dp"
+                    android:layout_marginTop="675dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -374,7 +462,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/_0123456"
                     android:textSize="25sp"
-                    android:layout_marginTop="600dp"
+                    android:layout_marginTop="705dp"
                     android:layout_marginStart="40dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -382,7 +470,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/billing_period"
                     android:textSize="25sp"
-                    android:layout_marginTop="630dp"
+                    android:layout_marginTop="735dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -390,7 +478,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/jul_15_aug_15_22"
                     android:textSize="25sp"
-                    android:layout_marginTop="660dp"
+                    android:layout_marginTop="765dp"
                     android:layout_marginStart="40dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
@@ -398,23 +486,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/due_date"
                     android:textSize="25sp"
-                    android:layout_marginTop="690dp"
+                    android:layout_marginTop="795dp"
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
+                    android:id="@+id/textDueDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/december_20_2023"
                     android:textSize="25sp"
-                    android:layout_marginTop="720dp"
+                    android:layout_marginTop="820dp"
                     android:layout_marginStart="50dp"
                     android:textColor="@color/primary_text"/>
                 <View
                     android:id="@+id/viewTotalBill"
                     android:layout_width="150dp"
                     android:layout_height="50dp"
-                    android:layout_marginTop="765dp"
-                    android:layout_marginStart="230dp"
+                    android:layout_marginTop="870dp"
+                    android:layout_marginStart="210dp"
                     android:background="@drawable/background_bill_white"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -426,7 +515,7 @@
                         android:textStyle="bold"
                         android:text="@string/total_bill"
                         android:textSize="40sp"
-                        android:layout_marginTop="760dp"
+                        android:layout_marginTop="870dp"
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
@@ -435,8 +524,8 @@
                         android:textStyle="bold"
                         android:text="@string/_000000"
                         android:textSize="40sp"
-                        android:layout_marginTop="760dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="870dp"
+                        android:layout_marginStart="10dp"
                         android:textAlignment="center"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
@@ -444,6 +533,7 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </ScrollView>
