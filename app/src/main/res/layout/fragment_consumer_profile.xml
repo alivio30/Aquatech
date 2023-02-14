@@ -121,6 +121,35 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/first_meter_read_"
+                    android:textSize="10sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:textColor="@color/primary_text"/>
+                <TextView
+                    android:id="@+id/textFirstMeterRead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_000000"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/primary_text"/>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="1dp"
+                app:cardCornerRadius="30dp"
+                app:cardBackgroundColor="@android:color/transparent">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_content_bottom_white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/pump_number"
                     android:textSize="10sp"
                     android:layout_marginTop="10dp"

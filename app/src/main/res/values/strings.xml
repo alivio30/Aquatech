@@ -115,6 +115,8 @@
     <string name="house_house_delivery">House-House Delivery</string>
     <string name="scan_the_meter">Scan The Meter</string>
     <string name="update_consumer_details">Update Consumer Details</string>
+    <string name="first_meter_read">First Meter Read</string>
+    <string name="first_meter_read_">First Meter Read :</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>

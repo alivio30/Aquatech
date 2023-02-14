@@ -66,11 +66,6 @@ public class UsersActivity extends BaseActivity implements UserListener {
 
     private void setListener() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        binding.imageSignOut.setOnClickListener(v -> {
-            Logout logout = new Logout();
-            logout.clearAllData();
-            signOut();
-        });
     }
     private void signOut(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
