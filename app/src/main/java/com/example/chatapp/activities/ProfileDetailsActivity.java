@@ -93,6 +93,10 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                         consumerProfileDetails.setRemarks(documentUserSnapshot.getString("remarks"));
                         consumerProfileDetails.setStatus(documentUserSnapshot.getString("status"));
                         consumerProfileDetails.setConsumerType(documentUserSnapshot.getString("consumerType"));
+                        consumerProfileDetails.setImage(documentUserSnapshot.getString("image"));
+                        consumerProfileDetails.setNotifyEmail(documentUserSnapshot.getString("notifyEmail"));
+                        consumerProfileDetails.setNotifySMS(documentUserSnapshot.getString("notifySMS"));
+                        consumerProfileDetails.setNotifyHouse(documentUserSnapshot.getString("notifyHouse"));
                         //testing if consumer detail is fetched
                         toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getUserID(), Toast.LENGTH_SHORT);
                         toast.show();
@@ -107,6 +111,8 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                                         consumerProfileDetails.setAddress(documentUserSnapshot1.getString("address"));
                                         consumerProfileDetails.setEmail(documentUserSnapshot1.getString("email"));
                                         consumerProfileDetails.setDateApplied((documentUserSnapshot1.getString("Date Created")));
+                                        consumerProfileDetails.setUserName(documentUserSnapshot1.getString("userName"));
+                                        consumerProfileDetails.setPassword(documentUserSnapshot1.getString("password"));
                                         //testing if consumer detail is fetched
                                         toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getDateApplied(), Toast.LENGTH_SHORT);
                                         toast.show();

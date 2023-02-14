@@ -1,6 +1,7 @@
 package com.example.chatapp.ActivityEmpPage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -143,6 +145,7 @@ public class MasterPage extends AppCompatActivity {
             });
         }
     }
+
     //for navigation bar
     private Fragment getFragment(int itemId) {
         switch(itemId){
@@ -153,16 +156,16 @@ public class MasterPage extends AppCompatActivity {
                 bottomNavigationView.getMenu().getItem(1).setChecked(true);
                 return new SearchPage();
             case R.id.profilebar:
-                bottomNavigationView.getMenu().getItem(2).setChecked(true);
-                return new ProfilePage();
-                /**if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
+                //bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                //return new ProfilePage();
+                if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                     return new ReaderProfileFragment();
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("admin")){
                     bottomNavigationView.getMenu().getItem(2).setChecked(true);
                     return new ProfilePage();
-                }*/
+                }
         }
         bottomNavigationView.getMenu().getItem(1).setChecked(true);
         return new HomePage();

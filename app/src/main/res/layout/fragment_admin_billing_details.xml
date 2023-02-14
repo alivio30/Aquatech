@@ -169,6 +169,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textWaterConsumed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -203,6 +204,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textBillAmount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -233,6 +235,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textPreviousBill"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -254,6 +257,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textPenalty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
@@ -288,6 +292,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textTotalPrevious"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -311,6 +316,7 @@
                         android:layout_marginStart="20dp"
                         android:textColor="@color/primary_text"/>
                     <TextView
+                        android:id="@+id/textReconnectionFee"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -354,6 +360,7 @@
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
+                    android:id="@+id/textMeterReader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/_0123456"
@@ -402,6 +409,7 @@
                     android:layout_marginStart="20dp"
                     android:textColor="@color/primary_text"/>
                 <TextView
+                    android:id="@+id/textDueDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/december_20_2023"

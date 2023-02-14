@@ -177,7 +177,6 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                         intent.putExtra("date", documentUserSnapshot.getString("Date Created"));
                         startActivity(intent);
                     });
-            //startActivity(intent);
         }
     }
 }

@@ -24,9 +24,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +79,10 @@ public class RegConsumer extends Fragment {
     Calendar calendar = Calendar.getInstance();
     int year, month, day;
     String consumerAccountNumber, image;
-    LocalDate currentDate;
+    Spinner spinnerType;
+    String type;
+    CheckBox chkEmail, chkSms, chkHouse;
+    String email = "0", sms = "0", house = "0";
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -101,6 +108,28 @@ public class RegConsumer extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
+
+        //checkbox preferred notification method
+        chkEmail = view.findViewById(R.id.checkBoxEmail);
+        chkSms = view.findViewById(R.id.checkBoxSMS);
+        chkHouse = view.findViewById(R.id.checkBoxHouse);
+
+        //spinner Consumer Type
+        spinnerType = view.findViewById(R.id.spinnerConsumerType);
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerType, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(typeAdapter);
+        spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                type = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         preferenceManager = new PreferenceManager(getContext());
         //for account number of a consumer
@@ -213,8 +242,6 @@ public class RegConsumer extends Fragment {
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Uploading File...");
         progressDialog.show();
-
-        //SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
         Date now = new Date();
         String fileName = formatter.format(now);
         storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
@@ -231,6 +258,15 @@ public class RegConsumer extends Fragment {
                             @Override
                             public void onSuccess(Uri uri) {
                                 image = uri.toString();
+                                if(chkEmail.isChecked()){
+                                    email = "1";
+                                }
+                                if(chkSms.isChecked()){
+                                    sms = "1";
+                                }
+                                if(chkHouse.isChecked()){
+                                    house = "1";
+                                }
                                 Toast.makeText(getContext(), image, Toast.LENGTH_SHORT).show();
                                 Map<String, Object> createConsumer = new HashMap<>();
                                 createConsumer.put("name", inputName.getText().toString());
@@ -245,7 +281,10 @@ public class RegConsumer extends Fragment {
                                 createConsumer.put("status", "Active");
                                 createConsumer.put("remarks", "Unread");
                                 createConsumer.put("image", image);
-                                createConsumer.put("consumerType", "Undecided");
+                                createConsumer.put("consumerType", type);
+                                createConsumer.put("notifyEmail", email);
+                                createConsumer.put("notifySMS", sms);
+                                createConsumer.put("notifyHouse", house);
 
                                 //user hash--
                                 Map<String, Object> createUser = new HashMap<>();
@@ -257,7 +296,6 @@ public class RegConsumer extends Fragment {
                                 createUser.put("userType", "Consumer");
                                 createUser.put("email", inputEmail.getText().toString());
                                 createUser.put("password", inputPassword.getText().toString());
-                                //createUser.put("availability", "not inputted");
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
                                 createUser.put("Date Created", month+"-"+day+"-"+year);

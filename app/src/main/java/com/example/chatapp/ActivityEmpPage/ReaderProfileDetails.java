@@ -70,22 +70,20 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class ReaderProfileDetails extends AppCompatActivity {
+    UserDetails userDetails = new UserDetails();
     TextView txtPreviousReading, txtInputPresentReading, txtWaterConsumption, txtaddres, txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
     String consId, mail, number, name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image, address;
-    ImageView imageProfile, scannedMeter, previousScannedMeter;
+    ImageView imageProfile, scannedMeter, previousScannedMeter, imageBack;
     Button scanButton, submitButton;
-    Uri imageUri;
     Bitmap bitmap;
-    Properties properties = new Properties();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    StorageReference storageReference;
     Toast toast;
-    ProgressDialog progressDialog;
     Calendar calendar = Calendar.getInstance();
     int year, month, day;
     String billingNumber;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat readingDateFormat = new SimpleDateFormat("MMMM-yyyy");
     int billingID = 1, watercharge=10;
     double tax =0;
     //String id="asdasdas";
@@ -125,6 +123,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txtInputPresentReading = findViewById(R.id.InputPresentReading);
         txtPreviousReading = findViewById(R.id.textPreviousReading);
         previousScannedMeter = findViewById(R.id.imagePrevWaterMeter);
+        imageBack = findViewById(R.id.imageBack);
 
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
@@ -142,6 +141,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txtmeterStandNumber.setText(meterStandNumber);
         txtaddres.setText(address);
         validation();
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -302,7 +307,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         Date now = new Date();
 
         billAmount = Integer.parseInt(txtWaterConsumption.getText().toString()) * watercharge;
-        readingDate = sdf.format(now);
+        readingDate = readingDateFormat.format(now);
         tax = billAmount * 0.12;
         status = "Pending";
         dueDate = sdf.format(getDueDate(15));
@@ -341,6 +346,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         createBilling.put("dueDate", dueDate);
         createBilling.put("meterImage", meterImage);
         createBilling.put("status", status);
+        createBilling.put("MeterReader", userDetails.getUserID());
         if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
             toast = Toast.makeText(getApplicationContext(), "Water Consumption went to negative!", Toast.LENGTH_SHORT);
             toast.show();
@@ -380,6 +386,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             createBilling.put("dueDate", dueDate);
                             createBilling.put("meterImage", meterImage);
                             createBilling.put("status", status);
+                            createBilling.put("MeterReader", userDetails.getUserID());
                             db.collection("billing")
                                     .add(createBilling)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -449,8 +456,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 });
         }
     }
-
-    public void notifyBill(){
+    public void notifySMS(){
         //Send to SMS
         if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED){
@@ -460,6 +466,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
             ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
                     Manifest.permission.SEND_SMS}, 100);
         }
+    }
+    public void notifyEmail(){
         //Send to email
         final String username = "crackadood095@gmail.com";
         final String password = "cqnbyusawaqmjoui";
@@ -490,6 +498,27 @@ public class ReaderProfileDetails extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+    public void notifyBill(){
+        db.collection("consumers")
+                .whereEqualTo("consId", consId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                            if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifySMS").equals("1")){
+                                notifySMS();
+                                notifyEmail();
+                            }else if(documentUserSnapshot.getString("notifyEmail").equals("1")){
+                                notifyEmail();
+                            }else if(documentUserSnapshot.getString("notifySMS").equals("1")){
+                                notifySMS();
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -525,7 +554,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
             txtWaterConsumption.setText(String.valueOf(consumption));
         }
     }
-
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

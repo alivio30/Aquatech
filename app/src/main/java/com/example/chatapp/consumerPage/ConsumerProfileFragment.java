@@ -31,6 +31,7 @@ public class ConsumerProfileFragment extends Fragment {
     UserDetails userDetails = new UserDetails();
     ImageView logout;
     TextView accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied, contactNumber, email;
+    TextView billNotification, consumerType;
     ChangePassFragment changePassFragment = new ChangePassFragment();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
