@@ -178,7 +178,7 @@ public class UpdateConsumerFragment extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            Toast.makeText(getContext(), "Updated!", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "User Updated!", Toast.LENGTH_SHORT).show();
                                         }
                                     });
                         }

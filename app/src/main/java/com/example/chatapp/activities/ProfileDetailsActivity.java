@@ -21,7 +21,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
     ConsumerDetails consumerDetails = new ConsumerDetails();
-    String name, userID, image, address;
+    String name, userID, image, address, consId;
     Toast toast;
     TextView txtname, txtaddress;
     ImageView consumerProfile;
@@ -34,8 +34,10 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         this.userID = getIntent().getStringExtra("userID");
         image = getIntent().getStringExtra("image");
         address = getIntent().getStringExtra("address");
+        consId = getIntent().getStringExtra("consId");
         Bundle bundle = new Bundle();
         bundle.putString("userId", userID);
+        bundle.putString("consId", consId);
         AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
         adminBillingDetails.setArguments(bundle);
         //initiation of variables
@@ -98,9 +100,6 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                         consumerProfileDetails.setNotifySMS(documentUserSnapshot.getString("notifySMS"));
                         consumerProfileDetails.setNotifyHouse(documentUserSnapshot.getString("notifyHouse"));
                         consumerProfileDetails.setFirstRead(documentUserSnapshot.getString("firstReading"));
-                        //testing if consumer detail is fetched
-                        toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getUserID(), Toast.LENGTH_SHORT);
-                        toast.show();
 
                         db.collection("users")
                                 .whereEqualTo("userId", userID)
@@ -114,12 +113,6 @@ public class ProfileDetailsActivity extends AppCompatActivity {
                                         consumerProfileDetails.setDateApplied((documentUserSnapshot1.getString("Date Created")));
                                         consumerProfileDetails.setUserName(documentUserSnapshot1.getString("userName"));
                                         consumerProfileDetails.setPassword(documentUserSnapshot1.getString("password"));
-                                        //testing if consumer detail is fetched
-                                        toast = Toast.makeText(getApplicationContext(), consumerProfileDetails.getDateApplied(), Toast.LENGTH_SHORT);
-                                        toast.show();
-                                    } else {
-                                        toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);
-                                        toast.show();
                                     }
                                 });
                     } else {

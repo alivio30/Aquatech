@@ -1,5 +1,6 @@
 package com.example.chatapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+import com.example.chatapp.ActivityEmpPage.CreateUser;
 import com.example.chatapp.R;
+import com.example.chatapp.activities.SignInActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -50,7 +53,11 @@ public class ForgotPassword extends Fragment {
                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                             final String username = "crackadood095@gmail.com";
                             final String password = "cqnbyusawaqmjoui";
-                            String messageToSend = "Hello, "+ documentUserSnapshot.getString("name")+"! Your password is '"+documentUserSnapshot.getString("password");
+                            String messageToSend = "Dear "+ documentUserSnapshot.getString("name")+",\n\nWe received your recent request for your old password. As per your request, we have retrieved your old " +
+                                    "password and it is '"+documentUserSnapshot.getString("password")+"'. Please note that for security reasons, we strongly advise that you change your password immediately after " +
+                                    "logging in.\n\nWe understand that forgetting passwords can be frustrating, which is why we recommend using password managers or other secure methods to store your login information. " +
+                                    "This will not only make it easier to access your accounts, but also help ensure the security of your personal information.\n\nIf you have any further questions or concerns, please do not " +
+                                    "hesitate to contact us. We are here to assist you in any way we can.\n\nThank you for your continued patronage.\n\nSincerely,\nAquatech";
                             Properties properties = new Properties();
                             properties.put("mail.smtp.auth", "true");
                             properties.put("mail.smtp.starttls.enable", "true");
@@ -66,10 +73,12 @@ public class ForgotPassword extends Fragment {
                                 Message message  = new MimeMessage(session);
                                 message.setFrom(new InternetAddress(username));
                                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(inputEmail.getText().toString()));
-                                message.setSubject("Sending message to receiver through app");
+                                message.setSubject("Forgot Password Assistance");
                                 message.setText(messageToSend);
                                 Transport.send(message);
-                                Toast.makeText(getContext(), "email send successfull", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Email sent!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getContext(), SignInActivity.class);
+                                startActivity(intent);
                             } catch (AddressException e) {
                                 e.printStackTrace();
                                 Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -79,7 +88,7 @@ public class ForgotPassword extends Fragment {
                             }
                         }
                     }).addOnFailureListener(failTask ->{
-                            Toast.makeText(getContext(), "Email address not found!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Incorrect email address.", Toast.LENGTH_SHORT).show();
                         });
             }
         });

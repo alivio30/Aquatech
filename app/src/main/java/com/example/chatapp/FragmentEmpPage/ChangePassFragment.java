@@ -51,16 +51,15 @@ public class ChangePassFragment extends Fragment {
         oldPassword = view.findViewById(R.id.inputOldPass);
         newPassword = view.findViewById(R.id.inputNewPassword);
         confirmPassword = view.findViewById(R.id.inputConfirmPassword);
-        showToast(userDetails.getUserID());
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(oldPassword.getText().toString().trim().isEmpty() || newPassword.getText().toString().trim().isEmpty() || confirmPassword.getText().toString().trim().isEmpty()){
-                    showToast("Please input necessary fields!");
+                    showToast("Please input necessary fields.");
                 }else if(!oldPassword.getText().toString().equals(userDetails.getPassword())){
                     showToast("Old password doesn't match on your account.");
                 }else if (!newPassword.getText().toString().equals(confirmPassword.getText().toString())) {
-                    showToast("New password did not match to your confirm password.");
+                    showToast("Password not matched.");
                 }else{
                     detailsValidator();
                 }

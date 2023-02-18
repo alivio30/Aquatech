@@ -173,6 +173,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                         intent.putExtra("name", usersArrayList.get(position).getName());
                         intent.putExtra("userID", usersArrayList.get(position).getUserId());
                         intent.putExtra("image", usersArrayList.get(position).getImage());
+                        intent.putExtra("consId", usersArrayList.get(position).getConsId());
                         intent.putExtra("address", documentUserSnapshot.getString("address"));
                         intent.putExtra("date", documentUserSnapshot.getString("Date Created"));
                         startActivity(intent);

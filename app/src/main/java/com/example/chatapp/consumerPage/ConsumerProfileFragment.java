@@ -3,6 +3,7 @@ package com.example.chatapp.consumerPage;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,22 +13,33 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chatapp.FragmentEmpPage.ChangePassFragment;
 import com.example.chatapp.R;
 import com.example.chatapp.activities.SignInActivity;
 import com.example.chatapp.models.User;
+import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.Logout;
 import com.example.chatapp.utilities.UserDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 public class ConsumerProfileFragment extends Fragment {
     View view;
     Button changePasswordButton;
     FirebaseFirestore dbUsers = FirebaseFirestore.getInstance();
     FirebaseFirestore dbConsumers = FirebaseFirestore.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserDetails userDetails = new UserDetails();
     ImageView logout;
     TextView accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied, contactNumber, email;
@@ -69,8 +81,7 @@ public class ConsumerProfileFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logout logout = new Logout();
-                logout.clearAllData();
+                eraseToken();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
             }
@@ -110,40 +121,37 @@ public class ConsumerProfileFragment extends Fragment {
                     }
                 });
     }
-    public void clearData(){
-        UserDetails userDetails = new UserDetails();
-        ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
-        userDetails.setName("");
-        userDetails.setUsername("");
-        userDetails.setPassword("");
-        userDetails.setEmail("");
-        userDetails.setAddress("");
-        userDetails.setContactNumber("");
-        //userDetails.setImage("");
-        userDetails.setUserType("");
-        userDetails.setUserID("");
-        userDetails.setConsumerID("");
-        userDetails.setSerialNumber("");
-        userDetails.setTankNumber("");
-        userDetails.setPumpNumber("");
-        userDetails.setLineNumber("");
-        userDetails.setMeterStandNumber("");
-        userDetails.setConsumerType("");
-
-        consumerProfileDetails.setName("");
-        consumerProfileDetails.setUserID("");
-        consumerProfileDetails.setConsID("");
-        consumerProfileDetails.setAccountNumber("");
-        consumerProfileDetails.setMeterSerialNumber("");
-        consumerProfileDetails.setTankNumber("");
-        consumerProfileDetails.setPumpNumber("");
-        consumerProfileDetails.setLineNumber("");
-        consumerProfileDetails.setMeterStandNumber("");
-        consumerProfileDetails.setRemarks("");
-        consumerProfileDetails.setStatus("");
-        consumerProfileDetails.setConsumerType("");
-        consumerProfileDetails.setContactNumber("");
-        consumerProfileDetails.setAddress("");
-        consumerProfileDetails.setEmail("");
+    public void eraseToken(){
+        Toast.makeText(getContext(), "Signing out...", Toast.LENGTH_SHORT).show();
+        db.collection("users")
+                .whereEqualTo("userId", userDetails.getUserID())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful() && !task.getResult().isEmpty()){
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            String documentID = documentSnapshot.getId();
+                            HashMap<String, Object> clearToken = new HashMap<>();
+                            clearToken.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
+                            db.collection("users")
+                                    .document(documentID)
+                                    .update(clearToken)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Logout logout = new Logout();
+                                            logout.clearAllData();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getContext(), "Unable to sign out", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 }

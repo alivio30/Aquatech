@@ -61,6 +61,19 @@
             app:layout_constraintBottom_toTopOf="@+id/LinearContainer"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="@dimen/_8sdp" />
+        <TextView
+            android:id="@+id/textNoBill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Billing Found on this Month"
+            android:textSize="@dimen/_20ssp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:layout_marginBottom="500dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
         <LinearLayout
             android:id="@+id/LinearContainer"
             android:layout_width="match_parent"
@@ -77,6 +90,7 @@
                 app:cardCornerRadius="30dp"
                 app:cardBackgroundColor="@android:color/transparent">
                 <View
+                    android:id="@+id/viewBillingDetails"
                     android:layout_width="match_parent"
                     android:layout_height="930dp"
                     android:background="@drawable/background_content_bottom_white"/>
@@ -507,6 +521,7 @@
                     android:layout_marginStart="210dp"
                     android:background="@drawable/background_bill_white"/>
                 <LinearLayout
+                    android:id="@+id/layoutBillingDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">

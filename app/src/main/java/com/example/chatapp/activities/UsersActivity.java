@@ -66,85 +66,8 @@ public class UsersActivity extends BaseActivity implements UserListener {
 
     private void setListener() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        /**binding.imageSignOut.setOnClickListener(v -> {
-            Logout logout = new Logout();
-            logout.clearAllData();
-            signOut();
-        });*/
     }
-    private void signOut(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        UserDetails userDetails = new UserDetails();
-        Toast.makeText(getApplicationContext(), "Signing out...", Toast.LENGTH_SHORT).show();
-        db.collection("users")
-                .whereEqualTo("userId", userDetails.getUserID())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful() && !task.getResult().isEmpty()){
-                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                            String documentID = documentSnapshot.getId();
-                            HashMap<String, Object> clearToken = new HashMap<>();
-                            clearToken.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
-                            db.collection("users")
-                                    .document(documentID)
-                                    .update(clearToken)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            preferenceManager.clear();
-                                            clearData();
-                                            startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-                                            finish();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), "Unable to sign out...", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
-                    }
-                });
-    }
-    public void clearData(){
-        UserDetails userDetails = new UserDetails();
-        ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
-        userDetails.setName("");
-        userDetails.setUsername("");
-        userDetails.setPassword("");
-        userDetails.setEmail("");
-        userDetails.setAddress("");
-        userDetails.setContactNumber("");
-        //userDetails.setImage("");
-        userDetails.setUserType("");
-        userDetails.setUserID("");
-        userDetails.setConsumerID("");
-        userDetails.setSerialNumber("");
-        userDetails.setTankNumber("");
-        userDetails.setPumpNumber("");
-        userDetails.setLineNumber("");
-        userDetails.setMeterStandNumber("");
-        userDetails.setConsumerType("");
 
-        consumerProfileDetails.setName("");
-        consumerProfileDetails.setUserID("");
-        consumerProfileDetails.setConsID("");
-        consumerProfileDetails.setAccountNumber("");
-        consumerProfileDetails.setMeterSerialNumber("");
-        consumerProfileDetails.setTankNumber("");
-        consumerProfileDetails.setPumpNumber("");
-        consumerProfileDetails.setLineNumber("");
-        consumerProfileDetails.setMeterStandNumber("");
-        consumerProfileDetails.setRemarks("");
-        consumerProfileDetails.setStatus("");
-        consumerProfileDetails.setConsumerType("");
-        consumerProfileDetails.setContactNumber("");
-        consumerProfileDetails.setAddress("");
-        consumerProfileDetails.setEmail("");
-    }
     private void getAdmin(){
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();

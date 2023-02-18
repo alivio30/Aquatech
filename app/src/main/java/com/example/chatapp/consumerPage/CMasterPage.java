@@ -18,9 +18,14 @@ import com.example.chatapp.R;
 import com.example.chatapp.activities.MainActivity;
 import com.example.chatapp.activities.UsersActivity;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.example.chatapp.utilities.UserDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -29,10 +34,10 @@ import java.util.Deque;
 import java.util.function.Consumer;
 
 public class CMasterPage extends AppCompatActivity {
-    ChomeFragment consumerHome = new ChomeFragment();
     AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
-    ConsumerProfileFragment consumerProfileFragment = new ConsumerProfileFragment();
     BottomNavigationView navigationView;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    UserDetails userDetails = new UserDetails();
     ImageView chatIcon;
     Deque<Integer> integerDeque = new ArrayDeque<>(2);
     boolean flag = true;
@@ -45,8 +50,7 @@ public class CMasterPage extends AppCompatActivity {
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                Intent intent = new Intent(getApplicationContext(), UsersActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
 
@@ -72,20 +76,6 @@ public class CMasterPage extends AppCompatActivity {
                 return false;
             }
         });
-        /**navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.chome:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerHome).addToBackStack(null).commit();
-                        return true;
-                    case R.id.cprofile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, consumerProfileFragment).addToBackStack(null).commit();
-                        return true;
-                }
-                return false;
-            }
-        });*/
     }
     //for navigation bar
     private Fragment getFragment(int itemId) {

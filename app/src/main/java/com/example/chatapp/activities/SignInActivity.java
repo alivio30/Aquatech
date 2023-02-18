@@ -77,14 +77,6 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         preferenceManager = new PreferenceManager(getApplicationContext());
-        /**if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-            Intent intent = new Intent(getApplicationContext(), MasterPage.class);
-            startActivity(intent);
-            finish();
-        }
-        binding = ActivitySignInBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        setListeners();*/
     }
 
     public void signIn() {
@@ -113,8 +105,6 @@ public class SignInActivity extends AppCompatActivity {
                         userDetails.setUserType(documentUserSnapshot.getString("userType"));
                         userDetails.setUserID(documentUserSnapshot.getString("userId"));
                         userDetails.setImage(documentUserSnapshot.getString("image"));
-                        toast = Toast.makeText(getApplicationContext(), preferenceManager.getString(Constants.KEY_IMAGE), Toast.LENGTH_SHORT);
-                        toast.show();
 
                         progressBar.setVisibility(View.GONE);
                         button.setVisibility((View.VISIBLE));
@@ -146,7 +136,7 @@ public class SignInActivity extends AppCompatActivity {
                     } else {
                         progressBar.setVisibility(View.GONE);
                         button.setVisibility((View.VISIBLE));
-                        toast = Toast.makeText(getApplicationContext(), "User does not exist!", Toast.LENGTH_SHORT);
+                        toast = Toast.makeText(getApplicationContext(), "Incorrect username and password.", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
@@ -156,70 +146,4 @@ public class SignInActivity extends AppCompatActivity {
         username.setText(null);
         password.setText(null);
     }
-
-    /**private void setListeners() {
-        binding.textCreateNewAccount.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), SignUpActivity.class)));
-        binding.buttonSignIn.setOnClickListener(v -> {
-            if(isValidSignInDetails()) {
-               signIn();
-            }
-        });
-    }*/
-
-    /**private void signIn() {
-        loading(true);
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        database.collection(Constants.KEY_COLLECTION_USERS)
-                .whereEqualTo(Constants.KEY_EMAIL, binding.inputUsername.getText().toString())
-                .whereEqualTo(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString())
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                        preferenceManager.putString(Constants.KEY_USER_ID, documentSnapshot.getId());
-                        preferenceManager.putString(Constants.KEY_NAME, documentSnapshot.getString(Constants.KEY_NAME));
-                        preferenceManager.putString(Constants.KEY_IMAGE, documentSnapshot.getString(Constants.KEY_IMAGE));
-                        Intent intent = new Intent(getApplicationContext(), homeActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }else {
-                        loading(false);
-                        showToast("Unable to sign in");
-                    }
-                });
-    }
-
-    private void loading(Boolean isLoading) {
-        if(isLoading) {
-            binding.buttonSignIn.setVisibility(View.INVISIBLE);
-            binding.progressBar.setVisibility(View.VISIBLE);
-        }else {
-            binding.progressBar.setVisibility(View.INVISIBLE);
-            binding.buttonSignIn.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private Boolean isValidSignInDetails() {
-        if(binding.inputUsername.getText().toString().trim().isEmpty()) {
-            toast = Toast.makeText(getApplicationContext(), "way sud username", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }else if(!Patterns.EMAIL_ADDRESS.matcher(binding.inputUsername.getText().toString()).matches()) {
-            toast = Toast.makeText(getApplicationContext(), "sayop", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        }else if(binding.inputPassword.getText().toString().trim().isEmpty()) {
-            toast = Toast.makeText(getApplicationContext(), "Uway sud password", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        } else {
-            return true;
-        }
-    }*/
 }

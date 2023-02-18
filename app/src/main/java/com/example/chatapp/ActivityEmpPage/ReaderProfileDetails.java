@@ -7,7 +7,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,6 +23,7 @@ import android.telephony.SmsManager;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,6 +75,7 @@ import javax.mail.internet.MimeMessage;
 
 public class ReaderProfileDetails extends AppCompatActivity {
     UserDetails userDetails = new UserDetails();
+    AlertDialog.Builder builder;
     TextView txtPreviousReading, txtInputPresentReading, txtWaterConsumption, txtaddres, txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
     String consId, mail, number, name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image, address;
     ImageView imageProfile, scannedMeter, previousScannedMeter, imageBack;
@@ -82,19 +86,22 @@ public class ReaderProfileDetails extends AppCompatActivity {
     Calendar calendar = Calendar.getInstance();
     int year, month, day;
     String billingNumber;
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
+    EditText inputRemarks;
+    SimpleDateFormat notifyFormat = new SimpleDateFormat("MMMM dd, yyyy");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat readingDateFormat = new SimpleDateFormat("MMMM-yyyy");
+    SimpleDateFormat readingDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM-yyyy");
     int billingID = 1;
     double tax =0;
-    //String id="asdasdas";
-    double watercharge=10, billAmountInvoice=0, billAmount=0, netAmount=100, credit=0, penalty=0, discount=0, previousBalance=0, reconnectionFee=0, others=0;
-    String meterImage, bill_no, readingDate, status, startBillingPeriod, endBillingPeriod, dueDate;
+    String messageDate;
+    double watercharge=10.00, billAmountInvoice=0.00, billAmount=0.00, netAmount=100.00, credit=0.00, penalty=0.00, discount=0.00, previousBalance=0.00, reconnectionFee=0.00, others=0.00;
+    String meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader_profile_details);
+        builder = new AlertDialog.Builder(this);
         name = getIntent().getStringExtra("name");
         accountNumber = getIntent().getStringExtra("accountNumber");
         meterStandNumber = getIntent().getStringExtra("meterStandNumber");
@@ -125,6 +132,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txtPreviousReading = findViewById(R.id.textPreviousReading);
         previousScannedMeter = findViewById(R.id.imagePrevWaterMeter);
         imageBack = findViewById(R.id.imageBack);
+        inputRemarks = findViewById(R.id.InputRemarks);
 
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
@@ -141,6 +149,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
         txtlineNumber.setText(lineNumber);
         txtmeterStandNumber.setText(meterStandNumber);
         txtaddres.setText(address);
+        billingID = billingID();
+        billingNumber = Integer.toString(year)+ "" +Integer.toString(month);
+
         validation();
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,11 +169,23 @@ public class ReaderProfileDetails extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(txtInputPresentReading.getText().toString().trim().isEmpty() || scannedMeter.getDrawable() == null){
+                if(txtInputPresentReading.getText().toString().trim().isEmpty() || scannedMeter.getDrawable() == null || inputRemarks.getText().toString().trim().isEmpty()){
                     Toast.makeText(getApplicationContext(), "Please input necessary fields", Toast.LENGTH_SHORT).show();
                 }else{
-                    calculateBill();
-                    onBackPressed();
+                    if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
+                        builder.setTitle("Alert!")
+                                .setMessage("Water Consumption went to negative!")
+                                .setCancelable(true)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.cancel();
+                                    }
+                                })
+                                .show();
+                    }else{
+                        calculateBill();
+                    }
                 }
             }
         });
@@ -359,11 +382,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
         billAmount = Integer.parseInt(txtWaterConsumption.getText().toString()) * watercharge;
         readingDate = readingDateFormat.format(now);
+        filterDate = filterDateFormat.format(now);
         tax = billAmount * 0.12;
         status = "Pending";
         dueDate = sdf.format(getDueDate(15));
+        messageDate = notifyFormat.format(getDueDate(15));
         meterImage = BitMapToString(bitmap);
-        netAmount = (billAmount + 0 + 0 + 0 + 0) - (0+0); //
         startBillingPeriod = sdf.format(getDueDate(-30));
         endBillingPeriod = sdf.format(getDueDate(-1));
         credit = 0.00; //excessPaid
@@ -373,12 +397,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
         reconnectionFee = 0.00; // reconnectionFee
         others = 0; // others
         billAmountInvoice = 0 + 0 + 0;// billAmountInvoice + reconnectionFee + others;
+        netAmount = (billAmount + previousBalance + penalty + reconnectionFee + others) - (discount+credit);
         int temp = 1;
         String finalBillingNumber= billingNumber + temp;
-        if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
-            toast = Toast.makeText(getApplicationContext(), "Water Consumption went to negative!", Toast.LENGTH_SHORT);
-            toast.show();
-        }else{
             //add to billing table
             db.collection("consumers")
                 .whereEqualTo("consId", consId)
@@ -395,6 +416,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             createBilling.put("invoiceId", "null");
                             createBilling.put("bill_no", Integer.parseInt(finalBillingNumber));
                             createBilling.put("readingDate", readingDate);
+                            createBilling.put("filterDate", filterDate);
                             createBilling.put("presentReading", txtInputPresentReading.getText().toString());
                             createBilling.put("previousReading", firstReading);
                             createBilling.put("ConsumptionUnit", txtWaterConsumption.getText().toString());
@@ -412,8 +434,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             createBilling.put("meterImage", meterImage);
                             createBilling.put("status", status);
                             createBilling.put("MeterReader", userDetails.getUserID());
-                            createBilling.put("startBillingPeriod", startBillingPeriod);
-                            createBilling.put("endBillingPerioud", endBillingPeriod);
+                            createBilling.put("remarks", inputRemarks.getText().toString());
                             db.collection("billing")
                                     .whereEqualTo("consId", consId)
                                     .get()
@@ -432,6 +453,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 createBilling.put("invoiceId", "null");
                                                 createBilling.put("bill_no", Integer.parseInt(stringTemp));
                                                 createBilling.put("readingDate", readingDate);
+                                                createBilling.put("filterDate", filterDate);
                                                 createBilling.put("presentReading", txtInputPresentReading.getText().toString());
                                                 createBilling.put("previousReading", txtPreviousReading.getText().toString());
                                                 createBilling.put("ConsumptionUnit", txtWaterConsumption.getText().toString());
@@ -449,8 +471,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 createBilling.put("meterImage", meterImage);
                                                 createBilling.put("status", status);
                                                 createBilling.put("MeterReader", userDetails.getUserID());
-                                                createBilling.put("startBillingPeriod", startBillingPeriod);
-                                                createBilling.put("endBillingPerioud", endBillingPeriod);
+                                                createBilling.put("remarks", inputRemarks.getText().toString());
                                                 db.collection("billing")
                                                         .add(createBilling)
                                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -472,6 +493,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                 @Override
                                                                                                 public void onSuccess(Void unused) {
                                                                                                     notifyBill();
+                                                                                                    onBackPressed();
                                                                                                 }
                                                                                             });
                                                                                 }
@@ -522,8 +544,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
                     }
                 });
-
-        }
     }
     public void notifySMS(){
         //Send to SMS
@@ -540,7 +560,16 @@ public class ReaderProfileDetails extends AppCompatActivity {
         //Send to email
         final String username = "crackadood095@gmail.com";
         final String password = "cqnbyusawaqmjoui";
-        String messageToSend = "Hello, "+name+"! Your new bill is set!";
+        String messageToSend = "Dear "+name+", \n\n" +
+                "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
+                " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +
+                "service disruptions and penalties.\n\nPlease note that your current water bill is due by "+messageDate+". " +
+                "If you have already paid the bill, please disregard this letter. However, if you have any questions or concerns about your bill, please do not hesitate to contact us." +
+                "And our mobile application allows you to view and track your partial previous and present bills.\n\n" +
+                "Additionally, we would like to use this opportunity to remind you that we only accept in-person payments at our office.\n\n" +
+                "Thank you for your attention to this matter, and please let us know if you have any questions or concerns.\n\n" +
+                "Best regards,\nAquatech";
+
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -556,10 +585,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
             Message message  = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail));
-            message.setSubject("Sending message to receiver through app");
+            message.setSubject("Aquatech Water Bill Payment Due");
             message.setText(messageToSend);
             Transport.send(message);
-            Toast.makeText(getApplicationContext(), "email send successfull", Toast.LENGTH_SHORT).show();
         } catch (AddressException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -602,12 +630,19 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
     private void sendSMS(){
         String phone = number;
-        String message = "Hello, "+name+"! Your new bill is set!";
+        String message = "Dear "+name+", \n\n" +
+                "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
+                " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +
+                "service disruptions and penalties.\n\nPlease note that your current water bill is due by "+messageDate+". " +
+                " If you have already paid the bill, please disregard this letter. However, if you have any questions or concerns about your bill, please do not hesitate to contact us." +
+                " And our mobile application allows you to view and track your partial previous and present bills.\n\n" +
+                " Additionally, we would like to use this opportunity to remind you that we only accept in-person payments at our office.\n\n" +
+                " Thank you for your attention to this matter, and please let us know if you have any questions or concerns.\n\n" +
+                "Best regards,\nAquatech";
 
         if(!phone.isEmpty() && !message.isEmpty()){
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phone, null, message, null, null);
-            Toast.makeText(this, "SMS sent successfully!", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Phone number not existed!", Toast.LENGTH_SHORT).show();
         }

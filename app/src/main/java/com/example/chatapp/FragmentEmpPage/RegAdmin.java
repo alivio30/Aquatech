@@ -191,14 +191,12 @@ public class RegAdmin extends Fragment {
                                 createUser.put("userName", inputUsername.getText().toString());
                                 createUser.put("address", inputAddress.getText().toString());
                                 createUser.put("contactNumber", inputContactNumber.getText().toString());
-                                //image line
                                 createUser.put("userType", "Admin");
                                 createUser.put("email", inputEmail.getText().toString());
                                 createUser.put("password", inputPassword.getText().toString());
-                                //createUser.put("availabilitiy", "not inputted");
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
-                                createUser.put("Date Created", month+"-"+day+"-"+year);
+                                createUser.put("Date Created", year+"-"+month+"-"+day);
                                 createUser.put("availability", "0");
 
                                 //add to users table

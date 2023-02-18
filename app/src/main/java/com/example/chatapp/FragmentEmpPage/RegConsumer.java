@@ -300,7 +300,7 @@ public class RegConsumer extends Fragment {
                                 createUser.put("password", inputPassword.getText().toString());
                                 createUser.put("status", "Active");
                                 createUser.put("image", image);
-                                createUser.put("Date Created", month+"-"+day+"-"+year);
+                                createUser.put("Date Created", year+"-"+month+"-"+day);
                                 createUser.put("availability", "0");
 
                                 //save data to consumers table--
