@@ -12,7 +12,7 @@
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="1040dp"
+            android:layout_height="1060dp"
             android:background="@drawable/background_water_drop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
             android:clickable="true"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="80dp"
             android:layout_marginStart="15dp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,9 +34,9 @@
             android:theme="@style/ThemeOverlay.AppCompat.Light"
             style="@android:style/Widget.Spinner.DropDown"
             android:spinnerMode="dropdown"
-            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
-            app:layout_constraintStart_toEndOf="@id/imageBack"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
         <Spinner
             android:id="@+id/spinnerMonth"
@@ -56,7 +56,7 @@
             android:background="@drawable/background_icon"
             android:scaleType="centerCrop"
             android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/_2sdp"
             app:layout_constraintStart_toEndOf="@id/spinnerMonth"
             app:layout_constraintBottom_toTopOf="@+id/LinearContainer"
             app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +82,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageWaterMeter"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="35dp">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,12 +149,13 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textPresentReading"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:layout_marginTop="95dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="32dp"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
                 <LinearLayout
@@ -171,12 +172,13 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textPreviousReading"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:layout_marginTop="125dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="22dp"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
                 <LinearLayout
@@ -193,19 +195,20 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textWaterConsumed"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:textSize="20sp"
                         android:layout_marginTop="155dp"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="23dp"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
                 <ImageView
                     android:src="@android:drawable/divider_horizontal_dark"
                     android:layout_width="100dp"
                     android:layout_height="3dp"
-                    android:layout_marginStart="250dp"
+                    android:layout_marginStart="245dp"
                     android:scaleType="fitXY"
                     android:background="@color/primary_text"
                     android:paddingLeft="5dp"
@@ -228,10 +231,11 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textBillAmount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="22sp"
                         android:textStyle="bold"
                         android:layout_marginTop="205dp"
                         android:layout_marginStart="30dp"
@@ -259,10 +263,11 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textPreviousBill"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="270dp"
                         android:layout_marginStart="80dp"
                         android:textColor="@color/primary_text"/>
@@ -281,10 +286,11 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textPenalty"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="300dp"
                         android:layout_marginStart="135dp"
                         android:textColor="@color/primary_text"/>
@@ -293,7 +299,7 @@
                     android:src="@android:drawable/divider_horizontal_dark"
                     android:layout_width="100dp"
                     android:layout_height="3dp"
-                    android:layout_marginStart="250dp"
+                    android:layout_marginStart="245dp"
                     android:scaleType="fitXY"
                     android:background="@color/primary_text"
                     android:paddingLeft="5dp"
@@ -316,11 +322,12 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textTotalPrevious"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="350dp"
                         android:layout_marginStart="55dp"
                         android:textColor="@color/primary_text"/>
@@ -340,11 +347,12 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textOther"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="385dp"
                         android:layout_marginStart="140dp"
                         android:textColor="@color/primary_text"/>
@@ -364,11 +372,12 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textReconnectionFee"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="420dp"
                         android:layout_marginStart="15dp"
                         android:textColor="@color/primary_text"/>
@@ -388,11 +397,12 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textDiscount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="455dp"
                         android:layout_marginStart="116dp"
                         android:textColor="@color/primary_text"/>
@@ -412,11 +422,12 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textCredit"
-                        android:layout_width="wrap_content"
+                        android:layout_width="90dp"
+                        android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="@string/_000000"
-                        android:textSize="25sp"
+                        android:text="0.00"
+                        android:textSize="20sp"
                         android:layout_marginTop="490dp"
                         android:layout_marginStart="148dp"
                         android:textColor="@color/primary_text"/>
@@ -515,10 +526,10 @@
                     android:textColor="@color/primary_text"/>
                 <View
                     android:id="@+id/viewTotalBill"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="870dp"
-                    android:layout_marginStart="210dp"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="880dp"
+                    android:layout_marginStart="205dp"
                     android:background="@drawable/background_bill_white"/>
                 <LinearLayout
                     android:id="@+id/layoutBillingDetails"
@@ -536,13 +547,13 @@
                         android:textColor="@color/primary_text"/>
                     <TextView
                         android:id="@+id/textTotalBill"
-                        android:layout_width="150dp"
-                        android:layout_height="50dp"
+                        android:layout_width="130dp"
+                        android:layout_height="40dp"
                         android:textStyle="bold"
                         android:text="@string/_000000"
-                        android:textSize="40sp"
-                        android:layout_marginTop="870dp"
-                        android:layout_marginStart="10dp"
+                        android:textSize="25sp"
+                        android:layout_marginTop="865dp"
+                        android:layout_marginStart="5dp"
                         android:textAlignment="center"
                         android:textColor="@color/primary_text"/>
                 </LinearLayout>
