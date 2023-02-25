@@ -103,8 +103,6 @@ public class RegMeterReader extends Fragment {
                             .addOnCompleteListener(passwordTask -> {
                                 if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
                                     DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
-                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
-                                    toast.show();
                                 }else{
                                     toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
                                     toast.show();
@@ -117,8 +115,6 @@ public class RegMeterReader extends Fragment {
                                                     toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
                                                     toast.show();
                                                 }else{
-                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
-                                                    toast.show();
                                                     insertUser();
                                                 }
                                             });

@@ -166,40 +166,34 @@ public class RegConsumer extends Fragment {
                             .addOnCompleteListener(passwordTask -> {
                                 if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
                                     DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
-                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
+                                    toast = Toast.makeText(getContext(), "Password already existed", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }else{
-                                    toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
-                                    toast.show();
                                     db.collection("users")
                                             .whereEqualTo("userId", String.valueOf(newUserID))
                                             .get()
                                             .addOnCompleteListener(userIdTask ->{
                                                 if (userIdTask.isSuccessful() && userIdTask.getResult() != null && userIdTask.getResult().getDocuments().size() > 0) {
                                                     DocumentSnapshot documentUserSnapshot = userIdTask.getResult().getDocuments().get(0);
-                                                    toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
+                                                    toast = Toast.makeText(getContext(), "User ID already existed", Toast.LENGTH_SHORT);
                                                     toast.show();
                                                 }else{
-                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
-                                                    toast.show();
                                                     db.collection("consumers")
                                                             .whereEqualTo("consId", String.valueOf(newConsumerID))
                                                             .get()
                                                             .addOnCompleteListener(consIdTask -> {
                                                                 if (consIdTask.isSuccessful() && consIdTask.getResult() != null && consIdTask.getResult().getDocuments().size() > 0) {
                                                                     DocumentSnapshot documentUserSnapshot = consIdTask.getResult().getDocuments().get(0);
-                                                                    toast = Toast.makeText(getContext(), "consId already existed", Toast.LENGTH_SHORT);
+                                                                    toast = Toast.makeText(getContext(), "Consumer ID already existed", Toast.LENGTH_SHORT);
                                                                     toast.show();
                                                                 }else{
-                                                                    toast = Toast.makeText(getContext(), "consId is new", Toast.LENGTH_SHORT);
-                                                                    toast.show();
                                                                     db.collection("consumers")
                                                                             .whereEqualTo("accountNumber", consumerAccountNumber)
                                                                             .get()
                                                                             .addOnCompleteListener(accountNumberTask ->{
                                                                                 if (accountNumberTask.isSuccessful() && accountNumberTask.getResult() != null && accountNumberTask.getResult().getDocuments().size() > 0) {
                                                                                     DocumentSnapshot documentUserSnapshot = accountNumberTask.getResult().getDocuments().get(0);
-                                                                                    toast = Toast.makeText(getContext(), "accountNumber already existed", Toast.LENGTH_SHORT);
+                                                                                    toast = Toast.makeText(getContext(), "AccountNumber already existed", Toast.LENGTH_SHORT);
                                                                                     toast.show();
                                                                                 }else{
                                                                                     db.collection("consumers")
@@ -208,11 +202,9 @@ public class RegConsumer extends Fragment {
                                                                                         .addOnCompleteListener(lineNumberTask ->{
                                                                                                 if (lineNumberTask.isSuccessful() && lineNumberTask.getResult() != null && lineNumberTask.getResult().getDocuments().size() > 0) {
                                                                                                     DocumentSnapshot documentUserSnapshot = lineNumberTask.getResult().getDocuments().get(0);
-                                                                                                    toast = Toast.makeText(getContext(), "serialnumber already existed", Toast.LENGTH_SHORT);
+                                                                                                    toast = Toast.makeText(getContext(), "Serialnumber already existed", Toast.LENGTH_SHORT);
                                                                                                     toast.show();
                                                                                                 }else{
-                                                                                                    toast = Toast.makeText(getContext(), "serialnumber is new", Toast.LENGTH_SHORT);
-                                                                                                    toast.show();
                                                                                                     insertUser();
                                                                                                 }
                                                                                         });

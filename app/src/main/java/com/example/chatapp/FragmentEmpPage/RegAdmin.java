@@ -128,8 +128,6 @@ public class RegAdmin extends Fragment {
                                     toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }else{
-                                    toast = Toast.makeText(getContext(), "password is new", Toast.LENGTH_SHORT);
-                                    toast.show();
                                     db.collection("users")
                                             .whereEqualTo("userId", String.valueOf(newUserID))
                                             .get()
@@ -139,8 +137,6 @@ public class RegAdmin extends Fragment {
                                                     toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
                                                     toast.show();
                                                 }else{
-                                                    toast = Toast.makeText(getContext(), "userId is new", Toast.LENGTH_SHORT);
-                                                    toast.show();
                                                     insertUser();
                                                 }
                                             });
