@@ -157,6 +157,9 @@ public class RegConsumer extends Fragment {
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
                     toast = Toast.makeText(getContext(), "Password is not matched!", Toast.LENGTH_SHORT);
                     toast.show();
+                }else if(profile.getDrawable() == null){
+                    toast = Toast.makeText(getContext(), "Please select an image.", Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
                     newUserID = userID();
                     newConsumerID = consumerID();
