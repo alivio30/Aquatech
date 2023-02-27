@@ -58,7 +58,6 @@ public class ProfilePage extends Fragment {
         contactNumber = view.findViewById(R.id.textContactNumber);
         email = view.findViewById(R.id.textEmailAddress);
         displayData();
-        Toast.makeText(getContext(), userDetails.getUserID(), Toast.LENGTH_SHORT).show();
 
         //change password
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +81,7 @@ public class ProfilePage extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getContext(), "Signing out...", Toast.LENGTH_SHORT).show();
                 eraseToken();
                 Intent intent = new Intent(getContext(), SignInActivity.class);
                 startActivity(intent);
@@ -105,7 +105,6 @@ public class ProfilePage extends Fragment {
                 });
     }
     public void eraseToken(){
-        Toast.makeText(getContext(), userDetails.getUserID(), Toast.LENGTH_SHORT).show();
         db.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())
                 .get()
@@ -123,7 +122,6 @@ public class ProfilePage extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            Toast.makeText(getContext(), "Signing out...", Toast.LENGTH_SHORT).show();
                                             logout.clearAllData();
                                         }
                                     })

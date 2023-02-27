@@ -51,8 +51,7 @@
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/inputOldPass"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_50sdp"
@@ -62,14 +61,22 @@
             android:hint="@string/old_password"
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
-            android:inputType="textPassword"
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_13ssp"
+            app:passwordToggleEnabled="true">
 
-        <EditText
-            android:id="@+id/inputNewPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputOldPass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:background="@drawable/background_input"
+                android:ems="15"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_100sdp"
@@ -79,14 +86,22 @@
             android:hint="@string/new_password"
             android:imeOptions="actionNext"
             android:importantForAutofill="no"
-            android:inputType="textPassword"
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_13ssp"
+            app:passwordToggleEnabled="true">
 
-        <EditText
-            android:id="@+id/inputConfirmPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:background="@drawable/background_input"
+                android:ems="15"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_150sdp"
@@ -96,11 +111,20 @@
             android:hint="@string/confirm_password"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
-            android:inputType="textPassword"
             android:paddingStart="@dimen/_16sdp"
             android:paddingEnd="@dimen/_16sdp"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_13ssp"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:background="@drawable/background_input"
+                android:ems="15"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </FrameLayout>
 

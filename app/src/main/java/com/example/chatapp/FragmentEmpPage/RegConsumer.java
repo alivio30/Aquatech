@@ -83,7 +83,7 @@ public class RegConsumer extends Fragment {
     String type;
     CheckBox chkEmail, chkSms, chkHouse;
     String email = "0", sms = "0", house = "0";
-
+    TextView textAddImage;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -109,6 +109,7 @@ public class RegConsumer extends Fragment {
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
         firstRead = view.findViewById(R.id.inputFirstMeterRead);
+        textAddImage = view.findViewById(R.id.textAddImage);
 
         //checkbox preferred notification method
         chkEmail = view.findViewById(R.id.checkBoxEmail);
@@ -137,7 +138,7 @@ public class RegConsumer extends Fragment {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
-        consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
+        //consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
         //randomly generated
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,65 +161,14 @@ public class RegConsumer extends Fragment {
                 }else if(profile.getDrawable() == null){
                     toast = Toast.makeText(getContext(), "Please select an image.", Toast.LENGTH_SHORT);
                     toast.show();
+                }else if(!chkEmail.isChecked() && !chkSms.isChecked() && !chkHouse.isChecked()){
+                    toast = Toast.makeText(getContext(), "Please select Bill Notification method", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else if(spinnerType.getSelectedItem().toString().equalsIgnoreCase("Select Type")){
+                    toast = Toast.makeText(getContext(), "Please select Consumer Type", Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
-                    newUserID = userID();
-                    newConsumerID = consumerID();
-                    db.collection("users")
-                            .whereEqualTo("password", inputPassword.getText().toString())
-                            .get()
-                            .addOnCompleteListener(passwordTask -> {
-                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
-                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
-                                    toast = Toast.makeText(getContext(), "Password already existed", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }else{
-                                    db.collection("users")
-                                            .whereEqualTo("userId", String.valueOf(newUserID))
-                                            .get()
-                                            .addOnCompleteListener(userIdTask ->{
-                                                if (userIdTask.isSuccessful() && userIdTask.getResult() != null && userIdTask.getResult().getDocuments().size() > 0) {
-                                                    DocumentSnapshot documentUserSnapshot = userIdTask.getResult().getDocuments().get(0);
-                                                    toast = Toast.makeText(getContext(), "User ID already existed", Toast.LENGTH_SHORT);
-                                                    toast.show();
-                                                }else{
-                                                    db.collection("consumers")
-                                                            .whereEqualTo("consId", String.valueOf(newConsumerID))
-                                                            .get()
-                                                            .addOnCompleteListener(consIdTask -> {
-                                                                if (consIdTask.isSuccessful() && consIdTask.getResult() != null && consIdTask.getResult().getDocuments().size() > 0) {
-                                                                    DocumentSnapshot documentUserSnapshot = consIdTask.getResult().getDocuments().get(0);
-                                                                    toast = Toast.makeText(getContext(), "Consumer ID already existed", Toast.LENGTH_SHORT);
-                                                                    toast.show();
-                                                                }else{
-                                                                    db.collection("consumers")
-                                                                            .whereEqualTo("accountNumber", consumerAccountNumber)
-                                                                            .get()
-                                                                            .addOnCompleteListener(accountNumberTask ->{
-                                                                                if (accountNumberTask.isSuccessful() && accountNumberTask.getResult() != null && accountNumberTask.getResult().getDocuments().size() > 0) {
-                                                                                    DocumentSnapshot documentUserSnapshot = accountNumberTask.getResult().getDocuments().get(0);
-                                                                                    toast = Toast.makeText(getContext(), "AccountNumber already existed", Toast.LENGTH_SHORT);
-                                                                                    toast.show();
-                                                                                }else{
-                                                                                    db.collection("consumers")
-                                                                                        .whereEqualTo("meterSerialNumber", inputSerialNumber.getText().toString())
-                                                                                        .get()
-                                                                                        .addOnCompleteListener(lineNumberTask ->{
-                                                                                                if (lineNumberTask.isSuccessful() && lineNumberTask.getResult() != null && lineNumberTask.getResult().getDocuments().size() > 0) {
-                                                                                                    DocumentSnapshot documentUserSnapshot = lineNumberTask.getResult().getDocuments().get(0);
-                                                                                                    toast = Toast.makeText(getContext(), "Serialnumber already existed", Toast.LENGTH_SHORT);
-                                                                                                    toast.show();
-                                                                                                }else{
-                                                                                                    insertUser();
-                                                                                                }
-                                                                                        });
-                                                                                }
-                                                                            });
-                                                                }
-                                                            });
-                                                }
-                                            });
-                                }
-                            });
+                    validateUserID();
                 }
             }
         });
@@ -233,6 +183,73 @@ public class RegConsumer extends Fragment {
         });
 
         return view;
+    }
+
+    public void validateUserID(){
+        newUserID = userID();
+        db.collection("users")
+                .whereEqualTo("userId", String.valueOf(newUserID))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        validateUserID();
+                    }else{
+                        validateAccountNumber();
+                    }
+                });
+
+    }
+    public void validateAccountNumber(){
+        consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
+        db.collection("users")
+                .whereEqualTo("userId", String.valueOf(newUserID))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        validateAccountNumber();
+                    }else{
+                        validateEmail();
+                    }
+                });
+    }
+    public void validateEmail(){
+        db.collection("users")
+                .whereEqualTo("email", inputEmail.getText().toString())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        toast = Toast.makeText(getContext(), "Email already taken!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else{
+                        validateConsumerID();
+                    }
+                });
+    }
+    public void validateConsumerID(){
+        newConsumerID = consumerID();
+        db.collection("consumers")
+                .whereEqualTo("consId", String.valueOf(newUserID))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        validateConsumerID();
+                    }else{
+                        validateSerialNumber();
+                    }
+                });
+    }
+    public void validateSerialNumber(){
+        db.collection("consumers")
+                .whereEqualTo("meterSerialNumber", inputSerialNumber.getText().toString())
+                .get()
+                .addOnCompleteListener(userIdTask -> {
+                    if (userIdTask.isSuccessful() && userIdTask.getResult() != null && userIdTask.getResult().getDocuments().size() > 0) {
+                        toast = Toast.makeText(getContext(), "Serial Number already taken!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }else{
+                        insertUser();
+                    }
+                });
     }
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
@@ -347,6 +364,7 @@ public class RegConsumer extends Fragment {
         if(requestCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             profile.setImageURI(imageUri);
+            textAddImage.setVisibility(View.GONE);
         }
     }
     //generate random ID to users
@@ -366,6 +384,8 @@ public class RegConsumer extends Fragment {
         return ((1 + accountNumberRandom.nextInt(9)) * 10000 + accountNumberRandom.nextInt(10000));
     }
     public void clearFields(){
+        profile.setImageDrawable(null);
+        textAddImage.setVisibility(View.VISIBLE);
         inputName.setText(null);
         inputAddress.setText(null);
         inputContactNumber.setText(null);
@@ -375,8 +395,13 @@ public class RegConsumer extends Fragment {
         inputPumpNumber.setText(null);
         inputLineNumber.setText(null);
         inputMeterStand.setText(null);
+        firstRead.setText(null);
         inputUsername.setText(null);
         inputPassword.setText(null);
         inputConfirmPassword.setText(null);
+        chkEmail.setChecked(false);
+        chkSms.setChecked(false);
+        chkHouse.setChecked(false);
+        spinnerType.setSelection(0);
     }
 }

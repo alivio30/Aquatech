@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
 import com.example.chatapp.R;
@@ -26,6 +27,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import org.checkerframework.checker.units.qual.A;
 
@@ -38,7 +40,8 @@ public class CMasterPage extends AppCompatActivity {
     BottomNavigationView navigationView;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserDetails userDetails = new UserDetails();
-    ImageView chatIcon;
+    ImageView chatIcon, profile;
+    TextView name, position;
     Deque<Integer> integerDeque = new ArrayDeque<>(2);
     boolean flag = true;
     @Override
@@ -47,6 +50,15 @@ public class CMasterPage extends AppCompatActivity {
         setContentView(R.layout.activity_cmaster_page2);
         getSupportFragmentManager().beginTransaction().replace(R.id.FragmentContainer, adminBillingDetails).commit();
         chatIcon = findViewById(R.id.imageMessenger);
+        profile = findViewById(R.id.imageProfile);
+        name = findViewById(R.id.textName);
+        position = findViewById(R.id.textPosition);
+
+        String imageUrl = null;
+        imageUrl = userDetails.getImage();
+        Picasso.get().load(imageUrl).into(profile);
+        name.setText(userDetails.getName());
+        position.setText(userDetails.getUserType());
         chatIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

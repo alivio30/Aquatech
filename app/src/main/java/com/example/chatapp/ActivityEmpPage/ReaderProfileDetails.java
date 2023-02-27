@@ -169,7 +169,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(txtInputPresentReading.getText().toString().trim().isEmpty() || scannedMeter.getDrawable() == null || inputRemarks.getText().toString().trim().isEmpty()){
+                if(txtInputPresentReading.getText().toString().trim().isEmpty() || scannedMeter.getDrawable() == null){
                     Toast.makeText(getApplicationContext(), "Please input necessary fields", Toast.LENGTH_SHORT).show();
                 }else{
                     if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
@@ -229,6 +229,16 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
                                                     DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
                                                     txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
+                                                    db.collection("billing")
+                                                            .whereEqualTo("consId", consId)
+                                                            .get()
+                                                            .addOnCompleteListener(task4 -> {
+                                                                if (task4.isSuccessful() && task4.getResult() != null && task4.getResult().getDocuments().size() > 0) {
+                                                                    DocumentSnapshot documentUserSnapshot4 = task4.getResult().getDocuments().get(0);
+                                                                    txtWaterConsumption.setText(documentUserSnapshot4.getString("ConsumptionUnit"));
+                                                                    inputRemarks.setText(documentUserSnapshot4.getString("remarks"));
+                                                                }
+                                                            });
                                                 }
                                             });
                                 }
@@ -278,6 +288,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                                 txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
                                                 StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
+                                                txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
+                                                inputRemarks.setText(documentUserSnapshot.getString("remarks"));
                                                 db.collection("billing")
                                                         .whereEqualTo("consId", consId)
                                                         .whereEqualTo("bill_no", value-1)
@@ -287,6 +299,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                 DocumentSnapshot documentUserSnapshot1 = task2.getResult().getDocuments().get(0);
                                                                 txtPreviousReading.setText(documentUserSnapshot1.getString("presentReading"));
                                                                 StringToBitMap(previousScannedMeter, documentUserSnapshot1.getString("meterImage"));
+                                                                txtWaterConsumption.setText(documentUserSnapshot1.getString("ConsumptionUnit"));
+                                                                inputRemarks.setText(documentUserSnapshot1.getString("remarks"));
+
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
@@ -299,11 +314,42 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                             if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
                                                                                 DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
                                                                                 txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
+                                                                                db.collection("billing")
+                                                                                        .whereEqualTo("consId", consId)
+                                                                                        .whereEqualTo("bill_no", value)
+                                                                                        .get()
+                                                                                        .addOnCompleteListener(task4 -> {
+                                                                                            if (task4.isSuccessful() && task4.getResult() != null && task4.getResult().getDocuments().size() > 0) {
+                                                                                                DocumentSnapshot documentUserSnapshot2 = task4.getResult().getDocuments().get(0);
+                                                                                                txtWaterConsumption.setText(documentUserSnapshot2.getString("ConsumptionUnit"));
+                                                                                                inputRemarks.setText(documentUserSnapshot2.getString("remarks"));
+                                                                                            }
+                                                                                        });
                                                                             }
                                                                         });
                                                             }
                                                         });
                                             }else{
+                                                Map<String, Object> updateRead = new HashMap<>();
+                                                updateRead.put("remarks", "Unread");
+                                                db.collection("consumers").whereEqualTo("consId", consId)
+                                                    .get()
+                                                    .addOnCompleteListener(unreadTask -> {
+                                                        if (unreadTask.isSuccessful() && unreadTask.getResult() != null && unreadTask.getResult().getDocuments().size() > 0) {
+                                                            DocumentSnapshot documentUserSnapshot1 = unreadTask.getResult().getDocuments().get(0);
+                                                            String docId = documentUserSnapshot1.getId();
+                                                            db.collection("consumers").document(docId)
+                                                                    .update(updateRead)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+
+                                                                        }
+                                                                    });
+                                                        }
+                                                    });
+
+
                                                 db.collection("billing")
                                                         .whereEqualTo("consId", consId)
                                                         .whereEqualTo("bill_no", value)
@@ -327,7 +373,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                                Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
+                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
                                                                                             }
                                                                                         });
                                                                             }
@@ -337,6 +383,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 scanButton.setClickable(true);
                                                 submitButton.setClickable(true);
                                                 txtInputPresentReading.setEnabled(true);
+                                                inputRemarks.setText(null);
+                                                inputRemarks.setEnabled(true);
                                                 getPrevReading();
                                             }
                                         } catch (ParseException e) {
@@ -447,6 +495,18 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                     counter = counter + 1;
                                                 }
                                                 String stringTemp = billingNumber + String.valueOf(counter);
+                                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+
+                                                //from previous billing?
+                                                double credit1 = 0.00; //excessPaid -> invoice table
+                                                double tax1 = billAmount * 0.12;
+                                                double penalty1 = 0.00; //penalty
+                                                double discount1 = 0.00; // discount
+                                                double previousBalance1 = 0.00 - 0.00; // billAmount - paidAmount (paid amount in invoice table)
+                                                double reconnectionFee1 = 0.00; // reconnectionFee
+                                                double others1 = 0; // others
+                                                double billAmountInvoice1 = 0 + 0 + 0;// billAmountInvoice + reconnectionFee + others;
+                                                double netAmount1 = (billAmount + previousBalance1 + penalty1 + reconnectionFee1 + others1) - (discount1+credit1);
                                                 Map<String, Object> createBilling = new HashMap<>();
                                                 createBilling.put("billingId", String.valueOf(billingID));
                                                 createBilling.put("consId", consId);
@@ -458,15 +518,15 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 createBilling.put("previousReading", txtPreviousReading.getText().toString());
                                                 createBilling.put("ConsumptionUnit", txtWaterConsumption.getText().toString());
                                                 createBilling.put("waterCharge", String.format("%.2f", watercharge));
-                                                createBilling.put("tax", String.format("%.2f", tax));
+                                                createBilling.put("tax", String.format("%.2f", tax1));
                                                 createBilling.put("billAmount", String.format("%.2f", billAmount));
-                                                createBilling.put("others", String.format("%.2f", others));
-                                                createBilling.put("previousBalance", String.format("%.2f", previousBalance));
-                                                createBilling.put("reconnectionFee", String.format("%.2f", reconnectionFee));
-                                                createBilling.put("penalty", String.format("%.2f", penalty));
-                                                createBilling.put("discount", String.format("%.2f", discount));
-                                                createBilling.put("credit", String.format("%.2f", credit));
-                                                createBilling.put("netAmount", String.format("%.2f", netAmount));
+                                                createBilling.put("others", String.format("%.2f", others1));
+                                                createBilling.put("previousBalance", String.format("%.2f", previousBalance1));
+                                                createBilling.put("reconnectionFee", String.format("%.2f", reconnectionFee1));
+                                                createBilling.put("penalty", String.format("%.2f", penalty1));
+                                                createBilling.put("discount", String.format("%.2f", discount1));
+                                                createBilling.put("credit", String.format("%.2f", credit1));
+                                                createBilling.put("netAmount", String.format("%.2f", netAmount1));
                                                 createBilling.put("dueDate", dueDate);
                                                 createBilling.put("meterImage", meterImage);
                                                 createBilling.put("status", status);
@@ -488,7 +548,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                     String documentID = documentSnapshot.getId();
                                                                                     db.collection("consumers")
                                                                                             .document(documentID)
-                                                                                            .update("remarks", "read")
+                                                                                            .update("remarks", "Read")
                                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                 @Override
                                                                                                 public void onSuccess(Void unused) {
@@ -523,7 +583,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                             String documentID = documentSnapshot.getId();
                                                                             db.collection("consumers")
                                                                                     .document(documentID)
-                                                                                    .update("remarks", "read")
+                                                                                    .update("remarks", "Read")
                                                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                         @Override
                                                                                         public void onSuccess(Void unused) {

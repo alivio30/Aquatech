@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
@@ -68,6 +69,7 @@ public class RegAdmin extends Fragment {
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
     Uri imageUri;
     String image;
+    TextView textAddImage;
     View view;
     EditText inputName, inputAddress, inputContactNumber, inputEmail;
     EditText inputUsername, inputPassword, inputConfirmPassword;
@@ -96,6 +98,7 @@ public class RegAdmin extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         createButton = view.findViewById(R.id.buttonCreateNewAccount);
+        textAddImage = view.findViewById(R.id.textAddImage);
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
         day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -121,30 +124,7 @@ public class RegAdmin extends Fragment {
                     toast = Toast.makeText(getContext(), "Please select an image.", Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
-                    newUserID = userID();
-                    db.collection("users")
-                            .whereEqualTo("password", inputPassword.getText().toString())
-                            .get()
-                            .addOnCompleteListener(passwordTask -> {
-                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
-                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
-                                    toast = Toast.makeText(getContext(), "password already existed", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }else{
-                                    db.collection("users")
-                                            .whereEqualTo("userId", String.valueOf(newUserID))
-                                            .get()
-                                            .addOnCompleteListener(userIdTask ->{
-                                                if (passwordTask.isSuccessful() && passwordTask.getResult() != null && passwordTask.getResult().getDocuments().size() > 0) {
-                                                    DocumentSnapshot documentUserSnapshot = passwordTask.getResult().getDocuments().get(0);
-                                                    toast = Toast.makeText(getContext(), "userId already existed", Toast.LENGTH_SHORT);
-                                                    toast.show();
-                                                }else{
-                                                    insertUser();
-                                                }
-                                            });
-                                }
-                            });
+                    validateUserID();
                 }
             }
         });
@@ -159,6 +139,20 @@ public class RegAdmin extends Fragment {
             }
         });
         return view;
+
+    }
+    public void validateUserID(){
+        newUserID = userID();
+        db.collection("users")
+                .whereEqualTo("userId", String.valueOf(newUserID))
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                        validateUserID();
+                    }else{
+                        insertUser();
+                    }
+                });
 
     }
     public void insertUser(){
@@ -238,6 +232,7 @@ public class RegAdmin extends Fragment {
         if(requestCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             profile.setImageURI(imageUri);
+            textAddImage.setVisibility(View.GONE);
         }
     }
     public int userID() {
@@ -245,6 +240,8 @@ public class RegAdmin extends Fragment {
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
     }
     public void clearFields(){
+        profile.setImageDrawable(null);
+        textAddImage.setVisibility(View.VISIBLE);
         inputName.setText(null);
         inputAddress.setText(null);
         inputContactNumber.setText(null);

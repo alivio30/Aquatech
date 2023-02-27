@@ -150,6 +150,7 @@ public class UpdateConsumerFragment extends Fragment {
         if(requestCode == RESULT_OK && data != null && data.getData() != null){
             imageUri = data.getData();
             image.setImageURI(imageUri);
+            addImage.setVisibility(View.GONE);
         }
     }
 
@@ -298,6 +299,7 @@ public class UpdateConsumerFragment extends Fragment {
         inputMeterStand.setText(consumerProfileDetails.getMeterStandNumber());
         inputUsername.setText(consumerProfileDetails.getUserName());
         inputPassword.setText(consumerProfileDetails.getPassword());
+        inputConfirmPassword.setText(consumerProfileDetails.getPassword());
         if(consumerProfileDetails.getNotifyEmail().equals("1")){
             chkEmail.setChecked(true);
         }

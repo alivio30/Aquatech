@@ -1,11 +1,14 @@
 package com.example.chatapp.FragmentEmpPage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.consumerPage.ConsumerProfileFragment;
 import com.example.chatapp.utilities.Constants;
@@ -43,14 +47,16 @@ public class ChangePassFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_change_pass, container, false);
-        backButton = view.findViewById(R.id.imageBack);
         ConsumerProfileFragment consumerProfile = new ConsumerProfileFragment();
         ProfilePage adminProfile = new ProfilePage();
         ReaderProfileFragment readerProfile = new ReaderProfileFragment();
+        backButton = view.findViewById(R.id.imageBack);
         changePass = view.findViewById(R.id.buttonChangeNewPassword);
         oldPassword = view.findViewById(R.id.inputOldPass);
         newPassword = view.findViewById(R.id.inputNewPassword);
         confirmPassword = view.findViewById(R.id.inputConfirmPassword);
+
+
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +82,7 @@ public class ChangePassFragment extends Fragment {
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     transaction.setReorderingAllowed(true);
-                    transaction.replace(R.id.FragmentContainer, adminProfile);
+                    transaction.replace(R.id.FragmentContainer, readerProfile);
                     transaction.commit();
                 }
                 if(userDetails.getUserType().equalsIgnoreCase("admin")){
@@ -111,6 +117,9 @@ public class ChangePassFragment extends Fragment {
                                             userDetails.setPassword(newPassword.getText().toString());
                                             showToast("Your password has been updated!");
                                             clearFields();
+                                            ReaderProfileFragment readerProfileFragment = new ReaderProfileFragment();
+                                            getFragmentManager().beginTransaction().replace(R.id.FragmentContainer, readerProfileFragment).addToBackStack(null)
+                                            .commit();
                                         }
                                     });
                         }

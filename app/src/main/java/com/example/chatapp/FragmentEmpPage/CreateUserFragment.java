@@ -20,7 +20,7 @@ import com.example.chatapp.R;
 import com.example.chatapp.activities.MainActivity;
 
 public class CreateUserFragment extends Fragment {
-    View view, viewMasterPage;
+    View view;
     Button createConsumer, createMeterReader, createAdmin;
     RegConsumer consumer = new RegConsumer();
     ImageView imageBack;
@@ -30,7 +30,6 @@ public class CreateUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_create_user, container, false);
-        TextView userAccounts = view.findViewById(R.id.textviewCreateUserAccount);
         createConsumer = view.findViewById(R.id.buttonConsumer);
         createMeterReader = view.findViewById(R.id.buttonMeterReader);
         createAdmin = view.findViewById(R.id.buttonAdmin);
