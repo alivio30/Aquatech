@@ -105,7 +105,7 @@ public class HomePage extends Fragment {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 sum = sum + Integer.parseInt(ds.getString("ConsumptionUnit"));
                             }
-                            totalConsumption.setText(String.valueOf(sum)+"m3");
+                            totalConsumption.setText(String.valueOf(sum));
                         }
                     }
                 });
