@@ -52,7 +52,7 @@ public class AdminBillingDetails extends Fragment {
     TextView textNoBill;
     ImageView imageWaterMeter, imageBack;
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat readingFormat = new SimpleDateFormat("MMMM-yyyy");
+    SimpleDateFormat readingFormat = new SimpleDateFormat("MMMM yyyy");
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM");
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
@@ -219,7 +219,7 @@ public class AdminBillingDetails extends Fragment {
         return 0;
     }
     public void displayBillingDetails(){
-        filter = getMonth+"-"+getYear;
+        filter = getMonth+" "+getYear;
         billingNumber.setText("");
         presentReading.setText("");
         previousReading.setText("");

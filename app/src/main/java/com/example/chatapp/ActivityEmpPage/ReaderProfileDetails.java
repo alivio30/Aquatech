@@ -90,7 +90,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     SimpleDateFormat notifyFormat = new SimpleDateFormat("MMMM dd, yyyy");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat readingDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM-yyyy");
+    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM yyyy");
     int billingID = 1;
     double tax =0;
     String messageDate;
@@ -216,6 +216,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                         txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
                                         StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
+                                        //txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
+                                        //inputRemarks.setText(documentUserSnapshot.getString("remarks"));
                                     }
                                 }
                             })
@@ -229,16 +231,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
                                                     DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
                                                     txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
-                                                    db.collection("billing")
-                                                            .whereEqualTo("consId", consId)
-                                                            .get()
-                                                            .addOnCompleteListener(task4 -> {
-                                                                if (task4.isSuccessful() && task4.getResult() != null && task4.getResult().getDocuments().size() > 0) {
-                                                                    DocumentSnapshot documentUserSnapshot4 = task4.getResult().getDocuments().get(0);
-                                                                    txtWaterConsumption.setText(documentUserSnapshot4.getString("ConsumptionUnit"));
-                                                                    inputRemarks.setText(documentUserSnapshot4.getString("remarks"));
-                                                                }
-                                                            });
                                                 }
                                             });
                                 }
@@ -299,8 +291,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                 DocumentSnapshot documentUserSnapshot1 = task2.getResult().getDocuments().get(0);
                                                                 txtPreviousReading.setText(documentUserSnapshot1.getString("presentReading"));
                                                                 StringToBitMap(previousScannedMeter, documentUserSnapshot1.getString("meterImage"));
-                                                                txtWaterConsumption.setText(documentUserSnapshot1.getString("ConsumptionUnit"));
-                                                                inputRemarks.setText(documentUserSnapshot1.getString("remarks"));
+                                                                //txtWaterConsumption.setText(documentUserSnapshot1.getString("ConsumptionUnit"));
+                                                                //inputRemarks.setText(documentUserSnapshot1.getString("remarks"));
 
                                                             }
                                                         })
