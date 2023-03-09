@@ -40,7 +40,7 @@
         android:maxLines="1"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-        app:layout_constraintEnd_toStartOf="@+id/paidImage"
+        app:layout_constraintEnd_toStartOf="@+id/readImage"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"/>
 
     <TextView
@@ -53,16 +53,26 @@
         android:maxLines="1"
         android:textColor="@color/secondary_text"
         app:layout_constraintTop_toBottomOf="@+id/viewSupporter"
-        app:layout_constraintEnd_toStartOf="@+id/paidImage"
+        app:layout_constraintEnd_toStartOf="@+id/readImage"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"/>
     <ImageView
-        android:id="@+id/paidImage"
+        android:id="@+id/readImage"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_180sdp"
         android:layout_marginTop="@dimen/_450sdp"
         android:src="@drawable/unread"
-
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+    <ImageView
+        android:id="@+id/unreadImage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_450sdp"
+        android:src="@drawable/read"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
