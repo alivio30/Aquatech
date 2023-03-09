@@ -90,7 +90,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     SimpleDateFormat notifyFormat = new SimpleDateFormat("MMMM dd, yyyy");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat readingDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM yyyy");
+    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM-yyyy");
     int billingID = 1;
     double tax =0;
     String messageDate;
@@ -206,35 +206,35 @@ public class ReaderProfileDetails extends AppCompatActivity {
                         }
                         int value = (int)maxValue;
                         db.collection("billing")
-                            .whereEqualTo("consId", consId)
-                            .whereEqualTo("bill_no", value-1)
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                                        DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                                        txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
-                                        StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
-                                        //txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
-                                        //inputRemarks.setText(documentUserSnapshot.getString("remarks"));
+                                .whereEqualTo("consId", consId)
+                                .whereEqualTo("bill_no", value-1)
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                                            txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
+                                            StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
+                                            txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
+                                            Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    db.collection("consumers")
-                                            .whereEqualTo("consId", consId)
-                                            .get()
-                                            .addOnCompleteListener(task3 ->{
-                                                if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
-                                                    DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
-                                                    txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
-                                                }
-                                            });
-                                }
-                            });
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        db.collection("consumers")
+                                                .whereEqualTo("consId", consId)
+                                                .get()
+                                                .addOnCompleteListener(task3 ->{
+                                                    if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
+                                                        DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
+                                                        txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
+                                                    }
+                                                });
+                                    }
+                                });
 
                     }
                 });
@@ -278,6 +278,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 txtInputPresentReading.setEnabled(false);
                                                 scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                                 submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
+
                                                 txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
                                                 StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
                                                 txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
@@ -291,9 +292,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                 DocumentSnapshot documentUserSnapshot1 = task2.getResult().getDocuments().get(0);
                                                                 txtPreviousReading.setText(documentUserSnapshot1.getString("presentReading"));
                                                                 StringToBitMap(previousScannedMeter, documentUserSnapshot1.getString("meterImage"));
-                                                                //txtWaterConsumption.setText(documentUserSnapshot1.getString("ConsumptionUnit"));
-                                                                //inputRemarks.setText(documentUserSnapshot1.getString("remarks"));
-
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
@@ -306,42 +304,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                             if (task3.isSuccessful() && task3.getResult() != null && task3.getResult().getDocuments().size() > 0) {
                                                                                 DocumentSnapshot documentUserSnapshot1 = task3.getResult().getDocuments().get(0);
                                                                                 txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
-                                                                                db.collection("billing")
-                                                                                        .whereEqualTo("consId", consId)
-                                                                                        .whereEqualTo("bill_no", value)
-                                                                                        .get()
-                                                                                        .addOnCompleteListener(task4 -> {
-                                                                                            if (task4.isSuccessful() && task4.getResult() != null && task4.getResult().getDocuments().size() > 0) {
-                                                                                                DocumentSnapshot documentUserSnapshot2 = task4.getResult().getDocuments().get(0);
-                                                                                                txtWaterConsumption.setText(documentUserSnapshot2.getString("ConsumptionUnit"));
-                                                                                                inputRemarks.setText(documentUserSnapshot2.getString("remarks"));
-                                                                                            }
-                                                                                        });
                                                                             }
                                                                         });
                                                             }
                                                         });
                                             }else{
-                                                Map<String, Object> updateRead = new HashMap<>();
-                                                updateRead.put("remarks", "Unread");
-                                                db.collection("consumers").whereEqualTo("consId", consId)
-                                                    .get()
-                                                    .addOnCompleteListener(unreadTask -> {
-                                                        if (unreadTask.isSuccessful() && unreadTask.getResult() != null && unreadTask.getResult().getDocuments().size() > 0) {
-                                                            DocumentSnapshot documentUserSnapshot1 = unreadTask.getResult().getDocuments().get(0);
-                                                            String docId = documentUserSnapshot1.getId();
-                                                            db.collection("consumers").document(docId)
-                                                                    .update(updateRead)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
-
-
+                                                //after 15 days of reading date, the button will be enabled
                                                 db.collection("billing")
                                                         .whereEqualTo("consId", consId)
                                                         .whereEqualTo("bill_no", value)
@@ -365,7 +333,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
+                                                                                                Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
                                                                                             }
                                                                                         });
                                                                             }
@@ -375,8 +343,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 scanButton.setClickable(true);
                                                 submitButton.setClickable(true);
                                                 txtInputPresentReading.setEnabled(true);
-                                                inputRemarks.setText(null);
-                                                inputRemarks.setEnabled(true);
                                                 getPrevReading();
                                             }
                                         } catch (ParseException e) {
@@ -440,8 +406,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
         netAmount = (billAmount + previousBalance + penalty + reconnectionFee + others) - (discount+credit);
         int temp = 1;
         String finalBillingNumber= billingNumber + temp;
-            //add to billing table
-            db.collection("consumers")
+        //add to billing table
+        db.collection("consumers")
                 .whereEqualTo("consId", consId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -487,18 +453,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                     counter = counter + 1;
                                                 }
                                                 String stringTemp = billingNumber + String.valueOf(counter);
-                                                DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-
-                                                //from previous billing?
-                                                double credit1 = 0.00; //excessPaid -> invoice table
-                                                double tax1 = billAmount * 0.12;
-                                                double penalty1 = 0.00; //penalty
-                                                double discount1 = 0.00; // discount
-                                                double previousBalance1 = 0.00 - 0.00; // billAmount - paidAmount (paid amount in invoice table)
-                                                double reconnectionFee1 = 0.00; // reconnectionFee
-                                                double others1 = 0; // others
-                                                double billAmountInvoice1 = 0 + 0 + 0;// billAmountInvoice + reconnectionFee + others;
-                                                double netAmount1 = (billAmount + previousBalance1 + penalty1 + reconnectionFee1 + others1) - (discount1+credit1);
                                                 Map<String, Object> createBilling = new HashMap<>();
                                                 createBilling.put("billingId", String.valueOf(billingID));
                                                 createBilling.put("consId", consId);
@@ -510,15 +464,15 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 createBilling.put("previousReading", txtPreviousReading.getText().toString());
                                                 createBilling.put("ConsumptionUnit", txtWaterConsumption.getText().toString());
                                                 createBilling.put("waterCharge", String.format("%.2f", watercharge));
-                                                createBilling.put("tax", String.format("%.2f", tax1));
+                                                createBilling.put("tax", String.format("%.2f", tax));
                                                 createBilling.put("billAmount", String.format("%.2f", billAmount));
-                                                createBilling.put("others", String.format("%.2f", others1));
-                                                createBilling.put("previousBalance", String.format("%.2f", previousBalance1));
-                                                createBilling.put("reconnectionFee", String.format("%.2f", reconnectionFee1));
-                                                createBilling.put("penalty", String.format("%.2f", penalty1));
-                                                createBilling.put("discount", String.format("%.2f", discount1));
-                                                createBilling.put("credit", String.format("%.2f", credit1));
-                                                createBilling.put("netAmount", String.format("%.2f", netAmount1));
+                                                createBilling.put("others", String.format("%.2f", others));
+                                                createBilling.put("previousBalance", String.format("%.2f", previousBalance));
+                                                createBilling.put("reconnectionFee", String.format("%.2f", reconnectionFee));
+                                                createBilling.put("penalty", String.format("%.2f", penalty));
+                                                createBilling.put("discount", String.format("%.2f", discount));
+                                                createBilling.put("credit", String.format("%.2f", credit));
+                                                createBilling.put("netAmount", String.format("%.2f", netAmount));
                                                 createBilling.put("dueDate", dueDate);
                                                 createBilling.put("meterImage", meterImage);
                                                 createBilling.put("status", status);
@@ -540,7 +494,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                     String documentID = documentSnapshot.getId();
                                                                                     db.collection("consumers")
                                                                                             .document(documentID)
-                                                                                            .update("remarks", "Read")
+                                                                                            .update("remarks", "read")
                                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                 @Override
                                                                                                 public void onSuccess(Void unused) {
@@ -575,7 +529,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                             String documentID = documentSnapshot.getId();
                                                                             db.collection("consumers")
                                                                                     .document(documentID)
-                                                                                    .update("remarks", "Read")
+                                                                                    .update("remarks", "read")
                                                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                         @Override
                                                                                         public void onSuccess(Void unused) {

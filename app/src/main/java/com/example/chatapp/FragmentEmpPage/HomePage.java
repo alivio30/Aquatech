@@ -44,7 +44,7 @@ public class HomePage extends Fragment {
     }
 
     public void countRead(){
-        db.collection("consumers").whereEqualTo("remarks", "read")
+        db.collection("consumers").whereEqualTo("remarks", "Read")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -61,7 +61,7 @@ public class HomePage extends Fragment {
     }
 
     public void countUnread(){
-        db.collection("consumers").whereEqualTo("remarks", "unread")
+        db.collection("consumers").whereEqualTo("remarks", "Unread")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
