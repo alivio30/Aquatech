@@ -41,11 +41,6 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         notifyDataSetChanged();
     }
 
-    /**public searchUserAdapter(Context context, ArrayList<UserDetailsRecyclerView> usersArrayList) {
-        this.context = context;
-        this.usersArrayList = usersArrayList;
-    }*/
-
     @NonNull
     @Override
     public searchUserAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -93,36 +88,6 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
             });
         }
     }
-    /**public class fetchImage extends Thread {
-        String URL;
-        Bitmap bitmap;
-        ImageView image;
-
-        fetchImage(String URL) {
-            this.URL = URL;
-        }
-
-        @Override
-        public void run() {
-            try {
-                InputStream inputStream = new java.net.URL(URL).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressDialog.isShowing()) {
-                        progressDialog.dismiss();
-                    }
-                    image = view.findViewById(R.id.imageProfile);
-                    image.setImageBitmap(bitmap);
-                }
-            });
-        }
-    }*/
 }
 
 

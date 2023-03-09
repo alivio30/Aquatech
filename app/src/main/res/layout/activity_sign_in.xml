@@ -29,9 +29,9 @@
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="@dimen/_300sdp"
-        android:layout_height="@dimen/_350sdp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/_40sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 

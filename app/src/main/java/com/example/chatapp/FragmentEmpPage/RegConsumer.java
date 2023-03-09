@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.example.chatapp.utilities.Validations;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -86,7 +87,7 @@ public class RegConsumer extends Fragment {
     TextView textAddImage;
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    Validations validations = new Validations();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -153,20 +154,17 @@ public class RegConsumer extends Fragment {
                         inputEmail.getText().toString().trim().isEmpty() || inputSerialNumber.getText().toString().trim().isEmpty() || inputTankNumber.getText().toString().trim().isEmpty() ||
                         inputPumpNumber.getText().toString().trim().isEmpty() || inputLineNumber.getText().toString().trim().isEmpty() || inputMeterStand.getText().toString().trim().isEmpty() ||
                         inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
-                    toast = Toast.makeText(getContext(), "Please input necessary field/s", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
-                    toast = Toast.makeText(getContext(), "Password is not matched!", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.passwordNotMatched(), Toast.LENGTH_SHORT).show();
                 }else if(profile.getDrawable() == null){
-                    toast = Toast.makeText(getContext(), "Please select an image.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.nullImage(), Toast.LENGTH_SHORT).show();
                 }else if(!chkEmail.isChecked() && !chkSms.isChecked() && !chkHouse.isChecked()){
-                    toast = Toast.makeText(getContext(), "Please select Bill Notification method", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.selectBillMethod(), Toast.LENGTH_SHORT).show();
                 }else if(spinnerType.getSelectedItem().toString().equalsIgnoreCase("Select Type")){
-                    toast = Toast.makeText(getContext(), "Please select Consumer Type", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.selectConsumerType(), Toast.LENGTH_SHORT).show();
+                }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
+                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
                 }else{
                     validateUserID();
                 }
@@ -218,8 +216,7 @@ public class RegConsumer extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                        toast = Toast.makeText(getContext(), "Email already taken!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(getContext(), validations.existingEmail(), Toast.LENGTH_SHORT).show();
                     }else{
                         validateConsumerID();
                     }
@@ -244,8 +241,7 @@ public class RegConsumer extends Fragment {
                 .get()
                 .addOnCompleteListener(userIdTask -> {
                     if (userIdTask.isSuccessful() && userIdTask.getResult() != null && userIdTask.getResult().getDocuments().size() > 0) {
-                        toast = Toast.makeText(getContext(), "Serial Number already taken!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(getContext(), validations.existingSerialNumber(), Toast.LENGTH_SHORT).show();
                     }else{
                         insertUser();
                     }
@@ -253,7 +249,7 @@ public class RegConsumer extends Fragment {
     }
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
-        progressDialog.setTitle("Uploading File...");
+        progressDialog.setTitle("Creating user account...");
         progressDialog.show();
         Date now = new Date();
         String fileName = formatter.format(now);
@@ -262,8 +258,6 @@ public class RegConsumer extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //binding.imageProfile.setImageURI(null);
-                        Toast.makeText(getContext(), "successfully uploaded", Toast.LENGTH_SHORT).show();
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
                         }
@@ -319,12 +313,10 @@ public class RegConsumer extends Fragment {
                                 db.collection("consumers")
                                         .add(createConsumer)
                                         .addOnSuccessListener(documentReference -> {
-                                            toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
-                                            toast.show();
+                                            Toast.makeText(getContext(), validations.registerSuccess(), Toast.LENGTH_SHORT).show();
                                         })
                                         .addOnFailureListener(exception -> {
-                                            toast = Toast.makeText(getContext(), "Failed to Register.", Toast.LENGTH_SHORT);
-                                            toast.show();
+                                            Toast.makeText(getContext(), validations.registerFail(), Toast.LENGTH_SHORT).show();
                                         });
 
                                 //save data to users table--
