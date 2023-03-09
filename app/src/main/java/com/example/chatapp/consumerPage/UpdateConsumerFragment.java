@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Validations;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +57,7 @@ public class UpdateConsumerFragment extends Fragment {
     Spinner spinnerType;
     Button updateButton;
     String type;
+    Validations validations = new Validations();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -130,6 +132,8 @@ public class UpdateConsumerFragment extends Fragment {
                     Toast.makeText(getContext(), "Password not matched!", Toast.LENGTH_SHORT).show();
                 }else if(email == "0" && sms == "0" && house == "0"){
                     Toast.makeText(getContext(), "Select at least 1 preferred notification!", Toast.LENGTH_SHORT).show();
+                }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
+                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
                 }else{
                     updateAccount();
                 }

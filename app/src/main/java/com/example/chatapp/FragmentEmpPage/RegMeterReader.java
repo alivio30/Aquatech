@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
+import com.example.chatapp.utilities.Validations;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -58,7 +59,7 @@ public class RegMeterReader extends Fragment {
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    Validations validations = new Validations();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,15 +93,13 @@ public class RegMeterReader extends Fragment {
                 if(inputName.getText().toString().trim().isEmpty() || inputAddress.getText().toString().trim().isEmpty() || inputContactNumber.getText().toString().trim().isEmpty() ||
                         inputEmail.getText().toString().trim().isEmpty() || inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() ||
                         inputConfirmPassword.getText().toString().trim().isEmpty()){
-                    toast = Toast.makeText(getContext(), "Please input necessary field/s", Toast.LENGTH_SHORT);
-                    toast.show();
-
+                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
-                    toast = Toast.makeText(getContext(), "Password is not matched!", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.passwordNotMatched(), Toast.LENGTH_SHORT).show();
                 }else if(profile.getDrawable() == null){
-                    toast = Toast.makeText(getContext(), "Please select an image.", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(getContext(), validations.nullImage(), Toast.LENGTH_SHORT).show();
+                }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
+                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
                 }else{
                     validateUserID();
                 }
@@ -133,7 +132,7 @@ public class RegMeterReader extends Fragment {
     }
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
-        progressDialog.setTitle("Uploading File...");
+        progressDialog.setTitle("Creating user account...");
         progressDialog.show();
 
         //SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.CANADA);
@@ -144,8 +143,6 @@ public class RegMeterReader extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        //binding.imageProfile.setImageURI(null);
-                        Toast.makeText(getContext(), "successfully uploaded", Toast.LENGTH_SHORT).show();
                         if(progressDialog.isShowing()){
                             progressDialog.dismiss();
                         }
