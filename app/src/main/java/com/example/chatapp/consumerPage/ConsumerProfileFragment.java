@@ -64,7 +64,6 @@ public class ConsumerProfileFragment extends Fragment {
         billNotification = view.findViewById(R.id.textBillNotification);
         firstRead = view.findViewById(R.id.textFirstMeterRead);
 
-
         displayData();
 
         changePasswordButton = view.findViewById(R.id.buttonChangePassword);

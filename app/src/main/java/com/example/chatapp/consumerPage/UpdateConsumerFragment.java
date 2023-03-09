@@ -78,7 +78,6 @@ public class UpdateConsumerFragment extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         updateButton = view.findViewById(R.id.buttonUpdateAccount);
-
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
