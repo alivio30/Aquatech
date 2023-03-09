@@ -73,7 +73,7 @@
         android:layout_marginStart="@dimen/_180sdp"
         android:layout_marginTop="@dimen/_450sdp"
         android:visibility="invisible"
-        android:src="@drawable/Unpaid"
+        android:src="@drawable/unpaid"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
     <ImageView
@@ -82,7 +82,7 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginStart="@dimen/_160sdp"
         android:layout_marginTop="@dimen/_450sdp"
-        android:src="@drawable/paidInFull"
+        android:src="@drawable/fullypaid"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
@@ -92,7 +92,7 @@
         android:layout_height="@dimen/_50sdp"
         android:layout_marginStart="@dimen/_180sdp"
         android:layout_marginTop="@dimen/_450sdp"
-        android:src="@drawable/Pending"
+        android:src="@drawable/pending"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

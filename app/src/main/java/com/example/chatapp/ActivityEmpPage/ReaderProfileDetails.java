@@ -90,7 +90,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     SimpleDateFormat notifyFormat = new SimpleDateFormat("MMMM dd, yyyy");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat readingDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM-yyyy");
+    SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM yyyy");
     int billingID = 1;
     double tax =0;
     String messageDate;
@@ -216,8 +216,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                             txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
                                             StringToBitMap(previousScannedMeter, documentUserSnapshot.getString("meterImage"));
-                                            txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
-                                            Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 })
@@ -272,7 +270,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         String stringDate = documentUserSnapshot.getString("dueDate");
                                         try {
                                             Date dueDate = sdf.parse(stringDate);
-                                            if(dueDate.after(now)){
+                                            if(dueDate.after(now)){     //before duedate
                                                 scanButton.setClickable(false);
                                                 submitButton.setClickable(false);
                                                 txtInputPresentReading.setEnabled(false);
@@ -333,7 +331,21 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                                Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
+                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
+                                                                                                Map<String, Object> updateStatus = new HashMap<>();
+                                                                                                updateStatus.put("remarks", "Unread");
+                                                                                                db.collection("consumers")
+                                                                                                        .whereEqualTo("consId", consId)
+                                                                                                        .get()
+                                                                                                        .addOnCompleteListener(updateTask1 -> {
+                                                                                                            if (updateTask1.isSuccessful() && updateTask1.getResult() != null && updateTask1.getResult().getDocuments().size() > 0) {
+                                                                                                                DocumentSnapshot documentUserSnapshot3 = updateTask1.getResult().getDocuments().get(0);
+                                                                                                                String docId = documentUserSnapshot3.getId();
+                                                                                                                db.collection("consumers")
+                                                                                                                        .document(docId)
+                                                                                                                        .update(updateStatus);
+                                                                                                            }
+                                                                                                        });
                                                                                             }
                                                                                         });
                                                                             }
@@ -494,7 +506,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                     String documentID = documentSnapshot.getId();
                                                                                     db.collection("consumers")
                                                                                             .document(documentID)
-                                                                                            .update("remarks", "read")
+                                                                                            .update("remarks", "Read")
                                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                 @Override
                                                                                                 public void onSuccess(Void unused) {
@@ -529,7 +541,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                             String documentID = documentSnapshot.getId();
                                                                             db.collection("consumers")
                                                                                     .document(documentID)
-                                                                                    .update("remarks", "read")
+                                                                                    .update("remarks", "Read")
                                                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                         @Override
                                                                                         public void onSuccess(Void unused) {

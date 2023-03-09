@@ -20,6 +20,7 @@ import com.example.chatapp.ActivityEmpPage.MasterPage;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
     Context context;
     ArrayList<UserDetailsRecyclerView> usersArrayList;
     private final RecyclerViewInterface recyclerViewInterface;
+    UserDetails userDetails = new UserDetails();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public searchUserAdapter(Context context, ArrayList<UserDetailsRecyclerView> usersArrayList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
@@ -53,10 +56,13 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         UserDetailsRecyclerView userDetailsRecyclerView = usersArrayList.get(position);
         holder.name.setText("Name: "+userDetailsRecyclerView.getName());
         holder.meterSerialNumber.setText("Serial Number: "+userDetailsRecyclerView.getMeterSerialNumber());
-
         String imageUrl = null;
         imageUrl = userDetailsRecyclerView.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
+
+        /**if(userDetails.getUserType().equalsIgnoreCase("Admin")){
+
+        }*/
 
     }
 
@@ -68,13 +74,13 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView name, meterSerialNumber;
-        ImageView image;
+        ImageView image, pendingImage;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             name = itemView.findViewById(R.id.textName);
             meterSerialNumber = itemView.findViewById(R.id.textSerialNumber);
             image = itemView.findViewById(R.id.imageProfile);
-
+            //pendingImage = itemView.findViewById(R.id.pendingImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
