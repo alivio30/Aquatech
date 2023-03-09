@@ -55,7 +55,7 @@ public class AdminBillingDetails extends Fragment {
     SimpleDateFormat readingFormat = new SimpleDateFormat("MMMM yyyy");
     SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM");
     SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-
+    ImageView pending, full, unpaid, paid;
     String consId ="";
     String month, year;
     TextView period, totalBill, billingNumber, presentReading, previousReading, waterConsumed, billAmount, penalty, reconnectionFee, serialNumber, meterReader, dueDate;
@@ -79,6 +79,11 @@ public class AdminBillingDetails extends Fragment {
         imageBack = view.findViewById(R.id.imageBack);
         layout = view.findViewById(R.id.LinearContainer);
         textNoBill = view.findViewById(R.id.textNoBill);
+        paid = view.findViewById(R.id.paidImage);
+        pending = view.findViewById(R.id.pendingImage);
+        full = view.findViewById(R.id.paidInFullImage);
+        unpaid = view.findViewById(R.id.unpaidImage);
+
         if(userDetails.getUserType().equalsIgnoreCase("consumer")){
             imageBack.setVisibility(View.GONE);
         }
@@ -96,10 +101,13 @@ public class AdminBillingDetails extends Fragment {
         ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerYear, android.R.layout.simple_spinner_item);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYear.setAdapter(yearAdapter);
+
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerMonth, android.R.layout.simple_spinner_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(monthAdapter);
+
         setData(spinnerMonth, spinnerYear);
+
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -259,6 +267,16 @@ public class AdminBillingDetails extends Fragment {
                             dueDate.setText(documentSnapshot1.getString("dueDate"));
                             totalBill.setText(documentSnapshot1.getString("netAmount"));
                             StringToBitMap(imageWaterMeter, documentSnapshot1.getString("meterImage"));
+                            if(documentSnapshot1.getString("status").equalsIgnoreCase("Pending")){
+                                pending.setVisibility(View.VISIBLE);
+                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Unpaid")){
+                                unpaid.setVisibility(View.VISIBLE);
+                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("FullyPaid")){
+                                full.setVisibility(View.VISIBLE);
+                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Paid")){
+                                paid.setVisibility(View.VISIBLE);
+                            }
+
                             db.collection("consumers").whereEqualTo("consId", consId)
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

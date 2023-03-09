@@ -65,14 +65,4 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
-    <ImageView
-        android:id="@+id/unpaidImage"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:layout_marginStart="@dimen/_180sdp"
-        android:layout_marginTop="@dimen/_450sdp"
-        android:visibility="invisible"
-        android:src="@drawable/read"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
