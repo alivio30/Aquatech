@@ -376,7 +376,7 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:text="@string/_000000"
-                        android:textSize="30sp"
+                        android:textSize="@dimen/_15ssp"
                         android:textStyle="bold"
                         android:layout_marginBottom="35dp"
                         android:textAlignment="center"
@@ -427,15 +427,34 @@
                     android:textColor="@color/primary_text" />
                 <TextView
                     android:id="@+id/textWaterConsumption"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:text="@string/_00000"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
                     android:textAlignment="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_gravity="center"
                     android:textColor="@color/primary_text"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="m"
+                    android:textStyle="bold"
+                    android:textColor="@color/homepage_text_blue"
+                    android:textSize="20sp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="93dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textStyle="bold"
+                    android:textColor="@color/homepage_text_blue"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="110dp"/>
             </androidx.cardview.widget.CardView>
             <EditText
                 android:id="@+id/InputRemarks"

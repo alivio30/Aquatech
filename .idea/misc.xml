@@ -71,7 +71,7 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_nav_bar.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_profile_details.xml" value="0.2620519159456119" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.21875" />
+        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_reader_profile_details.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_search.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/activity_sign_up.xml" value="0.3625" />
@@ -105,7 +105,7 @@
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/fragment_update_consumer.xml" value="0.1400709219858156" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/item_container_recent_conversation.xml" value="0.30625" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/item_container_sent_message.xml" value="0.3614583333333333" />
-        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/item_container_user.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/item_container_user.xml" value="0.25" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/layout/item_contatiner_received_message.xml" value="0.3614583333333333" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/menu/bottom_consumer_nav_menu.xml" value="0.109375" />
         <entry key="..\:/Users/JOJO GWAPO/AndroidStudioProjects/ChatApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.365625" />
