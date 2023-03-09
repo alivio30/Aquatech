@@ -111,7 +111,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     }
 
     private void EventChangeListener() {
-        db.collection("consumers")
+        db.collection("consumers").orderBy("name")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

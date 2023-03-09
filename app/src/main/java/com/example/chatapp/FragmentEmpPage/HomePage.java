@@ -20,6 +20,7 @@ public class HomePage extends Fragment {
     View view;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView totalUnread, totalRead, totalConsumption, totalActive, totalInactive, totalHouseholds, totalDisconnected;
+    TextView totalLines, totalPumps, totalTanks;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,6 +33,9 @@ public class HomePage extends Fragment {
         totalInactive = view.findViewById(R.id.textTotalInActive);
         totalHouseholds = view.findViewById(R.id.textTotalHousehold);
         totalDisconnected = view.findViewById(R.id.textTotalDisconnected);
+        totalLines = view.findViewById(R.id.textTotalLine);
+        totalPumps = view.findViewById(R.id.textTotalPumps);
+        totalTanks = view.findViewById(R.id.textTotalTanks);
         countRead();
         countUnread();
         countTotalHouseholds();
@@ -39,6 +43,9 @@ public class HomePage extends Fragment {
         totalActive();
         totalInactive();
         totalDisconnected();
+        totalLines();
+        totalPumps();
+        totalTanks();
 
         return view;
     }
@@ -157,6 +164,48 @@ public class HomePage extends Fragment {
                                 counter = counter + 1;
                             }
                             totalDisconnected.setText(String.valueOf(counter));
+                        }
+                    }
+                });
+    }
+
+    public void totalLines(){
+        db.collection("companyDetails")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                            totalLines.setText(documentUserSnapshot.getString("totalLine"));
+                        }
+                    }
+                });
+    }
+
+    public void totalPumps(){
+        db.collection("companyDetails")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                            totalPumps.setText(documentUserSnapshot.getString("totalPump"));
+                        }
+                    }
+                });
+    }
+
+    public void totalTanks(){
+        db.collection("companyDetails")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+                            totalTanks.setText(documentUserSnapshot.getString("totalTanks"));
                         }
                     }
                 });
