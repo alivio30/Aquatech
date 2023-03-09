@@ -562,7 +562,7 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginStart="@dimen/_180sdp"
-                    android:layout_marginTop="@dimen/_450sdp"
+                    android:layout_marginTop="@dimen/_500sdp"
                     android:rotation="-10"
                     android:src="@drawable/paid"
                     android:visibility="invisible"/>
@@ -571,7 +571,7 @@
                     android:layout_width="@dimen/_100sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginStart="@dimen/_180sdp"
-                    android:layout_marginTop="@dimen/_450sdp"
+                    android:layout_marginTop="@dimen/_500sdp"
                     android:visibility="invisible"
                     android:src="@drawable/unpaid"/>
                 <ImageView
@@ -579,7 +579,7 @@
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginStart="@dimen/_160sdp"
-                    android:layout_marginTop="@dimen/_450sdp"
+                    android:layout_marginTop="@dimen/_500sdp"
                     android:src="@drawable/fullypaid"
                     android:visibility="invisible"/>
                 <ImageView
@@ -587,7 +587,7 @@
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginStart="@dimen/_180sdp"
-                    android:layout_marginTop="@dimen/_450sdp"
+                    android:layout_marginTop="@dimen/_500sdp"
                     android:src="@drawable/pending"
                     android:visibility="invisible"/>
             </androidx.cardview.widget.CardView>
