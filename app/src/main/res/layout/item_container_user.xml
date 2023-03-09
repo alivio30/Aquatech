@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_button_design"
@@ -39,7 +40,7 @@
         android:maxLines="1"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/viewSupporter"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/paidImage"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"/>
 
     <TextView
@@ -52,6 +53,47 @@
         android:maxLines="1"
         android:textColor="@color/secondary_text"
         app:layout_constraintTop_toBottomOf="@+id/viewSupporter"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/paidImage"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"/>
+    <ImageView
+        android:id="@+id/paidImage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_450sdp"
+        android:rotation="-10"
+        android:src="@drawable/paid"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+    <ImageView
+        android:id="@+id/unpaidImage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_450sdp"
+        android:visibility="invisible"
+        android:src="@drawable/Unpaid"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+    <ImageView
+        android:id="@+id/paidInFullImage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_160sdp"
+        android:layout_marginTop="@dimen/_450sdp"
+        android:src="@drawable/paidInFull"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+    <ImageView
+        android:id="@+id/pendingImage"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_450sdp"
+        android:src="@drawable/Pending"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
