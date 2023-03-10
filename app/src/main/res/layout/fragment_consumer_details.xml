@@ -282,45 +282,24 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/background_content_bottom_white"/>
                 <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="@string/preferred_bill_notification"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp"
-                    android:textColor="@color/primary_text"
-                    android:textSize="@dimen/_13ssp" />
-                <CheckBox
-                    android:id="@+id/checkBoxEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:textColor="@color/primary_text"
-                    android:text="@string/emailalone" />
-                <CheckBox
-                    android:id="@+id/checkBoxSMS"
+                    android:text="Consumer Type :"
+                    android:textSize="10sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="12dp"
+                    android:textColor="@color/primary_text"/>
+                <TextView
+                    android:id="@+id/textConsumerType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_80sdp"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:textColor="@color/primary_text"
-                    android:text="@string/sms" />
-                <CheckBox
-                    android:id="@+id/checkBoxHouse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_150sdp"
-                    android:paddingStart="@dimen/_16sdp"
-                    android:paddingEnd="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:textColor="@color/primary_text"
-                    android:text="@string/house_house_delivery" />
+                    android:text="@string/_000000"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="20dp"
+                    android:textColor="@color/primary_text"/>
+
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

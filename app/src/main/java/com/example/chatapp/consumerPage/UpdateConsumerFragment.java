@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.FragmentEmpPage.AdminBillingDetails;
+import com.example.chatapp.FragmentEmpPage.ConsumerDetails;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.Validations;
@@ -42,13 +44,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateConsumerFragment extends Fragment {
+    ConsumerDetails consumerDetails = new ConsumerDetails();
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference imageRef;
     View view;
     Uri imageUri;
-    ImageView image;
+    ImageView image, imageBack;
     TextView addImage;
     EditText inputName, inputAddress, inputContactNumber, inputEmail, inputSerialNumber, inputTankNumber, inputPumpNumber, inputLineNumber, inputMeterStand;
     EditText inputUsername, inputPassword, inputConfirmPassword;
@@ -64,6 +67,7 @@ public class UpdateConsumerFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_update_consumer, container, false);
         addImage = view.findViewById(R.id.textAddImage);
+        imageBack = view.findViewById(R.id.imageBack);
         image = view.findViewById(R.id.imageProfile);
         inputName = view.findViewById(R.id.inputName);
         inputAddress = view.findViewById(R.id.inputAddress);
@@ -78,6 +82,17 @@ public class UpdateConsumerFragment extends Fragment {
         inputPassword = view.findViewById(R.id.inputPassword);
         inputConfirmPassword = view.findViewById(R.id.inputConfirmPassword);
         updateButton = view.findViewById(R.id.buttonUpdateAccount);
+        addImage.setVisibility(View.GONE);
+
+        imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                transaction.setReorderingAllowed(true);
+                transaction.replace(R.id.FragmentContainer, consumerDetails);
+                transaction.commit();
+            }
+        });
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +121,6 @@ public class UpdateConsumerFragment extends Fragment {
             }
         });
         displayData();
-
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

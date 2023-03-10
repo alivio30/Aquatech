@@ -32,10 +32,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -59,6 +61,10 @@ public class AdminBillingDetails extends Fragment {
     String consId ="";
     String month, year;
     TextView period, totalBill, billingNumber, presentReading, previousReading, waterConsumed, billAmount, penalty, reconnectionFee, serialNumber, meterReader, dueDate;
+    private ArrayList<String> yearLists;
+    private ArrayAdapter<String> yearAdapter;
+    private ArrayList<String> monthLists;
+    private ArrayAdapter<String> monthAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -97,15 +103,26 @@ public class AdminBillingDetails extends Fragment {
         //spinners
         spinnerYear = view.findViewById(R.id.spinnerYear);
         spinnerMonth = view.findViewById(R.id.spinnerMonth);
+
+        yearLists = new ArrayList<>();
+        yearAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, yearLists);
+        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerYear.setAdapter(yearAdapter);
+        setSpinnerYear(); //set years from consumer billing history
+
+        monthLists = new ArrayList<>();
+        monthAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, monthLists);
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMonth.setAdapter(monthAdapter);
+        setSpinnerMonth(); //set months from consumer billing history
         //spinner year
-        ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerYear, android.R.layout.simple_spinner_item);
+        /**ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerYear, android.R.layout.simple_spinner_item);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYear.setAdapter(yearAdapter);
 
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerMonth, android.R.layout.simple_spinner_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMonth.setAdapter(monthAdapter);
-
+        spinnerMonth.setAdapter(monthAdapter);*/
         setData(spinnerMonth, spinnerYear);
 
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -134,8 +151,62 @@ public class AdminBillingDetails extends Fragment {
         });
         return view;
     }
+
+    public void setSpinnerYear(){
+        if(userDetails.getUserType().equalsIgnoreCase("Admin")){
+            String userID = getArguments().getString("userId");
+            db.collection("consumers")
+                .whereEqualTo("userId", userID)
+                .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            db.collection("billing")
+                                    .whereEqualTo("consId", documentSnapshot.getString("consId"))
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : task1.getResult()){
+                                                String dateString = document.getString("filterDate");
+                                                String year = dateString.split(" ")[1];
+                                                yearLists.add(year);
+                                            }
+                                            yearAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                        }
+                    });
+        }
+    }
+
+    public void setSpinnerMonth(){
+        if(userDetails.getUserType().equalsIgnoreCase("Admin")){
+            String userID = getArguments().getString("userId");
+            db.collection("consumers")
+                    .whereEqualTo("userId", userID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            db.collection("billing")
+                                    .whereEqualTo("consId", documentSnapshot.getString("consId"))
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : task1.getResult()){
+                                                String dateString = document.getString("filterDate");
+                                                String month = dateString.split(" ")[0];
+                                                monthLists.add(month);
+                                            }
+                                            monthAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                        }
+                    });
+        }
+    }
     public void setData(Spinner spinnerM, Spinner spinnerY){
-        if(userDetails.getUserType().equalsIgnoreCase("admin")){
+        if(userDetails.getUserType().equalsIgnoreCase("Admin")){
             String userID = getArguments().getString("userId");
             db.collection("consumers")
                     .whereEqualTo("userId", userID)

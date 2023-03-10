@@ -576,8 +576,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
     public void notifyEmail(){
         //Send to email
-        final String username = "crackadood095@gmail.com";
-        final String password = "cqnbyusawaqmjoui";
+        final String username = "aquatech.system2023@gmail.com";
+        final String password = "relccytbuboorcnh";
         String messageToSend = "Dear "+name+", \n\n" +
                 "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
                 " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +

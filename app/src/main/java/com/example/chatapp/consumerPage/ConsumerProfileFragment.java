@@ -112,9 +112,21 @@ public class ConsumerProfileFragment extends Fragment {
                         lineNumber.setText(documentUserSnapshot.getString("lineNumber"));
                         meterStandNumber.setText(documentUserSnapshot.getString("meterStandNumber"));
                         consumerType.setText(documentUserSnapshot.getString("consumerType"));
-                        if(documentUserSnapshot.getString("notifyEmail").equals("1")) notifyVia += "Email, ";
-                        if(documentUserSnapshot.getString("notifySMS").equals("1")) notifyVia += "SMS, ";
-                        if(documentUserSnapshot.getString("notifyHouse").equals("1")) notifyVia += "House, ";
+                        if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifyHouse").equals("1") && documentUserSnapshot.getString("notifySMS").equals("1")){
+                            notifyVia = "Email, SMS, House";
+                        }else if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifyHouse").equals("1")){
+                            notifyVia = "Email, House";
+                        }else if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifySMS").equals("1")){
+                            notifyVia = "Email, SMS";
+                        }else if(documentUserSnapshot.getString("notifySMS").equals("1") && documentUserSnapshot.getString("notifyHouse").equals("1")){
+                            notifyVia = "SMS, House";
+                        }else if(documentUserSnapshot.getString("notifyEmail").equals("1")){
+                            notifyVia = "Email";
+                        }else if(documentUserSnapshot.getString("notifySMS").equals("1")){
+                            notifyVia = "SMS";
+                        }else if(documentUserSnapshot.getString("notifyHouse").equals("1")){
+                            notifyVia = "House";
+                        }
                         billNotification.setText(notifyVia);
                         firstRead.setText(documentUserSnapshot.getString("firstReading"));
                     }
