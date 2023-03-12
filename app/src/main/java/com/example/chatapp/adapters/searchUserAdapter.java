@@ -60,9 +60,13 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         imageUrl = userDetailsRecyclerView.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
 
-        /**if(userDetails.getUserType().equalsIgnoreCase("Admin")){
-
-        }*/
+        if(userDetails.getUserType().equalsIgnoreCase("Meter Reader")){
+            if(userDetailsRecyclerView.getRemarks().equalsIgnoreCase("Read")){
+                holder.readImage.setVisibility(View.VISIBLE);
+            }else if(userDetailsRecyclerView.getRemarks().equalsIgnoreCase("Unread")){
+                holder.unreadImage.setVisibility(View.VISIBLE);
+            }
+        }
 
     }
 
@@ -74,13 +78,14 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView name, meterSerialNumber;
-        ImageView image, pendingImage;
+        ImageView image, readImage, unreadImage;
         public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             name = itemView.findViewById(R.id.textName);
             meterSerialNumber = itemView.findViewById(R.id.textSerialNumber);
             image = itemView.findViewById(R.id.imageProfile);
-            //pendingImage = itemView.findViewById(R.id.pendingImage);
+            unreadImage = itemView.findViewById(R.id.unreadImage);
+            readImage = itemView.findViewById(R.id.readImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
