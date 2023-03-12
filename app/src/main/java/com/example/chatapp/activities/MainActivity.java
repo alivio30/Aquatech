@@ -67,6 +67,12 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     private void setListeners(){
         binding.fabNewChat.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+        binding.imageBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
     @Override
     public void onBackPressed() {

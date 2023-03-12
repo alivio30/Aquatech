@@ -61,7 +61,7 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_180sdp"
         android:layout_marginTop="@dimen/_450sdp"
-        android:src="@drawable/unread"
+        android:src="@drawable/read"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
@@ -71,7 +71,7 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="@dimen/_180sdp"
         android:layout_marginTop="@dimen/_450sdp"
-        android:src="@drawable/read"
+        android:src="@drawable/unread"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />

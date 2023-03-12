@@ -23,8 +23,6 @@ import com.example.chatapp.utilities.UserDetails;
 
 public class ConsumerDetails extends Fragment {
     View view;
-    UpdateConsumerFragment updateConsumerFragment = new UpdateConsumerFragment();
-    ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     TextView name, accountNumber, serialNumber, pumpNumber, tankNumber, lineNumber, meterStandNumber, dateApplied;
     TextView firstRead, contactNumber, email, consumerType, notify;
     ImageView back;
@@ -36,6 +34,8 @@ public class ConsumerDetails extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_consumer_details, container, false);
+        UpdateConsumerFragment updateConsumerFragment = new UpdateConsumerFragment();
+        ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
         AdminBillingDetails adminBillingDetails = new AdminBillingDetails();
         back = view.findViewById(R.id.imageBack);
         accountNumber = view.findViewById(R.id.textAccountNumber);
@@ -51,9 +51,21 @@ public class ConsumerDetails extends Fragment {
         consumerType = view.findViewById(R.id.textConsumerType);
         notify = view.findViewById(R.id.textBillNotification);
         firstRead = view.findViewById(R.id.textFirstMeterRead);
-        if(consumerProfileDetails.getNotifyEmail().equals("1")) notifyVia += "Email, ";
-        if(consumerProfileDetails.getNotifySMS().equals("1")) notifyVia += "SMS, ";
-        if(consumerProfileDetails.getNotifyHouse().equals("1")) notifyVia += "House, ";
+        if(consumerProfileDetails.getNotifyEmail().equals("1") && consumerProfileDetails.getNotifyHouse().equals("1") && consumerProfileDetails.getNotifySMS().equals("1")){
+            notifyVia = "Email, SMS, House";
+        }else if(consumerProfileDetails.getNotifyEmail().equals("1") && consumerProfileDetails.getNotifyHouse().equals("1")){
+            notifyVia = "Email, House";
+        }else if(consumerProfileDetails.getNotifyEmail().equals("1") && consumerProfileDetails.getNotifySMS().equals("1")){
+            notifyVia = "Email, SMS";
+        }else if(consumerProfileDetails.getNotifySMS().equals("1") && consumerProfileDetails.getNotifyHouse().equals("1")){
+            notifyVia = "SMS, House";
+        }else if(consumerProfileDetails.getNotifyEmail().equals("1")){
+            notifyVia = "Email";
+        }else if(consumerProfileDetails.getNotifySMS().equals("1")){
+            notifyVia = "SMS";
+        }else if(consumerProfileDetails.getNotifyHouse().equals("1")){
+            notifyVia = "House";
+        }
 
 
         update.setOnClickListener(new View.OnClickListener() {
