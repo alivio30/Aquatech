@@ -115,15 +115,14 @@ public class AdminBillingDetails extends Fragment {
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(monthAdapter);
         setSpinnerMonth(); //set months from consumer billing history
-        //spinner year
-        /**ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerYear, android.R.layout.simple_spinner_item);
-        yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerYear.setAdapter(yearAdapter);
 
-        ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this.getContext(), R.array.spinnerMonth, android.R.layout.simple_spinner_item);
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerMonth.setAdapter(monthAdapter);*/
-        setData(spinnerMonth, spinnerYear);
+        if(spinnerMonth.getAdapter().getCount() == 0 && spinnerYear.getAdapter().getCount() == 0){
+            layout.setVisibility(View.GONE);
+            textNoBill.setVisibility(View.VISIBLE);
+        }else{
+            setData(spinnerMonth, spinnerYear);
+        }
+        //setData(spinnerMonth, spinnerYear);
 
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -310,8 +309,8 @@ public class AdminBillingDetails extends Fragment {
         dueDate.setText("");
         serialNumber.setText("");
         imageWaterMeter.setImageDrawable(null);
-        layout.setVisibility(View.GONE);
-        textNoBill.setVisibility(View.VISIBLE);
+        //layout.setVisibility(View.GONE);
+        //textNoBill.setVisibility(View.VISIBLE);
         if(userDetails.getUserType().equalsIgnoreCase("admin")) consId = consumerProfileDetails.getConsID();
         else if(userDetails.getUserType().equalsIgnoreCase("consumer")) consId = userDetails.getConsumerID();
         db.collection("billing")
