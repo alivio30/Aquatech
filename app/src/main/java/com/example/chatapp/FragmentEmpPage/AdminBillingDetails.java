@@ -175,12 +175,58 @@ public class AdminBillingDetails extends Fragment {
                                     });
                         }
                     });
+        }else if(userDetails.getUserType().equalsIgnoreCase("Consumer")){
+            String userID = userDetails.getUserID();
+            db.collection("consumers")
+                    .whereEqualTo("userId", userID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            db.collection("billing")
+                                    .whereEqualTo("consId", documentSnapshot.getString("consId"))
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : task1.getResult()){
+                                                String dateString = document.getString("filterDate");
+                                                String year = dateString.split(" ")[1];
+                                                yearLists.add(year);
+                                            }
+                                            yearAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 
     public void setSpinnerMonth(){
         if(userDetails.getUserType().equalsIgnoreCase("Admin")){
             String userID = getArguments().getString("userId");
+            db.collection("consumers")
+                    .whereEqualTo("userId", userID)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
+                            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                            db.collection("billing")
+                                    .whereEqualTo("consId", documentSnapshot.getString("consId"))
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            for (QueryDocumentSnapshot document : task1.getResult()){
+                                                String dateString = document.getString("filterDate");
+                                                String month = dateString.split(" ")[0];
+                                                monthLists.add(month);
+                                            }
+                                            monthAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                        }
+                    });
+        }else if(userDetails.getUserType().equalsIgnoreCase("Consumer")){
+            String userID = userDetails.getUserID();
             db.collection("consumers")
                     .whereEqualTo("userId", userID)
                     .get()
@@ -223,24 +269,23 @@ public class AdminBillingDetails extends Fragment {
                             displayLatestBill(userDetails.getConsumerID(), spinnerM, spinnerY);
                         }
                     });
-        }
-        if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
-            db.collection("consumers")
-                    .whereEqualTo("userId", userDetails.getUserID())
-                    .get()
-                    .addOnCompleteListener(consumerTask -> {
-                        if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
-                            DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
-                            userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
-                            userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
-                            userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
-                            userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
-                            userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
-                            userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
-                            userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
-                            displayLatestBill(userDetails.getConsumerID(), spinnerM, spinnerY);
-                        }
-                    });
+        }else if (userDetails.getUserType().equalsIgnoreCase("Consumer")) {
+                db.collection("consumers")
+                        .whereEqualTo("userId", userDetails.getUserID())
+                        .get()
+                        .addOnCompleteListener(consumerTask -> {
+                            if (consumerTask.isSuccessful() && consumerTask.getResult() != null && consumerTask.getResult().getDocuments().size() > 0) {
+                                DocumentSnapshot documentConsumerSnapshot = consumerTask.getResult().getDocuments().get(0);
+                                userDetails.setConsumerID(documentConsumerSnapshot.getString("consId"));
+                                userDetails.setSerialNumber(documentConsumerSnapshot.getString("meterSerialNumber"));
+                                userDetails.setTankNumber(documentConsumerSnapshot.getString("tankNumber"));
+                                userDetails.setPumpNumber(documentConsumerSnapshot.getString("pumpNumber"));
+                                userDetails.setLineNumber(documentConsumerSnapshot.getString("lineNumber"));
+                                userDetails.setMeterStandNumber(documentConsumerSnapshot.getString("meterStandNumber"));
+                                userDetails.setConsumerType(documentConsumerSnapshot.getString("consumerType"));
+                                displayLatestBill(userDetails.getConsumerID(), spinnerM, spinnerY);
+                            }
+                        });
         }
     }
     public void displayLatestBill(String consId, Spinner spinnerM, Spinner spinnerY){
@@ -309,97 +354,196 @@ public class AdminBillingDetails extends Fragment {
         dueDate.setText("");
         serialNumber.setText("");
         imageWaterMeter.setImageDrawable(null);
-        //layout.setVisibility(View.GONE);
-        //textNoBill.setVisibility(View.VISIBLE);
-        if(userDetails.getUserType().equalsIgnoreCase("admin")) consId = consumerProfileDetails.getConsID();
-        else if(userDetails.getUserType().equalsIgnoreCase("consumer")) consId = userDetails.getConsumerID();
-        db.collection("billing")
-                .whereEqualTo("filterDate", filter)
-                .whereEqualTo("consId", consId)
+        if(userDetails.getUserType().equalsIgnoreCase("Admin")){
+            consId = consumerProfileDetails.getConsID();
+            db.collection("billing")
+                    .whereEqualTo("filterDate", filter)
+                    .whereEqualTo("consId", consId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                DocumentSnapshot documentSnapshot1 = task.getResult().getDocuments().get(0);
+                                String bill_no = documentSnapshot1.getLong("bill_no").toString();
+                                long bill_no_int = Long.parseLong(bill_no);
+                                layout.setVisibility(View.VISIBLE);
+                                textNoBill.setVisibility(View.GONE);
+                                billingNumber.setText(documentSnapshot1.getLong("bill_no").toString());
+                                presentReading.setText(documentSnapshot1.getString("presentReading"));
+                                previousReading.setText(documentSnapshot1.getString("previousReading"));
+                                waterConsumed.setText(documentSnapshot1.getString("ConsumptionUnit"));
+                                billAmount.setText(documentSnapshot1.getString("billAmount"));
+                                penalty.setText(documentSnapshot1.getString("penalty"));
+                                reconnectionFee.setText(documentSnapshot1.getString("reconnectionFee"));
+                                meterReader.setText(documentSnapshot1.getString("MeterReader"));
+                                dueDate.setText(documentSnapshot1.getString("dueDate"));
+                                totalBill.setText(documentSnapshot1.getString("netAmount"));
+                                StringToBitMap(imageWaterMeter, documentSnapshot1.getString("meterImage"));
+                                if(documentSnapshot1.getString("status").equalsIgnoreCase("Pending")){
+                                    pending.setVisibility(View.VISIBLE);
+                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Unpaid")){
+                                    unpaid.setVisibility(View.VISIBLE);
+                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("FullyPaid")){
+                                    full.setVisibility(View.VISIBLE);
+                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Paid")){
+                                    paid.setVisibility(View.VISIBLE);
+                                }
+
+                                db.collection("consumers").whereEqualTo("consId", consId)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                    DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
+                                                    String userId = documentSnapshot2.getString("userId");
+                                                    serialNumber.setText(documentSnapshot2.getString("meterSerialNumber"));
+                                                    db.collection("users").whereEqualTo("userId", userId)
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                    if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                        DocumentSnapshot documentSnapshot3 = task.getResult().getDocuments().get(0);
+                                                                        dateCreated = documentSnapshot3.getString("Date Created");
+                                                                        readingDate = documentSnapshot1.getString("readingDate");
+                                                                        try {
+                                                                            startBillingPeriod = format.format(getDateCreated(1));
+                                                                            endBillingPeriod = format.format(getReadingDate(-1));
+                                                                        } catch (ParseException e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                        period.setText(startBillingPeriod+" -- "+endBillingPeriod);
+                                                                        db.collection("billing").whereEqualTo("consId", consId).whereEqualTo("bill_no", bill_no_int-1)
+                                                                                .get()
+                                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                                            DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
+                                                                                            readingDate = documentSnapshot2.getString("readingDate");
+                                                                                            endReading = documentSnapshot1.getString("readingDate");
+                                                                                            try {
+                                                                                                startBillingPeriod = format.format(getReadingDate(1));
+                                                                                                endBillingPeriod = format.format(getEndReading(-1));
+                                                                                            } catch (ParseException e) {
+                                                                                                e.printStackTrace();
+                                                                                            }
+                                                                                            period.setText(startBillingPeriod+" -- "+endBillingPeriod);
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                    }
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
+        }
+        else if(userDetails.getUserType().equalsIgnoreCase("Consumer")){
+            db.collection("consumers").whereEqualTo("userId", userDetails.getUserID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful() && !task.getResult().isEmpty()) {
                             DocumentSnapshot documentSnapshot1 = task.getResult().getDocuments().get(0);
-                            String bill_no = documentSnapshot1.getLong("bill_no").toString();
-                            int bill_no_int = Integer.parseInt(bill_no);
-                            layout.setVisibility(View.VISIBLE);
-                            textNoBill.setVisibility(View.GONE);
-                            billingNumber.setText(documentSnapshot1.getLong("bill_no").toString());
-                            presentReading.setText(documentSnapshot1.getString("presentReading"));
-                            previousReading.setText(documentSnapshot1.getString("previousReading"));
-                            waterConsumed.setText(documentSnapshot1.getString("ConsumptionUnit"));
-                            billAmount.setText(documentSnapshot1.getString("billAmount"));
-                            penalty.setText(documentSnapshot1.getString("penalty"));
-                            reconnectionFee.setText(documentSnapshot1.getString("reconnectionFee"));
-                            meterReader.setText(documentSnapshot1.getString("MeterReader"));
-                            dueDate.setText(documentSnapshot1.getString("dueDate"));
-                            totalBill.setText(documentSnapshot1.getString("netAmount"));
-                            StringToBitMap(imageWaterMeter, documentSnapshot1.getString("meterImage"));
-                            if(documentSnapshot1.getString("status").equalsIgnoreCase("Pending")){
-                                pending.setVisibility(View.VISIBLE);
-                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Unpaid")){
-                                unpaid.setVisibility(View.VISIBLE);
-                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("FullyPaid")){
-                                full.setVisibility(View.VISIBLE);
-                            }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Paid")){
-                                paid.setVisibility(View.VISIBLE);
-                            }
+                            consId = documentSnapshot1.getString("consId");
+                            db.collection("billing")
+                                    .whereEqualTo("filterDate", filter)
+                                    .whereEqualTo("consId", consId)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                DocumentSnapshot documentSnapshot1 = task.getResult().getDocuments().get(0);
+                                                String bill_no = documentSnapshot1.getLong("bill_no").toString();
+                                                long bill_no_int = Long.parseLong(bill_no);
+                                                layout.setVisibility(View.VISIBLE);
+                                                textNoBill.setVisibility(View.GONE);
+                                                billingNumber.setText(documentSnapshot1.getLong("bill_no").toString());
+                                                presentReading.setText(documentSnapshot1.getString("presentReading"));
+                                                previousReading.setText(documentSnapshot1.getString("previousReading"));
+                                                waterConsumed.setText(documentSnapshot1.getString("ConsumptionUnit"));
+                                                billAmount.setText(documentSnapshot1.getString("billAmount"));
+                                                penalty.setText(documentSnapshot1.getString("penalty"));
+                                                reconnectionFee.setText(documentSnapshot1.getString("reconnectionFee"));
+                                                meterReader.setText(documentSnapshot1.getString("MeterReader"));
+                                                dueDate.setText(documentSnapshot1.getString("dueDate"));
+                                                totalBill.setText(documentSnapshot1.getString("netAmount"));
+                                                StringToBitMap(imageWaterMeter, documentSnapshot1.getString("meterImage"));
+                                                if(documentSnapshot1.getString("status").equalsIgnoreCase("Pending")){
+                                                    pending.setVisibility(View.VISIBLE);
+                                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Unpaid")){
+                                                    unpaid.setVisibility(View.VISIBLE);
+                                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("FullyPaid")){
+                                                    full.setVisibility(View.VISIBLE);
+                                                }else if(documentSnapshot1.getString("status").equalsIgnoreCase("Paid")){
+                                                    paid.setVisibility(View.VISIBLE);
+                                                }
 
-                            db.collection("consumers").whereEqualTo("consId", consId)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                                            DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
-                                            String userId = documentSnapshot2.getString("userId");
-                                            serialNumber.setText(documentSnapshot2.getString("meterSerialNumber"));
-                                            db.collection("users").whereEqualTo("userId", userId)
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                            if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                                                                DocumentSnapshot documentSnapshot3 = task.getResult().getDocuments().get(0);
-                                                                dateCreated = documentSnapshot3.getString("Date Created");
-                                                                readingDate = documentSnapshot1.getString("readingDate");
-                                                                try {
-                                                                    startBillingPeriod = format.format(getDateCreated(1));
-                                                                    endBillingPeriod = format.format(getReadingDate(-1));
-                                                                } catch (ParseException e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                                period.setText(startBillingPeriod+" -- "+endBillingPeriod);
-                                                                db.collection("billing").whereEqualTo("consId", consId).whereEqualTo("bill_no", bill_no_int-1)
-                                                                        .get()
-                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                                if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                                                                                    DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
-                                                                                    readingDate = documentSnapshot2.getString("readingDate");
-                                                                                    endReading = documentSnapshot1.getString("readingDate");
-                                                                                    try {
-                                                                                        startBillingPeriod = format.format(getReadingDate(1));
-                                                                                        endBillingPeriod = format.format(getEndReading(-1));
-                                                                                    } catch (ParseException e) {
-                                                                                        e.printStackTrace();
+                                                db.collection("consumers").whereEqualTo("consId", consId)
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                    DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
+                                                                    String userId = documentSnapshot2.getString("userId");
+                                                                    serialNumber.setText(documentSnapshot2.getString("meterSerialNumber"));
+                                                                    db.collection("users").whereEqualTo("userId", userId)
+                                                                            .get()
+                                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                    if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                                        DocumentSnapshot documentSnapshot3 = task.getResult().getDocuments().get(0);
+                                                                                        dateCreated = documentSnapshot3.getString("Date Created");
+                                                                                        readingDate = documentSnapshot1.getString("readingDate");
+                                                                                        try {
+                                                                                            startBillingPeriod = format.format(getDateCreated(1));
+                                                                                            endBillingPeriod = format.format(getReadingDate(-1));
+                                                                                        } catch (ParseException e) {
+                                                                                            e.printStackTrace();
+                                                                                        }
+                                                                                        period.setText(startBillingPeriod+" -- "+endBillingPeriod);
+                                                                                        db.collection("billing").whereEqualTo("consId", consId).whereEqualTo("bill_no", bill_no_int-1)
+                                                                                                .get()
+                                                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                                        if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                                                            DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
+                                                                                                            readingDate = documentSnapshot2.getString("readingDate");
+                                                                                                            endReading = documentSnapshot1.getString("readingDate");
+                                                                                                            try {
+                                                                                                                startBillingPeriod = format.format(getReadingDate(1));
+                                                                                                                endBillingPeriod = format.format(getEndReading(-1));
+                                                                                                            } catch (ParseException e) {
+                                                                                                                e.printStackTrace();
+                                                                                                            }
+                                                                                                            period.setText(startBillingPeriod+" -- "+endBillingPeriod);
+                                                                                                        }
+                                                                                                    }
+                                                                                                });
                                                                                     }
-                                                                                    period.setText(startBillingPeriod+" -- "+endBillingPeriod);
                                                                                 }
-                                                                            }
-                                                                        });
+                                                                            });
+                                                                }
                                                             }
-                                                        }
-                                                    });
+                                                        });
+                                            }
                                         }
-                                    }
-                                });
+                                    });
                         }
                     }
                 });
+        }
     }
     public void StringToBitMap(ImageView bitImage, String image){
         byte[] imageBytes;

@@ -10,6 +10,8 @@ public class UserDetails {
     private static String image;
     private static String userType;
     private static String userID;
+    private static String companyID;
+    private static String companyName;
 
     //for consumer
     private static String consumerID;
@@ -22,6 +24,12 @@ public class UserDetails {
 
 
     //set values
+    public void setCompanyName(String companyName){
+        this.companyName = companyName;
+    }
+    public void setCompanyID(String companyID){
+        this.companyID = companyID;
+    }
     public void setImage(String image){
         this.image = image;
     }
@@ -72,6 +80,12 @@ public class UserDetails {
     }
 
     //get values
+    public String getCompanyName(){
+        return companyName;
+    }
+    public String getCompanyID(){
+        return companyID;
+    }
     public String getImage(){
         return image;
     }

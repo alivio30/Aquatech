@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chatapp.R;
+import com.example.chatapp.utilities.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class HomePage extends Fragment {
     View view;
+    UserDetails userDetails = new UserDetails();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     TextView totalUnread, totalRead, totalConsumption, totalActive, totalInactive, totalHouseholds, totalDisconnected;
     TextView totalLines, totalPumps, totalTanks;
@@ -46,12 +49,11 @@ public class HomePage extends Fragment {
         totalLines();
         totalPumps();
         totalTanks();
-
         return view;
     }
 
     public void countRead(){
-        db.collection("consumers").whereEqualTo("remarks", "Read")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("remarks", "Read")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -68,7 +70,7 @@ public class HomePage extends Fragment {
     }
 
     public void countUnread(){
-        db.collection("consumers").whereEqualTo("remarks", "Unread")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("remarks", "Unread")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -85,7 +87,7 @@ public class HomePage extends Fragment {
     }
 
     public void countTotalHouseholds(){
-        db.collection("consumers")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -102,7 +104,7 @@ public class HomePage extends Fragment {
     }
 
     public void totalConsumption(){
-        db.collection("billing")
+        db.collection("billing").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -119,7 +121,7 @@ public class HomePage extends Fragment {
     }
 
     public void totalActive(){
-        db.collection("consumers").whereEqualTo("status", "Active")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Active")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -136,7 +138,7 @@ public class HomePage extends Fragment {
     }
 
     public void totalInactive(){
-        db.collection("consumers").whereEqualTo("status", "Inactive")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Inactive")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -153,7 +155,7 @@ public class HomePage extends Fragment {
     }
 
     public void totalDisconnected(){
-        db.collection("consumers").whereEqualTo("status", "Disconnected")
+        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Disconnected")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -170,35 +172,35 @@ public class HomePage extends Fragment {
     }
 
     public void totalLines(){
-        db.collection("companyDetails")
+        db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                            totalLines.setText(documentUserSnapshot.getString("totalLine"));
+                            totalLines.setText(documentUserSnapshot.getString("totalLines"));
                         }
                     }
                 });
     }
 
     public void totalPumps(){
-        db.collection("companyDetails")
+        db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                            totalPumps.setText(documentUserSnapshot.getString("totalPump"));
+                            totalPumps.setText(documentUserSnapshot.getString("totalPumps"));
                         }
                     }
                 });
     }
 
     public void totalTanks(){
-        db.collection("companyDetails")
+        db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

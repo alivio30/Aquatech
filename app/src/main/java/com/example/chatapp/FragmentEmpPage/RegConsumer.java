@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.Constants;
 import com.example.chatapp.utilities.PreferenceManager;
+import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.Validations;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -88,6 +89,7 @@ public class RegConsumer extends Fragment {
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Validations validations = new Validations();
+    UserDetails userDetails = new UserDetails();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -293,6 +295,7 @@ public class RegConsumer extends Fragment {
                                 createConsumer.put("notifySMS", sms);
                                 createConsumer.put("notifyHouse", house);
                                 createConsumer.put("firstReading", firstRead.getText().toString());
+                                createConsumer.put("companyId", userDetails.getCompanyID());
 
                                 //user hash--
                                 Map<String, Object> createUser = new HashMap<>();
@@ -308,10 +311,11 @@ public class RegConsumer extends Fragment {
                                 createUser.put("image", image);
                                 createUser.put("Date Created", year+"-"+month+"-"+day);
                                 createUser.put("availability", "0");
+                                createUser.put("companyId", userDetails.getCompanyID());
 
                                 //save data to consumers table--
-                                db.collection("consumers")
-                                        .add(createConsumer)
+                                db.collection("consumers").document(inputName.getText().toString()+" - "+userDetails.getCompanyName())
+                                        .set(createConsumer)
                                         .addOnSuccessListener(documentReference -> {
                                             Toast.makeText(getContext(), validations.registerSuccess(), Toast.LENGTH_SHORT).show();
                                         })
@@ -320,8 +324,8 @@ public class RegConsumer extends Fragment {
                                         });
 
                                 //save data to users table--
-                                db.collection("users")
-                                        .add(createUser)
+                                db.collection("users").document(inputName.getText().toString()+" - "+userDetails.getCompanyName())
+                                        .set(createUser)
                                         .addOnSuccessListener(documentReference -> {
                                             inputName.requestFocus();
                                             clearFields();
