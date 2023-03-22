@@ -51,6 +51,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
         String imageUrl = null;
         imageUrl = preferenceManager.getString(Constants.KEY_IMAGE);
         Picasso.get().load(imageUrl).into(binding.imageProfile);
+        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
 
         setListener();
         if(userDetails.getUserType().equalsIgnoreCase("admin")){
@@ -73,14 +74,15 @@ public class UsersActivity extends BaseActivity implements UserListener {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereEqualTo("userType", "Admin")
+                .whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
-                    String currentUserId = preferenceManager.getString(Constants.KEY_USER_ID);
+                    String currentUserId = userDetails.getUserID();
                     if(task.isSuccessful() && task.getResult() != null) {
                         List<User> users = new ArrayList<>();
                         for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                            if (currentUserId.equals(queryDocumentSnapshot.getId())) {
+                            if (currentUserId.equals(queryDocumentSnapshot.getString("userId"))) {
                                 continue;
                             }
                             User user = new User();
@@ -109,6 +111,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
+                .whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
@@ -116,7 +119,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
                     if(task.isSuccessful() && task.getResult() != null) {
                         List<User> users = new ArrayList<>();
                          for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                             if (currentUserId.equals(queryDocumentSnapshot.getId())) {
+                             if (currentUserId.equals(queryDocumentSnapshot.getString("userId"))) {
                                  continue;
                              }
                              User user = new User();

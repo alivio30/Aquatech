@@ -80,6 +80,7 @@ public class RegAdmin extends Fragment {
     Calendar calendar = Calendar.getInstance();
     int year, month, day;
     Toast toast;
+    UserDetails userDetails = new UserDetails();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Validations validations = new Validations();
     @Override
@@ -189,10 +190,11 @@ public class RegAdmin extends Fragment {
                                 createUser.put("image", image);
                                 createUser.put("Date Created", year+"-"+month+"-"+day);
                                 createUser.put("availability", "0");
+                                createUser.put("companyId", userDetails.getCompanyID());
 
                                 //add to users table
-                                db.collection("users")
-                                        .add(createUser)
+                                db.collection("users").document(inputName.getText().toString()+" - "+userDetails.getCompanyName())
+                                        .set(createUser)
                                         .addOnSuccessListener(documentReference -> {
                                             toast = Toast.makeText(getContext(), "Registered Successfully!", Toast.LENGTH_SHORT);
                                             toast.show();

@@ -24,6 +24,15 @@ public class ConsumerProfileDetails {
     private static String password;
     private static String image;
     private static String firstRead;
+    private static String companyID;
+
+    public String getCompanyID(){
+        return companyID;
+    }
+
+    public void setCompanyID(String companyID){
+        this.companyID = companyID;
+    }
 
     public String getFirstRead(){
         return firstRead;

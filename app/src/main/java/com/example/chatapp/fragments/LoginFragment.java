@@ -80,49 +80,71 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(userTask -> {
                     if (userTask.isSuccessful() && userTask.getResult() != null && userTask.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = userTask.getResult().getDocuments().get(0);
-                        preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                        preferenceManager.putString(Constants.KEY_USER_ID, documentUserSnapshot.getString("userId"));
-                        preferenceManager.putString(Constants.KEY_NAME, documentUserSnapshot.getString(Constants.KEY_NAME));
-                        preferenceManager.putString(Constants.KEY_IMAGE, documentUserSnapshot.getString(Constants.KEY_IMAGE));
-                        preferenceManager.putString(Constants.KEY_USER_TYPE, documentUserSnapshot.getString(Constants.KEY_USER_TYPE));
+                        if(documentUserSnapshot.getString("status").equalsIgnoreCase("Active")){
+                            db.collection("companyDetails").whereEqualTo("companyId", documentUserSnapshot.getString("companyId"))
+                                    .get()
+                                    .addOnCompleteListener(companyTask -> {
+                                        if (companyTask.isSuccessful() && companyTask.getResult() != null && companyTask.getResult().getDocuments().size() > 0) {
+                                            DocumentSnapshot documentUserSnapshot1 = companyTask.getResult().getDocuments().get(0);
+                                            if(documentUserSnapshot1.getString("status").equalsIgnoreCase("Active")){
+                                                preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                                                preferenceManager.putString(Constants.KEY_USER_ID, documentUserSnapshot.getString("userId"));
+                                                preferenceManager.putString(Constants.KEY_NAME, documentUserSnapshot.getString(Constants.KEY_NAME));
+                                                preferenceManager.putString(Constants.KEY_IMAGE, documentUserSnapshot.getString(Constants.KEY_IMAGE));
+                                                preferenceManager.putString(Constants.KEY_USER_TYPE, documentUserSnapshot.getString(Constants.KEY_USER_TYPE));
 
-                        userDetails.setName(documentUserSnapshot.getString("name"));
-                        userDetails.setUsername(documentUserSnapshot.getString("userName"));
-                        userDetails.setPassword(documentUserSnapshot.getString("password"));
-                        userDetails.setAddress(documentUserSnapshot.getString("address"));
-                        userDetails.setEmail(documentUserSnapshot.getString("email"));
-                        userDetails.setContactNumber(documentUserSnapshot.getString("contactNumber"));
-                        userDetails.setUserType(documentUserSnapshot.getString("userType"));
-                        userDetails.setUserID(documentUserSnapshot.getString("userId"));
-                        userDetails.setImage(documentUserSnapshot.getString("image"));
+                                                userDetails.setCompanyID(documentUserSnapshot.getString("companyId"));
+                                                userDetails.setName(documentUserSnapshot.getString("name"));
+                                                userDetails.setUsername(documentUserSnapshot.getString("userName"));
+                                                userDetails.setPassword(documentUserSnapshot.getString("password"));
+                                                userDetails.setAddress(documentUserSnapshot.getString("address"));
+                                                userDetails.setEmail(documentUserSnapshot.getString("email"));
+                                                userDetails.setContactNumber(documentUserSnapshot.getString("contactNumber"));
+                                                userDetails.setUserType(documentUserSnapshot.getString("userType"));
+                                                userDetails.setUserID(documentUserSnapshot.getString("userId"));
+                                                userDetails.setImage(documentUserSnapshot.getString("image"));
+                                                userDetails.setCompanyName(documentUserSnapshot1.getString("companyName"));
 
-                        progressBar.setVisibility(View.GONE);
-                        button.setVisibility((View.VISIBLE));
-                        if (userDetails.getUserType().equalsIgnoreCase("admin")) {
-                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-                                Intent intent = new Intent(this.getContext(), MasterPage.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                //finish();
-                            }
+                                                progressBar.setVisibility(View.GONE);
+                                                button.setVisibility((View.VISIBLE));
+                                                if (userDetails.getUserType().equalsIgnoreCase("admin")) {
+                                                    if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                                        Intent intent = new Intent(this.getContext(), MasterPage.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        //finish();
+                                                    }
+                                                }
+                                                if (userDetails.getUserType().equalsIgnoreCase("meter reader")) {
+                                                    if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                                        Intent intent = new Intent(this.getContext(), MasterPage.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        //finish();
+                                                    }
+                                                }
+                                                if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
+                                                    if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
+                                                        Intent intent = new Intent(this.getContext(), CMasterPage.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        //finish();
+                                                    }
+                                                }
+
+                                            }else{
+                                                Toast.makeText(getContext(), "Company is inactive. Please contact the company", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.GONE);
+                                                button.setVisibility((View.VISIBLE));
+                                            }
+                                        }
+                                    });
+                            //clearFields();
+                        }else{
+                            Toast.makeText(getContext(), "Account is inactive. Please contact the admin", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            button.setVisibility((View.VISIBLE));
                         }
-                        if (userDetails.getUserType().equalsIgnoreCase("meter reader")) {
-                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-                                Intent intent = new Intent(this.getContext(), MasterPage.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                //finish();
-                            }
-                        }
-                        if (userDetails.getUserType().equalsIgnoreCase("consumer")) {
-                            if (preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)) {
-                                Intent intent = new Intent(this.getContext(), CMasterPage.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                //finish();
-                            }
-                        }
-                        //clearFields();
                     } else {
                         progressBar.setVisibility(View.GONE);
                         button.setVisibility((View.VISIBLE));

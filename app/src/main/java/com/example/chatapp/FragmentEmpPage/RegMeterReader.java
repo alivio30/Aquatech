@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
+import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.Validations;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,6 +57,7 @@ public class RegMeterReader extends Fragment {
     int newUserID;
     Calendar calendar = Calendar.getInstance();
     int year, month,day;
+    UserDetails userDetails = new UserDetails();
 
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -166,10 +168,11 @@ public class RegMeterReader extends Fragment {
                                 createUser.put("image", image);
                                 createUser.put("Date Created", year+"-"+month+"-"+day);
                                 createUser.put("availability", "0");
+                                createUser.put("companyId", userDetails.getCompanyID());
 
                                 //save data to users table--
-                                db.collection("users")
-                                        .add(createUser)
+                                db.collection("users").document(inputName.getText().toString()+" - "+userDetails.getCompanyName())
+                                        .set(createUser)
                                         .addOnSuccessListener(documentReference -> {
                                             inputName.requestFocus();
                                             clearFields();
