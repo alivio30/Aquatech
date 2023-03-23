@@ -532,9 +532,33 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     createBilling.put("MeterReader", userDetails.getUserID());
                                                                                                     createBilling.put("remarks", inputRemarks.getText().toString());
                                                                                                     createBilling.put("companyId", userDetails.getCompanyID());
-                                                                                                    db.collection("billing")
-                                                                                                            .add(createBilling)
-                                                                                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                                    db.collection("billing").document(name+" - "+stringTemp+" - "+userDetails.getCompanyName())
+                                                                                                            .set(createBilling)
+                                                                                                            .addOnSuccessListener(documentReference -> {
+                                                                                                                db.collection("consumers")
+                                                                                                                        .whereEqualTo("consId", consId)
+                                                                                                                        .get()
+                                                                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                                                                if(task.isSuccessful() && !task.getResult().isEmpty()) {
+                                                                                                                                    DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+                                                                                                                                    String documentID = documentSnapshot.getId();
+                                                                                                                                    db.collection("consumers")
+                                                                                                                                            .document(documentID)
+                                                                                                                                            .update("remarks", "Read")
+                                                                                                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onSuccess(Void unused) {
+                                                                                                                                                    notifyBill();
+                                                                                                                                                    onBackPressed();
+                                                                                                                                                }
+                                                                                                                                            });
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        });
+                                                                                                            });
+                                                                                                            /**.addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                                                                                 @Override
                                                                                                                 public void onSuccess(DocumentReference documentReference) {
                                                                                                                     db.collection("consumers")
@@ -560,14 +584,14 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                                 }
                                                                                                                             });
                                                                                                                 }
-                                                                                                            });
+                                                                                                            });*/
                                                                                                 }
                                                                                             }
                                                                                         });
                                                                             }else{
                                                                                 Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
-                                                                                db.collection("billing")
-                                                                                        .add(createBilling)
+                                                                                db.collection("billing").document(name+" - "+finalBillingNumber+" - "+userDetails.getCompanyName())
+                                                                                        .set(createBilling)
                                                                                         .addOnSuccessListener(documentReference -> {
                                                                                             toast = Toast.makeText(getApplicationContext(), "Saved to billing!", Toast.LENGTH_SHORT);
                                                                                             toast.show();
