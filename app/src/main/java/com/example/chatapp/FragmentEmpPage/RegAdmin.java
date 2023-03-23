@@ -117,14 +117,17 @@ public class RegAdmin extends Fragment {
                 if(inputName.getText().toString().trim().isEmpty() || inputAddress.getText().toString().trim().isEmpty() || inputContactNumber.getText().toString().trim().isEmpty() ||
                 inputEmail.getText().toString().trim().isEmpty() || inputUsername.getText().toString().trim().isEmpty() ||
                 inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
-                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), validations.emptyFields(), Toast.LENGTH_SHORT).show();
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
                     Toast.makeText(getContext(), validations.passwordNotMatched(), Toast.LENGTH_SHORT).show();
                 }else if(profile.getDrawable() == null){
                     Toast.makeText(getContext(), validations.nullImage(), Toast.LENGTH_SHORT).show();
                 }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
                     Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(inputContactNumber.length() != 11){
+                    Toast.makeText(getContext(), validations.contactNumberLimit(), Toast.LENGTH_SHORT).show();
+                }
+                else{
                     validateUserID();
                 }
             }

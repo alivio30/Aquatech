@@ -156,7 +156,7 @@
                     android:id="@+id/inputContactNumber"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:background="@drawable/background_input"
                     android:ems="15" />
             </com.google.android.material.textfield.TextInputLayout>

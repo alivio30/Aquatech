@@ -140,14 +140,17 @@ public class UpdateConsumerFragment extends Fragment {
                    inputLineNumber.getText().toString().trim().isEmpty() || inputMeterStand.getText().toString().trim().isEmpty() ||
                    inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() ||
                    inputConfirmPassword.getText().toString().trim().isEmpty() || type.equals("Select Type")){
-                    Toast.makeText(getContext(), "Please input necessary fields!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), validations.emptyFields(), Toast.LENGTH_SHORT).show();
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
-                    Toast.makeText(getContext(), "Password not matched!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), validations.passwordNotMatched(), Toast.LENGTH_SHORT).show();
                 }else if(email == "0" && sms == "0" && house == "0"){
-                    Toast.makeText(getContext(), "Select at least 1 preferred notification!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), validations.selectBillMethod(), Toast.LENGTH_SHORT).show();
                 }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
                     Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
-                }else{
+                }else if(inputContactNumber.length() != 11){
+                    Toast.makeText(getContext(), validations.contactNumberLimit(), Toast.LENGTH_SHORT).show();
+                }
+                else{
                     updateAccount();
                 }
             }

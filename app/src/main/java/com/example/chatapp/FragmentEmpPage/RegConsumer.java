@@ -156,7 +156,7 @@ public class RegConsumer extends Fragment {
                         inputEmail.getText().toString().trim().isEmpty() || inputSerialNumber.getText().toString().trim().isEmpty() || inputTankNumber.getText().toString().trim().isEmpty() ||
                         inputPumpNumber.getText().toString().trim().isEmpty() || inputLineNumber.getText().toString().trim().isEmpty() || inputMeterStand.getText().toString().trim().isEmpty() ||
                         inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
-                    Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), validations.emptyFields(), Toast.LENGTH_SHORT).show();
                 }else if(!inputPassword.getText().toString().equals(inputConfirmPassword.getText().toString())){
                     Toast.makeText(getContext(), validations.passwordNotMatched(), Toast.LENGTH_SHORT).show();
                 }else if(profile.getDrawable() == null){
@@ -167,6 +167,8 @@ public class RegConsumer extends Fragment {
                     Toast.makeText(getContext(), validations.selectConsumerType(), Toast.LENGTH_SHORT).show();
                 }else if(!validations.isValidEmail(inputEmail.getText().toString().trim())){
                     Toast.makeText(getContext(), validations.invalidEmailFormat(), Toast.LENGTH_SHORT).show();
+                }else if(inputContactNumber.length() != 11){
+                    Toast.makeText(getContext(), validations.contactNumberLimit(), Toast.LENGTH_SHORT).show();
                 }else{
                     validateUserID();
                 }
