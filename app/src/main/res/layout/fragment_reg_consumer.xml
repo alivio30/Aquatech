@@ -294,22 +294,34 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="780dp"
                 android:background="@drawable/background_input" />
-            <EditText
-                android:id="@+id/inputUsername"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
                 android:layout_marginTop="845dp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@drawable/background_input"
-                android:hint="@string/_username"
                 android:imeOptions="actionNext"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:paddingStart="@dimen/_16sdp"
                 android:paddingEnd="@dimen/_16sdp"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/_13ssp" />
+                android:textSize="@dimen/_13ssp"
+                app:passwordToggleEnabled="true"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                android:hint="@string/_username"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:background="@drawable/background_input"
+                    android:ems="15" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -326,7 +338,9 @@
                 android:paddingEnd="@dimen/_16sdp"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/_13ssp"
-                app:passwordToggleEnabled="true">
+                app:passwordToggleEnabled="true"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputPassword"
@@ -334,7 +348,7 @@
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:background="@drawable/background_input"
-                    android:ems="15"/>
+                    android:ems="15" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -352,7 +366,9 @@
                 android:paddingEnd="@dimen/_16sdp"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/_13ssp"
-                app:passwordToggleEnabled="true">
+                app:passwordToggleEnabled="true"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputConfirmPassword"
