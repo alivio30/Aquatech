@@ -185,7 +185,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 .show();
                     }else{
                         calculateBill();
-                        //getWatercharge();
                     }
                 }
             }
@@ -205,7 +204,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             double value = ds.getDouble("bill_no");
                             maxValue = Math.max(maxValue, value);
                         }
-                        int value = (int)maxValue;
+                        long value = (long)maxValue;
                         db.collection("billing")
                                 .whereEqualTo("consId", consId)
                                 .whereEqualTo("bill_no", value-1)
@@ -213,6 +212,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                             txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
@@ -223,6 +223,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_SHORT).show();
                                         db.collection("consumers")
                                                 .whereEqualTo("consId", consId)
                                                 .get()
@@ -260,7 +261,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             double value = ds.getDouble("bill_no");
                             maxValue = Math.max(maxValue, value);
                         }
-                        int value = (int)maxValue;
+                        long value = (long)maxValue;
                         db.collection("billing")
                                 .whereEqualTo("consId", consId)
                                 .whereEqualTo("bill_no", value)
@@ -394,30 +395,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
         return cal.getTime();
     }
 
-    /**public void getWatercharge(){
-        db.collection("consumers").whereEqualTo("consId", consId)
-            .get()
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
-                    DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                    db.collection("rate").whereEqualTo("companyId", documentUserSnapshot.getString("companyId")).whereEqualTo("rateDescription", documentUserSnapshot.getString("consumerType"))
-                        .get()
-                        .addOnCompleteListener(task1 -> {
-                            if (task1.isSuccessful() && task1.getResult() != null && task1.getResult().getDocuments().size() > 0) {
-                                for(DocumentSnapshot ds : task1.getResult().getDocuments()){
-                                    int consumption = Integer.parseInt(txtWaterConsumption.getText().toString());
-                                    int consumption1 = 0;
-                                    if(consumption >= Integer.parseInt(ds.getString("rateStartUnit")) && consumption <= Integer.parseInt(ds.getString("rateEndUnit"))) {
-                                        consumption1 = Integer.parseInt((ds.getString("ratePrice")));
-                                        Toast.makeText(getApplicationContext(), "sulod: "+String.valueOf(consumption1), Toast.LENGTH_SHORT).show();
-                                    }
-                                    Toast.makeText(getApplicationContext(), "gawas: "+String.valueOf(consumption1), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                }
-            });
-    }*/
     public void calculateBill(){
         billingID = billingID();
         billingNumber = consId +"" +Integer.toString(year)+ "" +Integer.toString(month);
@@ -507,8 +484,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                 for(DocumentSnapshot ds : task.getResult()){
                                                                                     counter = counter + 1;
                                                                                 }
-                                                                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(getApplicationContext(), "2nd read", Toast.LENGTH_SHORT).show();
                                                                                 String stringTemp = billingNumber + String.valueOf(counter);
+                                                                                Toast.makeText(getApplicationContext(), stringTemp, Toast.LENGTH_SHORT).show();
                                                                                 db.collection("billing").whereEqualTo("consId", consId)
                                                                                         .orderBy("bill_no", Query.Direction.DESCENDING).limit(1)
                                                                                         .get()
@@ -519,14 +497,14 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                                                                                     String others1, previousBalance1, reconnectionFee1, penalty1, discount1, credit1;
                                                                                                     double netAmount1;
-
+                                                                                                    Toast.makeText(getApplicationContext(), documentUserSnapshot.getString("previousBalance"), Toast.LENGTH_SHORT).show();
                                                                                                     others1 = documentUserSnapshot.getString("others");
                                                                                                     previousBalance1 = documentUserSnapshot.getString("previousBalance");
                                                                                                     reconnectionFee1 = documentUserSnapshot.getString("reconnectionFee");
                                                                                                     penalty1 = documentUserSnapshot.getString("penalty");
                                                                                                     discount1 = documentUserSnapshot.getString("discount");
                                                                                                     credit1 = documentUserSnapshot.getString("credit");
-                                                                                                    netAmount1 = (billAmount + Double.parseDouble(previousBalance1) + Double.parseDouble(penalty1) + Double.parseDouble(reconnectionFee1) + Double.parseDouble(others1)) - (Double.parseDouble(discount1) + Double.parseDouble(credit1));
+                                                                                                    netAmount1 = (billAmount + Double.parseDouble(previousBalance1) + penalty + reconnectionFee + others) - (discount + Double.parseDouble(credit1));
 
                                                                                                     Map<String, Object> createBilling = new HashMap<>();
                                                                                                     createBilling.put("billingId", String.valueOf(billingID));
@@ -542,7 +520,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     createBilling.put("tax", String.format("%.2f", tax));
                                                                                                     createBilling.put("billAmount", String.format("%.2f", billAmount));
                                                                                                     createBilling.put("others", String.format("%.2f", others));
-                                                                                                    createBilling.put("previousBalance", String.format("%.2f", previousBalance1));
+                                                                                                    createBilling.put("previousBalance", String.format("%.2f", Double.parseDouble(previousBalance1)));
                                                                                                     createBilling.put("reconnectionFee", String.format("%.2f", reconnectionFee));
                                                                                                     createBilling.put("penalty", String.format("%.2f", penalty));
                                                                                                     createBilling.put("discount", String.format("%.2f", discount));

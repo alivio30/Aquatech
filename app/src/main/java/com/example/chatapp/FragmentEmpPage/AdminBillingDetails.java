@@ -423,6 +423,7 @@ public class AdminBillingDetails extends Fragment {
                                                                                         if(task.isSuccessful() && !task.getResult().isEmpty()) {
                                                                                             DocumentSnapshot documentSnapshot2 = task.getResult().getDocuments().get(0);
                                                                                             readingDate = documentSnapshot2.getString("readingDate");
+                                                                                            //readingDate = documentSnapshot2.getString("dueDate");
                                                                                             endReading = documentSnapshot1.getString("readingDate");
                                                                                             try {
                                                                                                 startBillingPeriod = format.format(getReadingDate(1));
