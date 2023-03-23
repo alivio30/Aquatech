@@ -42,4 +42,7 @@ public class Validations {
     public String registerFail(){
         return "Failed to register.";
     }
+    public String contactNumberLimit(){
+        return "Invalid contact number format";
+    }
 }
