@@ -93,7 +93,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM yyyy");
     int billingID = 1;
     double tax =0;
-    String messageDate;
+    String messageDate, messageNetAmount;
     double watercharge=10.00, billAmountInvoice=0.00, billAmount=0.00, netAmount=100.00, credit=0.00, penalty=0.00, discount=0.00, previousBalance=0.00, reconnectionFee=0.00, others=0.00;
     String meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
@@ -397,6 +397,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
     public void calculateBill(){
         billingID = billingID();
+        messageNetAmount = String.format("%.2f", netAmount);
+        messageDate = notifyFormat.format(getDueDate(15));
         billingNumber = consId +"" +Integer.toString(year)+ "" +Integer.toString(month);
         Date now = new Date();
         db.collection("consumers").whereEqualTo("consId", consId)
@@ -608,7 +610,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED){
             sendSMS();
-
         }else{
             ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
                     Manifest.permission.SEND_SMS}, 100);
@@ -619,7 +620,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         final String username = "aquatech.system2023@gmail.com";
         final String password = "jcohwldssphwwxjc";
         String messageToSend = "Dear "+name+", \n\n" +
-                "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
+                "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos for the month of "+filterDate+"." +
                 " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +
                 "service disruptions and penalties.\n\nPlease note that your current water bill is due by "+messageDate+". " +
                 "If you have already paid the bill, please disregard this letter. However, if you have any questions or concerns about your bill, please do not hesitate to contact us." +
@@ -663,12 +664,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
-                            if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifySMS").equals("1")){
+                            /**if(documentUserSnapshot.getString("notifyEmail").equals("1") && documentUserSnapshot.getString("notifySMS").equals("1")){
                                 notifySMS();
+                                notifyEmail();*/
+                            if(documentUserSnapshot.getString("notifyEmail").equals("1")){
                                 notifyEmail();
-                            }else if(documentUserSnapshot.getString("notifyEmail").equals("1")){
-                                notifyEmail();
-                            }else if(documentUserSnapshot.getString("notifySMS").equals("1")){
+                            }
+                            if(documentUserSnapshot.getString("notifySMS").equals("1")){
                                 notifySMS();
                             }
                         }
@@ -687,22 +689,20 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
 
     private void sendSMS(){
+        messageNetAmount = String.format("%.2f", netAmount);
+        SmsManager smsManager = SmsManager.getDefault();
         String phone = number;
         String message = "Dear "+name+", \n\n" +
-                "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
-                " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +
-                "service disruptions and penalties.\n\nPlease note that your current water bill is due by "+messageDate+". " +
-                " If you have already paid the bill, please disregard this letter. However, if you have any questions or concerns about your bill, please do not hesitate to contact us." +
-                " And our mobile application allows you to view and track your partial previous and present bills.\n\n" +
-                " Additionally, we would like to use this opportunity to remind you that we only accept in-person payments at our office.\n\n" +
-                " Thank you for your attention to this matter, and please let us know if you have any questions or concerns.\n\n" +
-                "Best regards,\nAquatech";
+                "Your partial bill is amounting "+messageNetAmount+" pesos for the month of "+filterDate+"." +
+                "\nDue date is by "+messageDate+". " +
+                "\n\nBest regards,\nAquatech";
 
-        if(!phone.isEmpty() && !message.isEmpty()){
-            SmsManager smsManager = SmsManager.getDefault();
+        try {
             smsManager.sendTextMessage(phone, null, message, null, null);
-        }else{
-            Toast.makeText(this, "Phone number not existed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "SMS sent successfully.", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "SMS failed to send.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 
