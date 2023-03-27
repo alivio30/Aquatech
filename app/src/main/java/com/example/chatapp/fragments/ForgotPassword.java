@@ -60,7 +60,7 @@ public class ForgotPassword extends Fragment {
                                 if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                                     DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                     final String username = "aquatech.system2023@gmail.com";
-                                    final String password = "relccytbuboorcnh";
+                                    final String password = "jcohwldssphwwxjc";
                                     String messageToSend = "Dear "+ documentUserSnapshot.getString("name")+",\n\nWe received your recent request for your old password. As per your request, we have retrieved your old " +
                                             "password and it is '"+documentUserSnapshot.getString("password")+"'. Please note that for security reasons, we strongly advise that you change your password immediately after " +
                                             "logging in.\n\nWe understand that forgetting passwords can be frustrating, which is why we recommend using password managers or other secure methods to store your login information. " +

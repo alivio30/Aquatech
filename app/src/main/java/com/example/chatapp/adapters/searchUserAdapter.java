@@ -59,7 +59,8 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         String imageUrl = null;
         imageUrl = userDetailsRecyclerView.getImage();
         Picasso.get().load(imageUrl).into(holder.image);
-
+        holder.readImage.setVisibility(View.GONE);
+        holder.unreadImage.setVisibility(View.GONE);
         if(userDetails.getUserType().equalsIgnoreCase("Meter Reader")){
             if(userDetailsRecyclerView.getRemarks().equalsIgnoreCase("Read")){
                 holder.readImage.setVisibility(View.VISIBLE);

@@ -446,7 +446,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                         if(task.isSuccessful() && !task.getResult().isEmpty()) {
                                                             DocumentSnapshot documentSnapshotRead = task.getResult().getDocuments().get(0);
                                                             String firstReading = documentSnapshotRead.getString("firstReading");
-                                                            Toast.makeText(getApplicationContext(), finalBillingNumber, Toast.LENGTH_SHORT).show();
                                                             Map<String, Object> createBilling = new HashMap<>();
                                                             createBilling.put("billingId", String.valueOf(billingID));
                                                             createBilling.put("consId", consId);
@@ -484,9 +483,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                 for(DocumentSnapshot ds : task.getResult()){
                                                                                     counter = counter + 1;
                                                                                 }
-                                                                                Toast.makeText(getApplicationContext(), "2nd read", Toast.LENGTH_SHORT).show();
                                                                                 String stringTemp = billingNumber + String.valueOf(counter);
-                                                                                Toast.makeText(getApplicationContext(), stringTemp, Toast.LENGTH_SHORT).show();
                                                                                 db.collection("billing").whereEqualTo("consId", consId)
                                                                                         .orderBy("bill_no", Query.Direction.DESCENDING).limit(1)
                                                                                         .get()
@@ -497,7 +494,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                                                                                     String others1, previousBalance1, reconnectionFee1, penalty1, discount1, credit1;
                                                                                                     double netAmount1;
-                                                                                                    Toast.makeText(getApplicationContext(), documentUserSnapshot.getString("previousBalance"), Toast.LENGTH_SHORT).show();
                                                                                                     others1 = documentUserSnapshot.getString("others");
                                                                                                     previousBalance1 = documentUserSnapshot.getString("previousBalance");
                                                                                                     reconnectionFee1 = documentUserSnapshot.getString("reconnectionFee");
@@ -558,38 +554,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                             }
                                                                                                                         });
                                                                                                             });
-                                                                                                            /**.addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                                                                @Override
-                                                                                                                public void onSuccess(DocumentReference documentReference) {
-                                                                                                                    db.collection("consumers")
-                                                                                                                            .whereEqualTo("consId", consId)
-                                                                                                                            .get()
-                                                                                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                                                                                @Override
-                                                                                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                                                                                    if(task.isSuccessful() && !task.getResult().isEmpty()) {
-                                                                                                                                        DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
-                                                                                                                                        String documentID = documentSnapshot.getId();
-                                                                                                                                        db.collection("consumers")
-                                                                                                                                                .document(documentID)
-                                                                                                                                                .update("remarks", "Read")
-                                                                                                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                                                                    @Override
-                                                                                                                                                    public void onSuccess(Void unused) {
-                                                                                                                                                        notifyBill();
-                                                                                                                                                        onBackPressed();
-                                                                                                                                                    }
-                                                                                                                                                });
-                                                                                                                                    }
-                                                                                                                                }
-                                                                                                                            });
-                                                                                                                }
-                                                                                                            });*/
                                                                                                 }
                                                                                             }
                                                                                         });
                                                                             }else{
-                                                                                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
                                                                                 db.collection("billing").document(name+" - "+finalBillingNumber+" - "+userDetails.getCompanyName())
                                                                                         .set(createBilling)
                                                                                         .addOnSuccessListener(documentReference -> {
@@ -649,7 +617,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     public void notifyEmail(){
         //Send to email
         final String username = "aquatech.system2023@gmail.com";
-        final String password = "relccytbuboorcnh";
+        final String password = "jcohwldssphwwxjc";
         String messageToSend = "Dear "+name+", \n\n" +
                 "We hope this letter finds you well. We are writing to notify you about your recent water bill amounting "+String.format("%.2f", netAmount)+" pesos." +
                 " As a responsible consumer, it is important to keep track of your bills to ensure timely payments and to avoid any potential " +
