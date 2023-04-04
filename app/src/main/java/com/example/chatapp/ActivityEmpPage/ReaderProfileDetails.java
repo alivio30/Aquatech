@@ -437,7 +437,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         netAmount = (billAmount + previousBalance + penalty + reconnectionFee + others) - (discount+credit);
                                         int temp = 1;
                                         String finalBillingNumber = billingNumber + temp;
-                                        Toast.makeText(getApplicationContext(), finalBillingNumber, Toast.LENGTH_SHORT).show();
                                         //add to billing table
                                         db.collection("consumers")
                                                 .whereEqualTo("consId", consId)
@@ -709,11 +708,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == requestCameraCode){
-            bitmap = (Bitmap)data.getExtras().get("data");
-            scannedMeter.setImageBitmap(bitmap);
-            int consumption = Integer.parseInt(txtInputPresentReading.getText().toString()) - Integer.parseInt(txtPreviousReading.getText().toString());
-            txtWaterConsumption.setText(String.valueOf(consumption));
+        if(requestCode == requestCameraCode && resultCode == RESULT_OK){
+            if(data != null){
+                bitmap = (Bitmap)data.getExtras().get("data");
+                scannedMeter.setImageBitmap(bitmap);
+                int consumption = Integer.parseInt(txtInputPresentReading.getText().toString()) - Integer.parseInt(txtPreviousReading.getText().toString());
+                txtWaterConsumption.setText(String.valueOf(consumption));
+            }
         }
     }
 
