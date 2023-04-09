@@ -94,6 +94,8 @@ public class ForgotPassword extends Fragment {
                                         e.printStackTrace();
                                         Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                                     }
+                                }else{
+                                    Toast.makeText(getContext(), "Incorrect email address.", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(failTask ->{
                                 Toast.makeText(getContext(), "Incorrect email address.", Toast.LENGTH_SHORT).show();
