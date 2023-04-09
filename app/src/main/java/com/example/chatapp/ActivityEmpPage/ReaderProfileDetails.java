@@ -1,5 +1,7 @@
 package com.example.chatapp.ActivityEmpPage;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +10,6 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
@@ -28,38 +30,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.chatapp.FragmentEmpPage.ConsumerDetails;
+import com.example.chatapp.utilities.CropperActivity;
 import com.example.chatapp.R;
-import com.example.chatapp.utilities.ConsumerProfileDetails;
 import com.example.chatapp.utilities.UserDetails;
-import com.example.chatapp.utilities.UserDetailsRecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -97,6 +95,11 @@ public class ReaderProfileDetails extends AppCompatActivity {
     double watercharge=10.00, billAmountInvoice=0.00, billAmount=0.00, netAmount=100.00, credit=0.00, penalty=0.00, discount=0.00, previousBalance=0.00, reconnectionFee=0.00, others=0.00;
     String meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
+
+    //camera
+    ActivityResultLauncher<Intent> takePictureLauncher;
+    Uri resultUri;
+    private static final int REQUEST_CAMERA_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,11 +162,22 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
+                    Manifest.permission.CAMERA
+            }, REQUEST_CAMERA_CODE);
+        }
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(camera, requestCameraCode);
+                /*Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(camera, requestCameraCode);*/
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Launch the camera to capture an image
+                    takePictureLauncher.launch(takePictureIntent);
+                }
             }
         });
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +203,31 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 }
             }
         });
+        takePictureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // Get the captured image from the result intent
+                        Bundle extras = result.getData().getExtras();
+                        Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                        File imageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_image.jpeg");
+                        try {
+                            FileOutputStream out = new FileOutputStream(imageFile);
+                            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                            out.flush();
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Pass the file Uri to the cropper activity
+                        Uri imageUri = Uri.fromFile(imageFile);
+                        // Pass the image to the cropper activity
+                        Intent intent = new Intent(ReaderProfileDetails.this, CropperActivity.class);
+                        intent.putExtra("DATA", imageUri.toString());
+                        startActivityForResult(intent, 101);
+                    }
+                });
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -705,7 +744,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == requestCameraCode && resultCode == RESULT_OK){
@@ -716,7 +755,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 txtWaterConsumption.setText(String.valueOf(consumption));
             }
         }
-    }
+    }*/
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -735,5 +774,79 @@ public class ReaderProfileDetails extends AppCompatActivity {
         imageBytes = Base64.decode(image, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         bitImage.setImageBitmap(bitmap);
+    }
+    //----------------------------------------
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==-1 && requestCode==101)
+        {
+            String result = data.getStringExtra("RESULT");
+            resultUri = null;
+            if(result!=null)
+                try {
+                    resultUri=Uri.parse(result);
+                    Bitmap bitmap = getBitmapFromUri(resultUri);
+                    scannedMeter.setImageBitmap(bitmap);
+                    //getTextFromImage(bitmap);
+                    runTextRecognition();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+    public Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        InputStream input = getContentResolver().openInputStream(uri);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
+        input.close();
+        return bitmap;
+    }
+
+    private void runTextRecognition() throws IOException {
+        InputImage image = InputImage.fromBitmap(getBitmapFromUri(resultUri), 0);
+        TextRecognizer recognizer = TextRecognition.getClient();
+
+        //mTextButton.setEnabled(false);
+        recognizer.process(image)
+                .addOnSuccessListener(new OnSuccessListener<Text>() {
+                    @Override
+                    public void onSuccess(Text visionText) {
+                        //mTextButton.setEnabled(true);
+                        processTextRecognitionResult(visionText);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //mTextButton.setEnabled(true);
+                        e.printStackTrace();
+                    }
+                });
+    }
+    private void processTextRecognitionResult(Text texts) {
+        List<Text.TextBlock> blocks = texts.getTextBlocks();
+        if (blocks.size() == 0) {
+            showToast("No text found");
+            return;
+        }
+        for (int i = 0; i < blocks.size(); i++) {
+            List<Text.Line> lines = blocks.get(i).getLines();
+            for (int j = 0; j < lines.size(); j++) {
+                List<Text.Element> elements = lines.get(j).getElements();
+                for (int k = 0; k < elements.size(); k++) {
+                    String elementText = elements.get(k).getText();
+                    showToast(elementText);
+                    String modifiedText = elementText.replace("O", "0").replace("o", "0").replace("B", "8").replace("D", "0").replace("d", "0");
+                    modifiedText = modifiedText.replaceAll("[^a-zA-Z0-9]", "");
+                    //showToast(modifiedText);
+                    txtInputPresentReading.setText(modifiedText);
+                }
+            }
+        }
+    }
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
