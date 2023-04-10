@@ -35,7 +35,6 @@ public class LoginFragment extends Fragment {
     Toast toast;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseFirestore db1 = FirebaseFirestore.getInstance();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
