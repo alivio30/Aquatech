@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,8 +23,11 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -74,27 +78,26 @@ import javax.mail.internet.MimeMessage;
 public class ReaderProfileDetails extends AppCompatActivity {
     UserDetails userDetails = new UserDetails();
     AlertDialog.Builder builder;
-    TextView txtPreviousReading, txtInputPresentReading, txtWaterConsumption, txtaddres, txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
+    Dialog dialog;
+    TextView dialogAttempt, dialogTextResult, dialogText, txtPreviousReading, txtInputPresentReading, txtWaterConsumption, txtaddres, txtname, txtaccountNumber, txtserialNumber, txtpumpNumber, txttankNumber, txtlineNumber, txtmeterStandNumber;
     String consId, mail, number, name, accountNumber, meterStandNumber, pumpNumber, tankNumber, meterSerialNumber, lineNumber, image, address;
-    ImageView imageProfile, scannedMeter, previousScannedMeter, imageBack;
-    Button scanButton, submitButton;
-    Bitmap bitmap;
+    ImageView imageProfile, scannedMeter, previousScannedMeter, imageBack, result;
+    Button scanButton, submitButton, yes, no;
+    Bitmap bitmap, croppedImage;
+    String modifiedText="";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Toast toast;
     Calendar calendar = Calendar.getInstance();
-    int year, month, day;
-    String billingNumber;
     EditText inputRemarks;
     SimpleDateFormat notifyFormat = new SimpleDateFormat("MMMM dd, yyyy");
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat readingDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat filterDateFormat = new SimpleDateFormat("MMMM yyyy");
-    int billingID = 1;
-    double tax =0;
-    String messageDate, messageNetAmount;
-    double watercharge=10.00, billAmountInvoice=0.00, billAmount=0.00, netAmount=100.00, credit=0.00, penalty=0.00, discount=0.00, previousBalance=0.00, reconnectionFee=0.00, others=0.00;
-    String meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
+    int counter = 3, billingID = 1, year, month, day;
+    double tax=0, watercharge=10.00, billAmountInvoice=0.00, billAmount=0.00, netAmount=100.00, credit=0.00, penalty=0.00, discount=0.00, previousBalance=0.00, reconnectionFee=0.00, others=0.00;
+    String billingNumber, messageDate, messageNetAmount, meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
+    boolean resultFlag = false;
 
     //camera
     ActivityResultLauncher<Intent> takePictureLauncher;
@@ -104,6 +107,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader_profile_details);
+        //for scan dialog
+        showDialog();
+
         builder = new AlertDialog.Builder(this);
         name = getIntent().getStringExtra("name");
         accountNumber = getIntent().getStringExtra("accountNumber");
@@ -136,6 +142,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         previousScannedMeter = findViewById(R.id.imagePrevWaterMeter);
         imageBack = findViewById(R.id.imageBack);
         inputRemarks = findViewById(R.id.InputRemarks);
+        txtInputPresentReading.setEnabled(false);
 
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH)+1;
@@ -172,12 +179,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
             public void onClick(View view) {
                 /*Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera, requestCameraCode);*/
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    // Launch the camera to capture an image
-                    takePictureLauncher.launch(takePictureIntent);
-                }
+                openCamera();
             }
         });
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +191,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
                         builder.setTitle("Alert!")
                                 .setMessage("Water Consumption went to negative!")
-                                .setCancelable(true)
+                                .setCancelable(false)
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -230,6 +232,68 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 });
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        result();
+    }
+
+    public void showDialog(){
+        dialog = new Dialog(ReaderProfileDetails.this);
+        dialog.setContentView(R.layout.scan_dialog);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_background));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(true);
+
+        yes = dialog.findViewById(R.id.btn_yes);
+        no = dialog.findViewById(R.id.btn_no);
+        result = dialog.findViewById(R.id.imageResult);
+        dialogText = dialog.findViewById(R.id.textPhrase);
+        dialogTextResult = dialog.findViewById(R.id.textResult);
+        dialogAttempt = dialog.findViewById(R.id.textAttempt);
+
+
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                resultFlag = true;
+                if(resultFlag){
+                    txtInputPresentReading.setText(modifiedText);
+                    scannedMeter.setImageBitmap(croppedImage);
+                    result();
+                }
+            }
+        });
+
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                counter--;
+                if(counter!=0){
+                    openCamera();
+                }else{
+                    dialog.dismiss();
+                    builder.setTitle("Manual input override..")
+                            .setMessage("Please input the present reading manually.")
+                            .setCancelable(true)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            })
+                            .show();
+                    txtInputPresentReading.setEnabled(true);
+                    scannedMeter.setImageBitmap(croppedImage);
+                }
+                dialog.dismiss();
+            }
+        });
+    }
+    public void openCamera(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Launch the camera to capture an image
+            takePictureLauncher.launch(takePictureIntent);
+        }
     }
     public void getPrevReading(){
         db.collection("billing")
@@ -463,7 +527,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         status = "Pending";
                                         dueDate = sdf.format(getDueDate(15));
                                         messageDate = notifyFormat.format(getDueDate(15));
-                                        meterImage = BitMapToString(bitmap);
+                                        meterImage = BitMapToString(croppedImage);
                                         startBillingPeriod = sdf.format(getDueDate(-30));
                                         endBillingPeriod = sdf.format(getDueDate(-1));
                                         credit = 0.00; //excessPaid
@@ -786,8 +850,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
             if(result!=null)
                 try {
                     resultUri=Uri.parse(result);
-                    Bitmap bitmap = getBitmapFromUri(resultUri);
-                    scannedMeter.setImageBitmap(bitmap);
+                    croppedImage = getBitmapFromUri(resultUri);
+                    //scannedMeter.setImageBitmap(croppedImage);
                     //getTextFromImage(bitmap);
                     runTextRecognition();
                 } catch (IOException e) {
@@ -828,7 +892,35 @@ public class ReaderProfileDetails extends AppCompatActivity {
     private void processTextRecognitionResult(Text texts) {
         List<Text.TextBlock> blocks = texts.getTextBlocks();
         if (blocks.size() == 0) {
+            counter--;
             showToast("No text found");
+            builder.setTitle("Alert!")
+                    .setMessage("No text found!\n\n"+"Number of attempt/s: "+counter)
+                    .setCancelable(true)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //dialogInterface.cancel();\
+                            if(counter!=0){
+                                openCamera();
+                            }else if(counter == 0){
+                                dialogInterface.cancel();
+                                    builder.setTitle("Manual input override..")
+                                            .setMessage("Please input the present reading manually.")
+                                            .setCancelable(true)
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.cancel();
+                                                }
+                                            })
+                                            .show();
+                                        txtInputPresentReading.setEnabled(true);
+                                        scannedMeter.setImageBitmap(croppedImage);
+                                    }
+                            }
+                    })
+                    .show();
             return;
         }
         for (int i = 0; i < blocks.size(); i++) {
@@ -838,15 +930,61 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 for (int k = 0; k < elements.size(); k++) {
                     String elementText = elements.get(k).getText();
                     showToast(elementText);
-                    String modifiedText = elementText.replace("O", "0").replace("o", "0").replace("B", "8").replace("D", "0").replace("d", "0");
+                    modifiedText = elementText.replace("O", "0").replace("o", "0").replace("B", "8").replace("D", "0").replace("d", "0");
                     modifiedText = modifiedText.replaceAll("[^a-zA-Z0-9]", "");
                     //showToast(modifiedText);
-                    txtInputPresentReading.setText(modifiedText);
+                    /*dialog.show();
+                    result.setImageBitmap(croppedImage);
+                    dialogTextResult.setText(modifiedText);
+                    dialogText.setText("Is this the correct result?");
+                    dialogAttempt.setText("Number of attempt/s: "+counter);
+                    if(resultFlag){
+                        txtInputPresentReading.setText(modifiedText);
+                        scannedMeter.setImageBitmap(croppedImage);
+                    }
+                    if(counter == 0){
+                        txtInputPresentReading.setEnabled(true);
+                        scannedMeter.setImageBitmap(croppedImage);
+                    }*/
                 }
             }
         }
+        dialog.show();
+        result.setImageBitmap(croppedImage);
+        dialogTextResult.setText(modifiedText);
+        dialogText.setText("Is this the correct result?");
+        dialogAttempt.setText("Number of attempt/s: "+counter);
     }
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void result(){
+        txtInputPresentReading.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().isEmpty()) {
+                    try{
+                        int number = Integer.parseInt(s.toString());
+                        int result = number - Integer.parseInt(txtPreviousReading.getText().toString()); // Perform your calculation here
+                        txtWaterConsumption.setText(String.valueOf(result));
+                    }catch(NumberFormatException e){
+                        txtWaterConsumption.setText("");
+                    }
+                } else {
+                    txtWaterConsumption.setText("");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }
