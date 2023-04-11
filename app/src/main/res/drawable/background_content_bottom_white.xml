@@ -7,8 +7,8 @@
         android:startColor="@color/background_design_white"
         android:endColor="@color/background_design_nontransparent" />
     <corners
-        android:topLeftRadius="@dimen/_28sdp"
-        android:topRightRadius="@dimen/_28sdp"
-        android:bottomLeftRadius="@dimen/_28sdp"
-        android:bottomRightRadius="@dimen/_28sdp"/>
+        android:topLeftRadius="@dimen/_10sdp"
+        android:topRightRadius="@dimen/_10sdp"
+        android:bottomLeftRadius="@dimen/_10sdp"
+        android:bottomRightRadius="@dimen/_10sdp"/>
 </shape>
