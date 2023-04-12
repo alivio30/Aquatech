@@ -22,14 +22,11 @@ public class CropperActivity extends AppCompatActivity {
     Uri filedUri;
     Uri imageUri;
     Image  image = new Image();
-    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropper);
-
-        imageView = findViewById(R.id.imageView);
         readIntent();
 
         String dest_uri = new StringBuilder(UUID.randomUUID().toString()).append(".jpeg").toString();
@@ -38,7 +35,7 @@ public class CropperActivity extends AppCompatActivity {
         UCrop.Options options = new UCrop.Options();
         options.setFreeStyleCropEnabled(true);
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG); // Set desired image format
-        options.setCompressionQuality(100); // Set desired compression quality (0-100)
+        options.setCompressionQuality(90); // Set desired compression quality (0-100)
 
         // Start UCrop with configured options
         UCrop.of(filedUri, Uri.fromFile(new File(getCacheDir(), dest_uri)))
