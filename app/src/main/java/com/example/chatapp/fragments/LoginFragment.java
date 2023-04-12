@@ -49,10 +49,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String emptyFields = "Please input necessary field/s.";
+
+                //validations for login
                 if(username.getText().toString().isEmpty() || password.getText().toString().isEmpty()){
                     Toast.makeText(getContext(), emptyFields, Toast.LENGTH_SHORT).show();
                 }else{
-                    signIn();
+                    signIn(); //call signIn method
                 }
             }
         });
@@ -68,6 +70,7 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    //signIn method for user log in
     public void signIn() {
         UserDetails userDetails = new UserDetails();
         progressBar.setVisibility(View.VISIBLE);
@@ -79,6 +82,8 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(userTask -> {
                     if (userTask.isSuccessful() && userTask.getResult() != null && userTask.getResult().getDocuments().size() > 0) {
                         DocumentSnapshot documentUserSnapshot = userTask.getResult().getDocuments().get(0);
+
+                        //validate user accounts
                         if(documentUserSnapshot.getString("userType").equalsIgnoreCase("Super Admin")){
                             Toast.makeText(getContext(), "Incorrect username and password.", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);

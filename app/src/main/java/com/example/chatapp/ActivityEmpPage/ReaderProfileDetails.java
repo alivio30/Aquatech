@@ -177,6 +177,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //counter = 3;
                 /*Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera, requestCameraCode);*/
                 openCamera();
@@ -235,12 +236,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
         result();
     }
 
+    //showDialog method for after scanning image
     public void showDialog(){
         dialog = new Dialog(ReaderProfileDetails.this);
         dialog.setContentView(R.layout.scan_dialog);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_background));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(true);
+        dialog.setCancelable(false);
 
         yes = dialog.findViewById(R.id.btn_yes);
         no = dialog.findViewById(R.id.btn_no);
@@ -258,6 +260,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 if(resultFlag){
                     txtInputPresentReading.setText(modifiedText);
                     scannedMeter.setImageBitmap(croppedImage);
+                    scanButton.setClickable(false);
+                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                     result();
                 }
             }
@@ -271,7 +275,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     openCamera();
                 }else{
                     dialog.dismiss();
-                    builder.setTitle("Manual input override..")
+                    scanButton.setClickable(false);
+                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                    builder.setTitle("Manual input override.")
                             .setMessage("Please input the present reading manually.")
                             .setCancelable(true)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -282,6 +288,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             })
                             .show();
                     txtInputPresentReading.setEnabled(true);
+                    txtInputPresentReading.requestFocus();
                     scannedMeter.setImageBitmap(croppedImage);
                 }
                 dialog.dismiss();
@@ -295,6 +302,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
             takePictureLauncher.launch(takePictureIntent);
         }
     }
+
+    //retrieve previous reading of a consumer
     public void getPrevReading(){
         db.collection("billing")
                 .whereEqualTo("consId", consId)
@@ -342,8 +351,11 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     }
                 });
     }
+
     public void validation(){
         Date now = new Date();
+
+        //retrieve the firstReading of the consumer (first reading)
         db.collection("consumers")
                 .whereEqualTo("consId", consId)
                 .get()
@@ -353,6 +365,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                         txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
                     }
                 });
+
         db.collection("billing")
                 .whereEqualTo("consId", consId)
                 .get()
@@ -364,7 +377,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             double value = ds.getDouble("bill_no");
                             maxValue = Math.max(maxValue, value);
                         }
-                        long value = (long)maxValue;
+                        long value = (long)maxValue; //gets the highest value of bill_no (latest reading)
                         db.collection("billing")
                                 .whereEqualTo("consId", consId)
                                 .whereEqualTo("bill_no", value)
@@ -375,13 +388,15 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         String stringDate = documentUserSnapshot.getString("dueDate");
                                         try {
                                             Date dueDate = sdf.parse(stringDate);
-                                            if(dueDate.after(now)){     //before duedate
+                                            //buttons and textfield disabled if dueDate is not met
+                                            if(dueDate.after(now)){
                                                 scanButton.setClickable(false);
                                                 submitButton.setClickable(false);
                                                 txtInputPresentReading.setEnabled(false);
                                                 scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                                 submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
 
+                                                //while not met, display latest reading
                                                 txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
                                                 StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
                                                 txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
@@ -412,7 +427,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                             }
                                                         });
                                             }else{
-                                                //after 15 days of reading date, the button will be enabled
+                                                //buttons and textfield enabled if due date is met
                                                 db.collection("billing")
                                                         .whereEqualTo("consId", consId)
                                                         .whereEqualTo("bill_no", value)
@@ -436,9 +451,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
                                                                                                 Map<String, Object> updateStatus = new HashMap<>();
-                                                                                                updateStatus.put("remarks", "Unread");
+                                                                                                updateStatus.put("remarks", "Unread"); //update status to Unread
                                                                                                 db.collection("consumers")
                                                                                                         .whereEqualTo("consId", consId)
                                                                                                         .get()
@@ -459,7 +473,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                         });
                                                 scanButton.setClickable(true);
                                                 submitButton.setClickable(true);
-                                                txtInputPresentReading.setEnabled(true);
+                                                //retrieve last reading
                                                 getPrevReading();
                                             }
                                         } catch (ParseException e) {
@@ -604,6 +618,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     penalty1 = documentUserSnapshot.getString("penalty");
                                                                                                     discount1 = documentUserSnapshot.getString("discount");
                                                                                                     credit1 = documentUserSnapshot.getString("credit");
+                                                                                                    //calculate for netAmount
                                                                                                     netAmount1 = (billAmount + Double.parseDouble(previousBalance1) + penalty + reconnectionFee + others) - (discount + Double.parseDouble(credit1));
 
                                                                                                     Map<String, Object> createBilling = new HashMap<>();
@@ -646,7 +661,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                                     String documentID = documentSnapshot.getId();
                                                                                                                                     db.collection("consumers")
                                                                                                                                             .document(documentID)
-                                                                                                                                            .update("remarks", "Read")
+                                                                                                                                            .update("remarks", "Read") //update status to Read
                                                                                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                                                                 @Override
                                                                                                                                                 public void onSuccess(Void unused) {
@@ -896,7 +911,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
             showToast("No text found");
             builder.setTitle("Alert!")
                     .setMessage("No text found!\n\n"+"Number of attempt/s: "+counter)
-                    .setCancelable(true)
+                    .setCancelable(false)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -916,6 +931,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                             })
                                             .show();
                                         txtInputPresentReading.setEnabled(true);
+                                        scanButton.setClickable(false);
+                                        scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                         scannedMeter.setImageBitmap(croppedImage);
                                     }
                             }

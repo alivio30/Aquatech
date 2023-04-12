@@ -29,6 +29,7 @@ import com.example.chatapp.adapters.RecyclerViewInterface;
 import com.example.chatapp.adapters.searchUserAdapter;
 import com.example.chatapp.models.User;
 import com.example.chatapp.utilities.ConsumerProfileDetails;
+import com.example.chatapp.utilities.Image;
 import com.example.chatapp.utilities.UserDetails;
 import com.example.chatapp.utilities.UserDetailsRecyclerView;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +58,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     searchUserAdapter myAdapter;
     FirebaseFirestore db;
     Toast toast;
+    Image image = new Image();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -138,6 +140,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onItemClick(int position) {
+        image.setImage(null);
         if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
             db.collection("users")
                     .whereEqualTo("userId", usersArrayList.get(position).getUserId())

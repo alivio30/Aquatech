@@ -59,6 +59,7 @@ public class ForgotPassword extends Fragment {
                             .addOnCompleteListener(task ->{
                                 if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                                     DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
+
                                     final String username = "aquatech.system2023@gmail.com";
                                     final String password = "jcohwldssphwwxjc";
                                     String messageToSend = "Dear "+ documentUserSnapshot.getString("name")+",\n\nWe received your recent request for your old password. As per your request, we have retrieved your old " +
@@ -66,6 +67,8 @@ public class ForgotPassword extends Fragment {
                                             "logging in.\n\nWe understand that forgetting passwords can be frustrating, which is why we recommend using password managers or other secure methods to store your login information. " +
                                             "This will not only make it easier to access your accounts, but also help ensure the security of your personal information.\n\nIf you have any further questions or concerns, please do not " +
                                             "hesitate to contact us. We are here to assist you in any way we can.\n\nThank you for your continued patronage.\n\nSincerely,\nAquatech";
+
+                                    //set email username and password for "login"
                                     Properties properties = new Properties();
                                     properties.put("mail.smtp.auth", "true");
                                     properties.put("mail.smtp.starttls.enable", "true");
@@ -78,6 +81,7 @@ public class ForgotPassword extends Fragment {
                                         }
                                     });
                                     try{
+                                        //send email for password
                                         Message message  = new MimeMessage(session);
                                         message.setFrom(new InternetAddress(username));
                                         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(inputEmail.getText().toString()));

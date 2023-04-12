@@ -278,7 +278,6 @@ public class RegConsumer extends Fragment {
                                 if(chkHouse.isChecked()){
                                     house = "1";
                                 }
-                                Toast.makeText(getContext(), image, Toast.LENGTH_SHORT).show();
                                 Map<String, Object> createConsumer = new HashMap<>();
                                 createConsumer.put("name", inputName.getText().toString());
                                 createConsumer.put("accountNumber", consumerAccountNumber);

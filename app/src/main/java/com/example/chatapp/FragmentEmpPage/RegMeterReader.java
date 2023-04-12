@@ -154,7 +154,6 @@ public class RegMeterReader extends Fragment {
                             @Override
                             public void onSuccess(Uri uri) {
                                 image = uri.toString();
-                                Toast.makeText(getContext(), image, Toast.LENGTH_SHORT).show();
                                 //user hash--
                                 Map<String, Object> createUser = new HashMap<>();
                                 createUser.put("userId", String.valueOf(newUserID));

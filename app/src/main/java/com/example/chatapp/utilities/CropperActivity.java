@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.chatapp.R;
@@ -19,14 +20,17 @@ public class CropperActivity extends AppCompatActivity {
 
     String result;
     Uri filedUri;
+    Uri imageUri;
+    Image  image = new Image();
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropper);
 
+        imageView = findViewById(R.id.imageView);
         readIntent();
-
 
         String dest_uri = new StringBuilder(UUID.randomUUID().toString()).append(".jpeg").toString();
 
@@ -46,22 +50,23 @@ public class CropperActivity extends AppCompatActivity {
     }
 
     private void readIntent() {
-        Intent intent=getIntent();
-        if(intent.getExtras()!=null)
-        {
-            result=intent.getStringExtra("DATA");
-            filedUri=Uri.parse(result);
+        Intent intent = getIntent();
+        if (intent.getExtras() != null) {
+            result = intent.getStringExtra("DATA");
+            filedUri = Uri.parse(result);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK && requestCode==UCrop.REQUEST_CROP){
+       if(resultCode==RESULT_OK && requestCode==UCrop.REQUEST_CROP){
             final Uri resultUri=UCrop.getOutput(data);
             Intent returnIntent = new Intent();
             returnIntent.putExtra("RESULT", resultUri+"");
             setResult(-1,returnIntent);
+           //image.setImage(resultUri+"");
+           Toast.makeText(getApplicationContext(), "cropper result", Toast.LENGTH_SHORT).show();
             finish();
         } else if(resultCode==UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);

@@ -39,6 +39,12 @@ public class HomePage extends Fragment {
         totalLines = view.findViewById(R.id.textTotalLine);
         totalPumps = view.findViewById(R.id.textTotalPumps);
         totalTanks = view.findViewById(R.id.textTotalTanks);
+
+        displayData();
+        return view;
+    }
+
+    public void displayData(){
         countRead();
         countUnread();
         countTotalHouseholds();
@@ -49,7 +55,6 @@ public class HomePage extends Fragment {
         totalLines();
         totalPumps();
         totalTanks();
-        return view;
     }
 
     public void countRead(){
