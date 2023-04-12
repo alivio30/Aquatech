@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -34,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.chatapp.activities.MainActivity2;
 import com.example.chatapp.utilities.CropperActivity;
 import com.example.chatapp.R;
 import com.example.chatapp.utilities.UserDetails;
@@ -98,6 +100,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     String billingNumber, messageDate, messageNetAmount, meterImage, bill_no, readingDate, filterDate, status, startBillingPeriod, endBillingPeriod, dueDate;
     public static final int requestCameraCode = 12;
     boolean resultFlag = false;
+    String currentPhotoPath;
 
     //camera
     ActivityResultLauncher<Intent> takePictureLauncher;
@@ -177,7 +180,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //counter = 3;
                 /*Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(camera, requestCameraCode);*/
                 openCamera();
@@ -210,24 +212,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
                         // Get the captured image from the result intent
-                        Bundle extras = result.getData().getExtras();
-                        Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-                        File imageFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "captured_image.jpeg");
-                        try {
-                            FileOutputStream out = new FileOutputStream(imageFile);
-                            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                            out.flush();
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        // Pass the file Uri to the cropper activity
-                        Uri imageUri = Uri.fromFile(imageFile);
+                        Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
                         // Pass the image to the cropper activity
                         Intent intent = new Intent(ReaderProfileDetails.this, CropperActivity.class);
-                        intent.putExtra("DATA", imageUri.toString());
+                        intent.putExtra("DATA", imageUri+"");
                         startActivityForResult(intent, 101);
                     }
                 });
@@ -236,13 +224,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
         result();
     }
 
-    //showDialog method for after scanning image
     public void showDialog(){
         dialog = new Dialog(ReaderProfileDetails.this);
         dialog.setContentView(R.layout.scan_dialog);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_background));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         yes = dialog.findViewById(R.id.btn_yes);
         no = dialog.findViewById(R.id.btn_no);
@@ -260,9 +247,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 if(resultFlag){
                     txtInputPresentReading.setText(modifiedText);
                     scannedMeter.setImageBitmap(croppedImage);
+                    result();
+                    txtInputPresentReading.setEnabled(false);
                     scanButton.setClickable(false);
                     scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
-                    result();
                 }
             }
         });
@@ -275,20 +263,19 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     openCamera();
                 }else{
                     dialog.dismiss();
-                    scanButton.setClickable(false);
-                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
-                    builder.setTitle("Manual input override.")
+                    builder.setTitle("Manual input override..")
                             .setMessage("Please input the present reading manually.")
                             .setCancelable(true)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.cancel();
+                                    scanButton.setClickable(false);
+                                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                 }
                             })
                             .show();
                     txtInputPresentReading.setEnabled(true);
-                    txtInputPresentReading.requestFocus();
                     scannedMeter.setImageBitmap(croppedImage);
                 }
                 dialog.dismiss();
@@ -296,14 +283,31 @@ public class ReaderProfileDetails extends AppCompatActivity {
         });
     }
     public void openCamera(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String fileName = "photo";
+        File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        try {
+            File imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
+            currentPhotoPath = imageFile.getAbsolutePath();
+
+            Uri imageUri = FileProvider.getUriForFile(ReaderProfileDetails.this,
+                    "com.example.chatapp.fileprovider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Launch the camera to capture an image
+                takePictureLauncher.launch(takePictureIntent);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Launch the camera to capture an image
             takePictureLauncher.launch(takePictureIntent);
-        }
+        }*/
     }
-
-    //retrieve previous reading of a consumer
     public void getPrevReading(){
         db.collection("billing")
                 .whereEqualTo("consId", consId)
@@ -351,11 +355,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     }
                 });
     }
-
     public void validation(){
         Date now = new Date();
-
-        //retrieve the firstReading of the consumer (first reading)
         db.collection("consumers")
                 .whereEqualTo("consId", consId)
                 .get()
@@ -365,7 +366,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                         txtPreviousReading.setText(documentUserSnapshot1.getString("firstReading"));
                     }
                 });
-
         db.collection("billing")
                 .whereEqualTo("consId", consId)
                 .get()
@@ -377,7 +377,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             double value = ds.getDouble("bill_no");
                             maxValue = Math.max(maxValue, value);
                         }
-                        long value = (long)maxValue; //gets the highest value of bill_no (latest reading)
+                        long value = (long)maxValue;
                         db.collection("billing")
                                 .whereEqualTo("consId", consId)
                                 .whereEqualTo("bill_no", value)
@@ -388,15 +388,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         String stringDate = documentUserSnapshot.getString("dueDate");
                                         try {
                                             Date dueDate = sdf.parse(stringDate);
-                                            //buttons and textfield disabled if dueDate is not met
-                                            if(dueDate.after(now)){
+                                            if(dueDate.after(now)){     //before duedate
                                                 scanButton.setClickable(false);
                                                 submitButton.setClickable(false);
                                                 txtInputPresentReading.setEnabled(false);
                                                 scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                                 submitButton.setBackgroundColor(Color.rgb(255, 0, 0));
 
-                                                //while not met, display latest reading
                                                 txtInputPresentReading.setText(documentUserSnapshot.getString("presentReading"));
                                                 StringToBitMap(scannedMeter, documentUserSnapshot.getString("meterImage"));
                                                 txtWaterConsumption.setText(documentUserSnapshot.getString("ConsumptionUnit"));
@@ -427,7 +425,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                             }
                                                         });
                                             }else{
-                                                //buttons and textfield enabled if due date is met
+                                                //after 15 days of reading date, the button will be enabled
                                                 db.collection("billing")
                                                         .whereEqualTo("consId", consId)
                                                         .whereEqualTo("bill_no", value)
@@ -451,8 +449,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
+                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
                                                                                                 Map<String, Object> updateStatus = new HashMap<>();
-                                                                                                updateStatus.put("remarks", "Unread"); //update status to Unread
+                                                                                                updateStatus.put("remarks", "Unread");
                                                                                                 db.collection("consumers")
                                                                                                         .whereEqualTo("consId", consId)
                                                                                                         .get()
@@ -473,7 +472,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                         });
                                                 scanButton.setClickable(true);
                                                 submitButton.setClickable(true);
-                                                //retrieve last reading
                                                 getPrevReading();
                                             }
                                         } catch (ParseException e) {
@@ -618,7 +616,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                     penalty1 = documentUserSnapshot.getString("penalty");
                                                                                                     discount1 = documentUserSnapshot.getString("discount");
                                                                                                     credit1 = documentUserSnapshot.getString("credit");
-                                                                                                    //calculate for netAmount
                                                                                                     netAmount1 = (billAmount + Double.parseDouble(previousBalance1) + penalty + reconnectionFee + others) - (discount + Double.parseDouble(credit1));
 
                                                                                                     Map<String, Object> createBilling = new HashMap<>();
@@ -661,7 +658,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                                     String documentID = documentSnapshot.getId();
                                                                                                                                     db.collection("consumers")
                                                                                                                                             .document(documentID)
-                                                                                                                                            .update("remarks", "Read") //update status to Read
+                                                                                                                                            .update("remarks", "Read")
                                                                                                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                                                                 @Override
                                                                                                                                                 public void onSuccess(Void unused) {
@@ -911,7 +908,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
             showToast("No text found");
             builder.setTitle("Alert!")
                     .setMessage("No text found!\n\n"+"Number of attempt/s: "+counter)
-                    .setCancelable(false)
+                    .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -927,12 +924,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                     dialogInterface.cancel();
+                                                    scanButton.setClickable(false);
+                                                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                                 }
                                             })
                                             .show();
                                         txtInputPresentReading.setEnabled(true);
-                                        scanButton.setClickable(false);
-                                        scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
                                         scannedMeter.setImageBitmap(croppedImage);
                                     }
                             }
@@ -949,20 +946,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     showToast(elementText);
                     modifiedText = elementText.replace("O", "0").replace("o", "0").replace("B", "8").replace("D", "0").replace("d", "0");
                     modifiedText = modifiedText.replaceAll("[^a-zA-Z0-9]", "");
-                    //showToast(modifiedText);
-                    /*dialog.show();
-                    result.setImageBitmap(croppedImage);
-                    dialogTextResult.setText(modifiedText);
-                    dialogText.setText("Is this the correct result?");
-                    dialogAttempt.setText("Number of attempt/s: "+counter);
-                    if(resultFlag){
-                        txtInputPresentReading.setText(modifiedText);
-                        scannedMeter.setImageBitmap(croppedImage);
-                    }
-                    if(counter == 0){
-                        txtInputPresentReading.setEnabled(true);
-                        scannedMeter.setImageBitmap(croppedImage);
-                    }*/
                 }
             }
         }
