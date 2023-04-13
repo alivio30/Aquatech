@@ -199,15 +199,36 @@ public class ReaderProfileDetails extends AppCompatActivity {
             public void onClick(View view) {
                 if(txtInputPresentReading.getText().toString().trim().isEmpty() || scannedMeter.getDrawable() == null){
                     Toast.makeText(getApplicationContext(), "Please input necessary fields", Toast.LENGTH_SHORT).show();
+                }else if(txtWaterConsumption.getText().toString().isEmpty()){
+                    builder.setTitle("Alert!")
+                            .setMessage("Water Consumption is empty, please scan again.")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                    counter=3;
+                                    scanButton.setBackgroundResource(android.R.drawable.btn_default);
+                                    scanButton.setClickable(true);
+                                    txtInputPresentReading.setText("");
+                                    scannedMeter.setImageDrawable(null);
+                                }
+                            })
+                            .show();
                 }else{
                     if(Integer.parseInt(txtWaterConsumption.getText().toString()) < 0){
                         builder.setTitle("Alert!")
-                                .setMessage("Water Consumption went to negative!")
+                                .setMessage("Water Consumption went to negative! Please scan again.")
                                 .setCancelable(false)
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         dialogInterface.cancel();
+                                        counter=3;
+                                        scanButton.setBackgroundResource(android.R.drawable.btn_default);
+                                        scanButton.setClickable(true);
+                                        txtInputPresentReading.setText("");
+                                        scannedMeter.setImageDrawable(null);
                                     }
                                 })
                                 .show();
@@ -224,17 +245,9 @@ public class ReaderProfileDetails extends AppCompatActivity {
                         /*Bundle extras = result.getData().getExtras();
                         imageBitmap = (Bitmap) extras.get("data");*/
                         Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
-                        /*Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
 
-                        byte[] data = baos.toByteArray();
-
-                        // Create a new Bitmap object from the compressed image data
-                        Bitmap compressedBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-
-                        FileOutputStream fos = null;
+                        /*FileOutputStream fos = null;
                         try {
                             // create a temporary file to save the compressed bitmap
                             file = File.createTempFile("compressed_", ".jpg", getCacheDir());
