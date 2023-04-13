@@ -1,5 +1,7 @@
 package com.example.chatapp.ActivityEmpPage;
 
+import static com.google.firebase.messaging.Constants.MessageNotificationKeys.TAG;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -27,6 +29,8 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
+import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,6 +47,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -67,6 +72,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -101,7 +108,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     public static final int requestCameraCode = 12;
     boolean resultFlag = false;
     String currentPhotoPath;
-
+    File imageFile, file;
+    Bitmap imageBitmap;
     //camera
     ActivityResultLauncher<Intent> takePictureLauncher;
     Uri resultUri;
@@ -169,6 +177,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                scannedMeter.setImageDrawable(null);
                 onBackPressed();
             }
         });
@@ -212,7 +221,32 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
                         // Get the captured image from the result intent
+                        /*Bundle extras = result.getData().getExtras();
+                        imageBitmap = (Bitmap) extras.get("data");*/
                         Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
+                        /*Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+
+                        byte[] data = baos.toByteArray();
+
+                        // Create a new Bitmap object from the compressed image data
+                        Bitmap compressedBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                        FileOutputStream fos = null;
+                        try {
+                            // create a temporary file to save the compressed bitmap
+                            file = File.createTempFile("compressed_", ".jpg", getCacheDir());
+                            fos = new FileOutputStream(file);
+                            // write the compressed bitmap to the file
+                            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fos);
+                            fos.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Uri compressedUri = Uri.fromFile(file);*/
+
                         // Pass the image to the cropper activity
                         Intent intent = new Intent(ReaderProfileDetails.this, CropperActivity.class);
                         intent.putExtra("DATA", imageUri+"");
@@ -287,7 +321,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         try {
-            File imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
+            imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
             currentPhotoPath = imageFile.getAbsolutePath();
 
             Uri imageUri = FileProvider.getUriForFile(ReaderProfileDetails.this,
@@ -302,11 +336,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Launch the camera to capture an image
-            takePictureLauncher.launch(takePictureIntent);
-        }*/
     }
     public void getPrevReading(){
         db.collection("billing")
