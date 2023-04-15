@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class UpdateConsumerFragment extends Fragment {
     Button updateButton;
     String type;
     Validations validations = new Validations();
+    ProgressBar progressBar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -178,6 +180,8 @@ public class UpdateConsumerFragment extends Fragment {
     }
     //method for updating account
     public void updateAccount(){
+        progressBar.setVisibility(View.VISIBLE);
+        updateButton.setVisibility((View.INVISIBLE));
         if(imageUri == null){
             Map<String, Object> updateConsumers = new HashMap<>();
             updateConsumers.put("name", inputName.getText().toString());
@@ -229,6 +233,10 @@ public class UpdateConsumerFragment extends Fragment {
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 Toast.makeText(getContext(), "User Updated!", Toast.LENGTH_SHORT).show();
+                                                progressBar.setVisibility(View.INVISIBLE);
+                                                updateButton.setVisibility((View.VISIBLE));
+                                                FragmentManager fm = getFragmentManager();
+                                                fm.popBackStack();
                                             }
                                         });
                             }
@@ -294,6 +302,8 @@ public class UpdateConsumerFragment extends Fragment {
                                                             @Override
                                                             public void onSuccess(Void unused) {
                                                                 Toast.makeText(getContext(), "User Updated!", Toast.LENGTH_SHORT).show();
+                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                updateButton.setVisibility((View.VISIBLE));
                                                                 FragmentManager fm = getFragmentManager();
                                                                 fm.popBackStack();
                                                             }

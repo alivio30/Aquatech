@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,6 +111,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     String currentPhotoPath;
     File imageFile, file;
     Bitmap imageBitmap;
+    ProgressBar progressBar;
     //camera
     ActivityResultLauncher<Intent> takePictureLauncher;
     Uri resultUri;
@@ -351,7 +353,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                                             DocumentSnapshot documentUserSnapshot = task.getResult().getDocuments().get(0);
                                             txtPreviousReading.setText(documentUserSnapshot.getString("presentReading"));
@@ -362,7 +363,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getApplicationContext(), "fail", Toast.LENGTH_SHORT).show();
                                         db.collection("consumers")
                                                 .whereEqualTo("consId", consId)
                                                 .get()
@@ -472,7 +472,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                                //Toast.makeText(getApplicationContext(), "bill updated", Toast.LENGTH_SHORT).show();
                                                                                                 Map<String, Object> updateStatus = new HashMap<>();
                                                                                                 updateStatus.put("remarks", "Unread");
                                                                                                 db.collection("consumers")
@@ -534,6 +533,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
 
     public void calculateBill(){
+        progressBar.setVisibility(View.VISIBLE);
+        submitButton.setVisibility((View.INVISIBLE));
         billingID = billingID();
         messageNetAmount = String.format("%.2f", netAmount);
         messageDate = notifyFormat.format(getDueDate(15));
@@ -686,6 +687,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                                                 @Override
                                                                                                                                                 public void onSuccess(Void unused) {
                                                                                                                                                     notifyBill();
+                                                                                                                                                    progressBar.setVisibility(View.INVISIBLE);
+                                                                                                                                                    submitButton.setVisibility((View.VISIBLE));
                                                                                                                                                     onBackPressed();
                                                                                                                                                 }
                                                                                                                                             });
@@ -700,8 +703,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                 db.collection("billing").document(name+" - "+finalBillingNumber+" - "+userDetails.getCompanyName())
                                                                                         .set(createBilling)
                                                                                         .addOnSuccessListener(documentReference -> {
-                                                                                            toast = Toast.makeText(getApplicationContext(), "Saved to billing!", Toast.LENGTH_SHORT);
-                                                                                            toast.show();
+                                                                                            /*toast = Toast.makeText(getApplicationContext(), "Saved to billing!", Toast.LENGTH_SHORT);
+                                                                                            toast.show();*/
                                                                                             db.collection("consumers")
                                                                                                     .whereEqualTo("consId", consId)
                                                                                                     .get()
@@ -718,6 +721,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                             @Override
                                                                                                                             public void onSuccess(Void unused) {
                                                                                                                                 notifyBill();
+                                                                                                                                progressBar.setVisibility(View.INVISIBLE);
+                                                                                                                                submitButton.setVisibility((View.VISIBLE));
                                                                                                                                 onBackPressed();
                                                                                                                             }
                                                                                                                         });
@@ -728,6 +733,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                         .addOnFailureListener(exception -> {
                                                                                             toast = Toast.makeText(getApplicationContext(), "Failed to Register", Toast.LENGTH_SHORT);
                                                                                             toast.show();
+                                                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                                                            submitButton.setVisibility((View.VISIBLE));
                                                                                         });
                                                                             }
                                                                         }
