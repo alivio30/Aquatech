@@ -42,7 +42,7 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 });*/
     }
-
+    //set user availability to 0 if the device is on onPause
     @Override
     protected void onPause() {
         super.onPause();
@@ -63,6 +63,7 @@ public class BaseActivity extends AppCompatActivity {
                 });
     }
 
+    //set user availability to 1 if the device is on onResume
     @Override
     protected void onResume() {
         super.onResume();

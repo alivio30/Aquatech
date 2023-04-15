@@ -181,11 +181,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
-                    Manifest.permission.CAMERA
-            }, REQUEST_CAMERA_CODE);
-        }
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -242,12 +237,11 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
                         // Get the captured image from the result intent
-                        /*Bundle extras = result.getData().getExtras();
-                        imageBitmap = (Bitmap) extras.get("data");*/
-                        Uri imageUri = Uri.fromFile(new File(currentPhotoPath));
+                        Bundle extras = result.getData().getExtras();
+                        imageBitmap = (Bitmap) extras.get("data");
 
 
-                        /*FileOutputStream fos = null;
+                        FileOutputStream fos = null;
                         try {
                             // create a temporary file to save the compressed bitmap
                             file = File.createTempFile("compressed_", ".jpg", getCacheDir());
@@ -258,11 +252,11 @@ public class ReaderProfileDetails extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Uri compressedUri = Uri.fromFile(file);*/
+                        Uri compressedUri = Uri.fromFile(file);
 
                         // Pass the image to the cropper activity
                         Intent intent = new Intent(ReaderProfileDetails.this, CropperActivity.class);
-                        intent.putExtra("DATA", imageUri+"");
+                        intent.putExtra("DATA", compressedUri+"");
                         startActivityForResult(intent, 101);
                     }
                 });
@@ -323,6 +317,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             })
                             .show();
                     txtInputPresentReading.setEnabled(true);
+                    txtInputPresentReading.requestFocus();
                     scannedMeter.setImageBitmap(croppedImage);
                 }
                 dialog.dismiss();
@@ -330,24 +325,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
         });
     }
     public void openCamera(){
-        String fileName = "photo";
-        File storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-
-        try {
-            imageFile = File.createTempFile(fileName, ".jpg", storageDirectory);
-            currentPhotoPath = imageFile.getAbsolutePath();
-
-            Uri imageUri = FileProvider.getUriForFile(ReaderProfileDetails.this,
-                    "com.example.chatapp.fileprovider", imageFile);
-
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Launch the camera to capture an image
-                takePictureLauncher.launch(takePictureIntent);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Launch the camera to capture an image
+            takePictureLauncher.launch(takePictureIntent);
         }
     }
     public void getPrevReading(){
@@ -862,19 +843,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == requestCameraCode && resultCode == RESULT_OK){
-            if(data != null){
-                bitmap = (Bitmap)data.getExtras().get("data");
-                scannedMeter.setImageBitmap(bitmap);
-                int consumption = Integer.parseInt(txtInputPresentReading.getText().toString()) - Integer.parseInt(txtPreviousReading.getText().toString());
-                txtWaterConsumption.setText(String.valueOf(consumption));
-            }
-        }
-    }*/
-
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -926,19 +894,16 @@ public class ReaderProfileDetails extends AppCompatActivity {
         InputImage image = InputImage.fromBitmap(getBitmapFromUri(resultUri), 0);
         TextRecognizer recognizer = TextRecognition.getClient();
 
-        //mTextButton.setEnabled(false);
         recognizer.process(image)
                 .addOnSuccessListener(new OnSuccessListener<Text>() {
                     @Override
                     public void onSuccess(Text visionText) {
-                        //mTextButton.setEnabled(true);
                         processTextRecognitionResult(visionText);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //mTextButton.setEnabled(true);
                         e.printStackTrace();
                     }
                 });
@@ -972,6 +937,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                             })
                                             .show();
                                         txtInputPresentReading.setEnabled(true);
+                                        txtInputPresentReading.requestFocus();
                                         scannedMeter.setImageBitmap(croppedImage);
                                     }
                             }
@@ -1001,6 +967,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    //calculates the result real-time
     public void result(){
         txtInputPresentReading.addTextChangedListener(new TextWatcher() {
             @Override

@@ -50,6 +50,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        //displays the login fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, loginFragment).commit();
     }
 }

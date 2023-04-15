@@ -69,6 +69,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
     }
 
+    //method for displaying all admins
     private void getAdmin(){
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -107,6 +108,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
                     }
                 });
     }
+    //method for displaying all users
     private void getUsers() {
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -156,7 +158,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
             binding.progressBar.setVisibility(View.INVISIBLE);
         }
     }
-
+    //method for clicking user for chat activity
     @Override
     public void onUserClicked(User user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);

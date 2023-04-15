@@ -115,6 +115,7 @@ public class MasterPage extends AppCompatActivity {
         return new HomePage();
     }
 
+    //method for implementation of fragment redirect
     private void loadFragment(Fragment fragment){
         getSupportFragmentManager()
                 .beginTransaction()

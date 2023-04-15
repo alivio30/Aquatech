@@ -47,7 +47,7 @@ public class CreateUser extends AppCompatActivity {
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        //display create user fragment
         fragmentTransaction.replace(R.id.FragmentContainer,createUser).commit();
 
     }

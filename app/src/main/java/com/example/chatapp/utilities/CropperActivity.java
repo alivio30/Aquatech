@@ -46,6 +46,7 @@ public class CropperActivity extends AppCompatActivity {
                 .start(CropperActivity.this);
     }
 
+    //read or get intent value
     private void readIntent() {
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
@@ -54,6 +55,7 @@ public class CropperActivity extends AppCompatActivity {
         }
     }
 
+    //result after image crop
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -120,10 +121,11 @@ public class UpdateConsumerFragment extends Fragment {
 
             }
         });
-        displayData();
+        displayData(); //method call
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validations
                 if(chkEmail.isChecked()){
                     email = "1";
                 }
@@ -157,13 +159,14 @@ public class UpdateConsumerFragment extends Fragment {
         });
         return view;
     }
-
+    //method for selecting image
     public void selectImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, RESULT_OK);
     }
+    //display image after selecting an image
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -173,7 +176,7 @@ public class UpdateConsumerFragment extends Fragment {
             addImage.setVisibility(View.GONE);
         }
     }
-
+    //method for updating account
     public void updateAccount(){
         if(imageUri == null){
             Map<String, Object> updateConsumers = new HashMap<>();
@@ -291,6 +294,8 @@ public class UpdateConsumerFragment extends Fragment {
                                                             @Override
                                                             public void onSuccess(Void unused) {
                                                                 Toast.makeText(getContext(), "User Updated!", Toast.LENGTH_SHORT).show();
+                                                                FragmentManager fm = getFragmentManager();
+                                                                fm.popBackStack();
                                                             }
                                                         });
                                             }
@@ -303,7 +308,7 @@ public class UpdateConsumerFragment extends Fragment {
         }
 
     }
-
+    //method for displaying data
     public void displayData(){
         String imageUrl = null;
         imageUrl = consumerProfileDetails.getImage();

@@ -78,6 +78,7 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     public void onBackPressed() {
         super.onBackPressed();
     }
+    //method for displaying users
     private void loadUserDetails() {
         binding.textPosition.setText(preferenceManager.getString(Constants.KEY_USER_TYPE));
         binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
@@ -86,12 +87,14 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         Picasso.get().load(imageUrl).into(binding.imageProfile);
     }
 
+    //method for initializations
     private void init() {
         conversations = new ArrayList<>();
         conversionsAdapter = new RecentConversionsAdapter(conversations, this);
         binding.conversationRecyclerView.setAdapter(conversionsAdapter);
         db = FirebaseFirestore.getInstance();
     }
+    //method for displaying latest chat/conversation
     private final EventListener<QuerySnapshot> eventListener = (value, error) -> {
         if(error != null) {
             return;
@@ -182,7 +185,7 @@ public class MainActivity extends BaseActivity implements ConversationListener {
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-
+    //method for clicking user's latest chat/conversation
     @Override
     public void onConversationClicked(User user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);

@@ -60,6 +60,7 @@ public class ChangePassFragment extends Fragment {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validations
                 if(oldPassword.getText().toString().trim().isEmpty() || newPassword.getText().toString().trim().isEmpty() || confirmPassword.getText().toString().trim().isEmpty()){
                     showToast("Please input necessary fields.");
                 }else if(!oldPassword.getText().toString().equals(userDetails.getPassword())){
@@ -75,16 +76,19 @@ public class ChangePassFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null);
+                //redirects to consumerProfile fragment
                 if(userDetails.getUserType().equalsIgnoreCase("consumer")){
                     transaction.setReorderingAllowed(true);
                     transaction.replace(R.id.FragmentContainer, consumerProfile);
                     transaction.commit();
                 }
+                //redirects to readerProfile fragment
                 if(userDetails.getUserType().equalsIgnoreCase("meter reader")){
                     transaction.setReorderingAllowed(true);
                     transaction.replace(R.id.FragmentContainer, readerProfile);
                     transaction.commit();
                 }
+                //redirects to adminProfile fragment
                 if(userDetails.getUserType().equalsIgnoreCase("admin")){
                     transaction.setReorderingAllowed(true);
                     transaction.replace(R.id.FragmentContainer, adminProfile);

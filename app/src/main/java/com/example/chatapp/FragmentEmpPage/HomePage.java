@@ -40,10 +40,10 @@ public class HomePage extends Fragment {
         totalPumps = view.findViewById(R.id.textTotalPumps);
         totalTanks = view.findViewById(R.id.textTotalTanks);
 
-        displayData();
+        displayData(); //method called
         return view;
     }
-
+    //method for displaying all data
     public void displayData(){
         countRead();
         countUnread();
@@ -56,7 +56,7 @@ public class HomePage extends Fragment {
         totalPumps();
         totalTanks();
     }
-
+    //method for retrieving the number of "Read" status from all consumers
     public void countRead(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("remarks", "Read")
                 .get()
@@ -73,7 +73,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the number of "Unread" status from all consumers
     public void countUnread(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("remarks", "Unread")
                 .get()
@@ -90,7 +90,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the number of total households
     public void countTotalHouseholds(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
@@ -107,7 +107,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the total consumption of the company
     public void totalConsumption(){
         db.collection("billing").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
@@ -124,7 +124,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the number of Active consumers
     public void totalActive(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Active")
                 .get()
@@ -141,7 +141,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the number of Inactive consumers
     public void totalInactive(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Inactive")
                 .get()
@@ -158,7 +158,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the number of Disconnected consumers
     public void totalDisconnected(){
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).whereEqualTo("status", "Disconnected")
                 .get()
@@ -175,7 +175,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the total Lines of the company
     public void totalLines(){
         db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
@@ -189,7 +189,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the total Pumps of the company
     public void totalPumps(){
         db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()
@@ -203,7 +203,7 @@ public class HomePage extends Fragment {
                     }
                 });
     }
-
+    //method for retrieving the total Tanks of the company
     public void totalTanks(){
         db.collection("companyDetails").whereEqualTo("companyId", userDetails.getCompanyID())
                 .get()

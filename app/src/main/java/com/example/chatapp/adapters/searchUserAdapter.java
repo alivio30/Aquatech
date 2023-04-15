@@ -51,6 +51,7 @@ public class searchUserAdapter extends RecyclerView.Adapter<searchUserAdapter.My
         return new MyViewHolder(view, recyclerViewInterface);
     }
 
+    //holder for display data
     @Override
     public void onBindViewHolder(@NonNull searchUserAdapter.MyViewHolder holder, int position) {
         UserDetailsRecyclerView userDetailsRecyclerView = usersArrayList.get(position);

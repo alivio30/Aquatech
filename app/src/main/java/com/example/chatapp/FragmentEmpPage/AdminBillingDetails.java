@@ -104,12 +104,13 @@ public class AdminBillingDetails extends Fragment {
         spinnerYear = view.findViewById(R.id.spinnerYear);
         spinnerMonth = view.findViewById(R.id.spinnerMonth);
 
+        //create year adapter
         yearLists = new ArrayList<>();
         yearAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, yearLists);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYear.setAdapter(yearAdapter);
         setSpinnerYear(); //set years from consumer billing history
-
+        //create month adapter
         monthLists = new ArrayList<>();
         monthAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_spinner_item, monthLists);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,7 +123,6 @@ public class AdminBillingDetails extends Fragment {
         }else{
             setData(spinnerMonth, spinnerYear);
         }
-        //setData(spinnerMonth, spinnerYear);
 
         spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -151,6 +151,7 @@ public class AdminBillingDetails extends Fragment {
         return view;
     }
 
+    //method for adding new year to adapter list for consumers
     public void setSpinnerYear(){
         if(userDetails.getUserType().equalsIgnoreCase("Admin")){
             String userID = getArguments().getString("userId");
@@ -200,7 +201,7 @@ public class AdminBillingDetails extends Fragment {
                     });
         }
     }
-
+    //method for adding new month to adapter list for consumers
     public void setSpinnerMonth(){
         if(userDetails.getUserType().equalsIgnoreCase("Admin")){
             String userID = getArguments().getString("userId");
@@ -250,6 +251,7 @@ public class AdminBillingDetails extends Fragment {
                     });
         }
     }
+    //method for storing the data of consumer's bill
     public void setData(Spinner spinnerM, Spinner spinnerY){
         if(userDetails.getUserType().equalsIgnoreCase("Admin")){
             String userID = getArguments().getString("userId");
@@ -288,6 +290,7 @@ public class AdminBillingDetails extends Fragment {
                         });
         }
     }
+    //method for displaying consumer's latest bill
     public void displayLatestBill(String consId, Spinner spinnerM, Spinner spinnerY){
         db.collection("billing").whereEqualTo("consId", consId)
                 .get()
@@ -325,6 +328,7 @@ public class AdminBillingDetails extends Fragment {
                     }
                 });
     }
+    //method for getting month's index
     private int getMonthIndex(Spinner spinnerM, String m) {
         for(int i=0; i<spinnerM.getCount(); i++){
             if(spinnerM.getItemAtPosition(i).toString().equalsIgnoreCase(m)){
@@ -333,6 +337,7 @@ public class AdminBillingDetails extends Fragment {
         }
         return 0;
     }
+    //method for getting year's index
     private int getYearIndex(Spinner spinnerY, String y) {
         for(int i=0; i<spinnerY.getCount(); i++){
             if(spinnerY.getItemAtPosition(i).toString().equalsIgnoreCase(y)){
@@ -341,6 +346,7 @@ public class AdminBillingDetails extends Fragment {
         }
         return 0;
     }
+    //method for displaying selected bill
     public void displayBillingDetails(){
         filter = getMonth+" "+getYear;
         billingNumber.setText("");
@@ -546,12 +552,15 @@ public class AdminBillingDetails extends Fragment {
                 });
         }
     }
+    //convert string to bitmap for display image
     public void StringToBitMap(ImageView bitImage, String image){
         byte[] imageBytes;
         imageBytes = Base64.decode(image, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         bitImage.setImageBitmap(bitmap);
     }
+
+    //methods for parsing string to date
     public Date getReadingDate(int date) throws ParseException {
         Date d = format.parse(this.readingDate);
         Calendar cal = Calendar.getInstance();

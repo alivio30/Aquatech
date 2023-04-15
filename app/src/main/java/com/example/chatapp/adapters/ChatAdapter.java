@@ -16,6 +16,7 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    //initializations
     private final List<ChatMessage> chatMessages;
     private String receiverProfileImage;
     private final String senderId;
@@ -64,7 +65,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ReceivedMessageViewHolder) holder).setData(chatMessages.get(position), receiverProfileImage);
         }
     }
-
+    //retrieve item count
     @Override
     public int getItemCount() {
         return chatMessages.size();
@@ -86,7 +87,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemContainerSentMessageBinding.getRoot());
             binding = itemContainerSentMessageBinding;
         }
-
+        //set data for display
         void setData(ChatMessage chatMessage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);
@@ -101,7 +102,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemContatinerReceivedMessageBinding.getRoot());
             binding = itemContatinerReceivedMessageBinding;
         }
-
+        //display data
         void setData(ChatMessage chatMessage, String receiverProfileImage) {
             binding.textMessage.setText(chatMessage.message);
             binding.textDateTime.setText(chatMessage.dateTime);

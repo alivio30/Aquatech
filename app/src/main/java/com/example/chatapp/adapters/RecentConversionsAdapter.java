@@ -57,7 +57,7 @@ public class RecentConversionsAdapter extends RecyclerView.Adapter<RecentConvers
             super(itemContainerRecentConversationBinding.getRoot());
             binding = itemContainerRecentConversationBinding;
         }
-
+        //display data
         void setData(ChatMessage chatMessage) {
             String imageUrl = null;
             imageUrl = chatMessage.conversionImage;
