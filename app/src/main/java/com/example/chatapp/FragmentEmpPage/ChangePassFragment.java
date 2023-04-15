@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
@@ -41,6 +42,7 @@ public class ChangePassFragment extends Fragment {
     EditText oldPassword, newPassword, confirmPassword;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Button changePass;
+    ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +101,8 @@ public class ChangePassFragment extends Fragment {
         return view;
     }
     public void detailsValidator(){
+        progressBar.setVisibility(View.VISIBLE);
+        changePass.setVisibility((View.INVISIBLE));
         Map<String, Object> changePassword = new HashMap<>();
         changePassword.put("password", newPassword.getText().toString());
 
@@ -121,6 +125,8 @@ public class ChangePassFragment extends Fragment {
                                             userDetails.setPassword(newPassword.getText().toString());
                                             showToast("Your password has been updated!");
                                             clearFields();
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            changePass.setVisibility((View.VISIBLE));
                                             ReaderProfileFragment readerProfileFragment = new ReaderProfileFragment();
                                             getFragmentManager().beginTransaction().replace(R.id.FragmentContainer, readerProfileFragment).addToBackStack(null)
                                             .commit();
