@@ -64,7 +64,7 @@ public class ConsumerProfileFragment extends Fragment {
         billNotification = view.findViewById(R.id.textBillNotification);
         firstRead = view.findViewById(R.id.textFirstMeterRead);
 
-        displayData();
+        displayData(); //method call
 
         changePasswordButton = view.findViewById(R.id.buttonChangePassword);
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +87,7 @@ public class ConsumerProfileFragment extends Fragment {
         });
         return view;
     }
+    //method for displaying data of consumer
     public void displayData(){
         dbUsers.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())
@@ -132,6 +133,7 @@ public class ConsumerProfileFragment extends Fragment {
                     }
                 });
     }
+    //method for erasing token
     public void eraseToken(){
         Toast.makeText(getContext(), "Signing out...", Toast.LENGTH_SHORT).show();
         db.collection("users")

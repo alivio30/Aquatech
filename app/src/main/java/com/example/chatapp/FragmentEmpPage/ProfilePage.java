@@ -90,6 +90,7 @@ public class ProfilePage extends Fragment {
 
         return view;
     }
+    //method for displaying user data
     public void displayData(){
         db.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())
@@ -104,6 +105,7 @@ public class ProfilePage extends Fragment {
                     }
                 });
     }
+    //method for erasing token
     public void eraseToken(){
         db.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())

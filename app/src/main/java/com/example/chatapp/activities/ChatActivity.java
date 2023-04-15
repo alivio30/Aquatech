@@ -71,6 +71,7 @@ public class ChatActivity extends BaseActivity {
         listenMessages();
     }
 
+    //method for initializations
     private void init() {
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<>();
@@ -82,7 +83,7 @@ public class ChatActivity extends BaseActivity {
         binding.chatRecyclerView.setAdapter(chatAdapter);
         database = FirebaseFirestore.getInstance();
     }
-
+    //method for sending messages to other user
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
@@ -135,6 +136,7 @@ public class ChatActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+
     private void sendNotification(String messageBody) {
         ApiClient.getClient().create(ApiService.class).sendMessage(
                 Constants.getRemoteMsgHeaders(),
@@ -168,6 +170,7 @@ public class ChatActivity extends BaseActivity {
         });
     }
 
+    //method for knowing if receiver is online
     private void listenAvailabilityOfReceiver() {
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereEqualTo("userId", receiverUser.id)
@@ -263,6 +266,7 @@ public class ChatActivity extends BaseActivity {
         }
     }
 
+    //method for displaying user name
     private void loadReceiverDetails() {
         receiverUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
         binding.textName.setText(receiverUser.name);

@@ -78,6 +78,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
         db = FirebaseFirestore.getInstance();
         usersArrayList = new ArrayList<UserDetailsRecyclerView>();
 
+        //set data adapter for displaying consumers
         myAdapter = new searchUserAdapter(SearchPage.this.getContext(), usersArrayList, this);
         recyclerView.setAdapter(myAdapter);
         EventChangeListener();
@@ -99,7 +100,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
         });
         return view;
     }
-
+    //method for searching consumers by serial number
     private void Filter(String toString) {
         ArrayList<UserDetailsRecyclerView> filterList = new ArrayList<>();
 
@@ -111,7 +112,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
         myAdapter.setFilteredList(filterList);
 
     }
-
+    //method for displaying all consumers
     private void EventChangeListener() {
         db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).orderBy("name")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -137,7 +138,8 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                     }
                 });
     }
-
+    //method for clicking consumers for data retrieval
+    //redirects to ReaderProfileDetails/ProfileDetailsActivity class
     @Override
     public void onItemClick(int position) {
         image.setImage(null);
@@ -163,7 +165,6 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                                 intent.putExtra("consID", usersArrayList.get(position).getConsId());
                                 startActivity(intent);
                             });
-            //startActivity(intent);
         }
         if(userDetails.getUserType().equalsIgnoreCase("admin")) {
             db.collection("users")

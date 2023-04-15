@@ -6,6 +6,7 @@ public class Logout {
     ConsumerProfileDetails consumerProfileDetails = new ConsumerProfileDetails();
     UserDetailsRecyclerView userDetailsRecyclerView = new UserDetailsRecyclerView();
 
+    //clear data after logout
     public void clearAllData(){
         //preferenceManager.clear();
         userDetails.setName("");

@@ -92,6 +92,7 @@ public class RegMeterReader extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validations
                 if(inputName.getText().toString().trim().isEmpty() || inputAddress.getText().toString().trim().isEmpty() || inputContactNumber.getText().toString().trim().isEmpty() ||
                         inputEmail.getText().toString().trim().isEmpty() || inputUsername.getText().toString().trim().isEmpty() || inputPassword.getText().toString().trim().isEmpty() ||
                         inputConfirmPassword.getText().toString().trim().isEmpty()){
@@ -120,6 +121,7 @@ public class RegMeterReader extends Fragment {
         });
         return view;
     }
+    //validates if user id is already existing
     public void validateUserID(){
         newUserID = userID();
         db.collection("users")
@@ -134,6 +136,7 @@ public class RegMeterReader extends Fragment {
                 });
 
     }
+    //method for meter reader register
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Creating user account...");
@@ -192,12 +195,14 @@ public class RegMeterReader extends Fragment {
                     }
                 });
     }
+    //method for image selecting
     public void selectImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, RESULT_OK);
     }
+    //displays image after selecting
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -207,10 +212,12 @@ public class RegMeterReader extends Fragment {
             textAddImage.setVisibility(View.GONE);
         }
     }
+    //generates random userID
     public int userID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
     }
+    //method for clearing fields after register
     public void clearFields(){
         profile.setImageDrawable(null);
         textAddImage.setVisibility(View.VISIBLE);

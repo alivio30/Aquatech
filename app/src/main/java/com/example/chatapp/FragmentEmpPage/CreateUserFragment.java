@@ -42,6 +42,7 @@ public class CreateUserFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        //redirects to create consumer register fragment
         createConsumer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +52,7 @@ public class CreateUserFragment extends Fragment {
                 transaction.commit();
             }
         });
+        //redirects to create meter reader register fragment
         createMeterReader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,6 +62,7 @@ public class CreateUserFragment extends Fragment {
                 transaction.commit();
             }
         });
+        //redirects to create admin register fragment
         createAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

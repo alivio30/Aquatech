@@ -152,6 +152,7 @@ public class RegConsumer extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validations
                 if(inputName.getText().toString().trim().isEmpty() || inputAddress.getText().toString().trim().isEmpty() || inputContactNumber.getText().toString().trim().isEmpty() ||
                         inputEmail.getText().toString().trim().isEmpty() || inputSerialNumber.getText().toString().trim().isEmpty() || inputTankNumber.getText().toString().trim().isEmpty() ||
                         inputPumpNumber.getText().toString().trim().isEmpty() || inputLineNumber.getText().toString().trim().isEmpty() || inputMeterStand.getText().toString().trim().isEmpty() ||
@@ -186,7 +187,7 @@ public class RegConsumer extends Fragment {
 
         return view;
     }
-
+    //validate if user ID is existing
     public void validateUserID(){
         newUserID = userID();
         db.collection("users")
@@ -201,6 +202,7 @@ public class RegConsumer extends Fragment {
                 });
 
     }
+    //validate if account number is existing
     public void validateAccountNumber(){
         consumerAccountNumber = Integer.toString(year)+ "" +Integer.toString(month)+ "" +generateAccountNumber();
         db.collection("users")
@@ -214,6 +216,7 @@ public class RegConsumer extends Fragment {
                     }
                 });
     }
+    //validate if email is existing
     public void validateEmail(){
         db.collection("users")
                 .whereEqualTo("email", inputEmail.getText().toString())
@@ -226,6 +229,7 @@ public class RegConsumer extends Fragment {
                     }
                 });
     }
+    //validate if consumer ID is existing
     public void validateConsumerID(){
         newConsumerID = consumerID();
         db.collection("consumers")
@@ -239,6 +243,7 @@ public class RegConsumer extends Fragment {
                     }
                 });
     }
+    //validate if serial number is existing
     public void validateSerialNumber(){
         db.collection("consumers")
                 .whereEqualTo("meterSerialNumber", inputSerialNumber.getText().toString())
@@ -251,6 +256,7 @@ public class RegConsumer extends Fragment {
                     }
                 });
     }
+    //method for consumer register
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Creating user account...");
@@ -349,12 +355,14 @@ public class RegConsumer extends Fragment {
                     }
                 });
     }
+    //method for selecting image
     public void selectImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, RESULT_OK);
     }
+    //display image after selecting
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -380,6 +388,7 @@ public class RegConsumer extends Fragment {
         Random accountNumberRandom = new Random();
         return ((1 + accountNumberRandom.nextInt(9)) * 10000 + accountNumberRandom.nextInt(10000));
     }
+    //clear fields after register
     public void clearFields(){
         profile.setImageDrawable(null);
         textAddImage.setVisibility(View.VISIBLE);

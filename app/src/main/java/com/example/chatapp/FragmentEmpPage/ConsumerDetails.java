@@ -78,6 +78,7 @@ public class ConsumerDetails extends Fragment {
             }
         });
 
+        //retrieve and display consumer data
         accountNumber.setText(consumerProfileDetails.getAccountNumber());
         serialNumber.setText(consumerProfileDetails.getMeterSerialNumber());
         pumpNumber.setText(consumerProfileDetails.getPumpNumber());

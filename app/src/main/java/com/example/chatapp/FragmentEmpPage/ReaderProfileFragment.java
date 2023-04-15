@@ -64,6 +64,7 @@ public class ReaderProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
+        //redirects to login activity
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +75,7 @@ public class ReaderProfileFragment extends Fragment {
         });
         return view;
     }
+    //method for display user data
     public void displayData(){
         db.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())
@@ -88,6 +90,7 @@ public class ReaderProfileFragment extends Fragment {
                     }
                 });
     }
+    //method for erasing token
     public void eraseToken(){
         db.collection("users")
                 .whereEqualTo("userId", userDetails.getUserID())

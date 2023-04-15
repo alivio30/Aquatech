@@ -114,6 +114,7 @@ public class RegAdmin extends Fragment {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //validations
                 if(inputName.getText().toString().trim().isEmpty() || inputAddress.getText().toString().trim().isEmpty() || inputContactNumber.getText().toString().trim().isEmpty() ||
                 inputEmail.getText().toString().trim().isEmpty() || inputUsername.getText().toString().trim().isEmpty() ||
                 inputPassword.getText().toString().trim().isEmpty() || inputConfirmPassword.getText().toString().trim().isEmpty()){
@@ -145,6 +146,7 @@ public class RegAdmin extends Fragment {
         return view;
 
     }
+    //validate if user ID is existing
     public void validateUserID(){
         newUserID = userID();
         db.collection("users")
@@ -159,6 +161,7 @@ public class RegAdmin extends Fragment {
                 });
 
     }
+    //method for admin register
     public void insertUser(){
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setTitle("Creating user account...");
@@ -222,12 +225,14 @@ public class RegAdmin extends Fragment {
                     }
                 });
     }
+    //method for selecting image
     public void selectImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, RESULT_OK);
     }
+    //display image after selecting
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -237,10 +242,12 @@ public class RegAdmin extends Fragment {
             textAddImage.setVisibility(View.GONE);
         }
     }
+    //generate random user ID
     public int userID() {
         Random userRandom = new Random();
         return ((1 + userRandom.nextInt(9)) * 10000 + userRandom.nextInt(10000));
     }
+    //clear fields after register
     public void clearFields(){
         profile.setImageDrawable(null);
         textAddImage.setVisibility(View.VISIBLE);

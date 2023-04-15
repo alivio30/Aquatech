@@ -57,7 +57,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             super(itemContainerUserBinding.getRoot());
             binding = itemContainerUserBinding;
         }
-
+        //display data
         void setUserData(User user) {
             binding.textName.setText(user.getName());
             binding.textSerialNumber.setText(user.getType());

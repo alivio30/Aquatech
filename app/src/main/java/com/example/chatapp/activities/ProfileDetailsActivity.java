@@ -75,7 +75,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         }
 
     }
-
+    //method for storing consumer data to a getter/setter class
     public void retrieveConsumerData(){
         db.collection("consumers")
                 .whereEqualTo("userId", this.userID)

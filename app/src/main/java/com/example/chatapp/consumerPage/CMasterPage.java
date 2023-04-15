@@ -68,6 +68,7 @@ public class CMasterPage extends AppCompatActivity {
 
         });
         navigationView = findViewById(R.id.bottomNavigationView);
+        //set navigations for redirect fragment page
         navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -102,6 +103,7 @@ public class CMasterPage extends AppCompatActivity {
         navigationView.getMenu().getItem(0).setChecked(true);
         return new AdminBillingDetails();
     }
+    //method for loading fragment
     private void loadFragment(Fragment fragment){
         getSupportFragmentManager()
                 .beginTransaction()
