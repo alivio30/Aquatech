@@ -483,6 +483,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

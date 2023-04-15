@@ -471,7 +471,6 @@
                 android:padding="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp" />
         </LinearLayout>
-
         <Button
             android:id="@+id/buttonSubmit"
             android:layout_width="@dimen/_150sdp"
@@ -483,6 +482,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearContainer"
             android:layout_marginEnd="@dimen/_10sdp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearContainer"
+            android:layout_marginEnd="@dimen/_70sdp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
