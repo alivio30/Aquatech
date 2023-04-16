@@ -115,6 +115,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     //camera
     ActivityResultLauncher<Intent> takePictureLauncher;
     Uri resultUri;
+
+    //request camera
     private static final int REQUEST_CAMERA_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +185,13 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
+                    Manifest.permission.CAMERA
+            }, REQUEST_CAMERA_CODE);
+        }
+
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -191,6 +200,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 openCamera();
             }
         });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
