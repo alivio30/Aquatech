@@ -298,12 +298,45 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 dialog.dismiss();
                 resultFlag = true;
                 if(resultFlag){
-                    txtInputPresentReading.setText(modifiedText);
-                    scannedMeter.setImageBitmap(croppedImage);
-                    result();
-                    txtInputPresentReading.setEnabled(false);
-                    scanButton.setClickable(false);
-                    scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                    if(Integer.parseInt(modifiedText) < Integer.parseInt(txtPreviousReading.getText().toString())){
+                        counter--;
+                        if(counter!=0){
+                            builder.setTitle("Alert!")
+                                    .setMessage("Present reading too low! Please scan again.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                            openCamera();
+                                        }
+                                    })
+                                    .show();
+                        }else{
+                            builder.setTitle("Manual input override..")
+                                    .setMessage("Present reading too low! Please input the present reading manually.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                            scanButton.setClickable(false);
+                                            scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                                        }
+                                    })
+                                    .show();
+                            txtInputPresentReading.setEnabled(true);
+                            txtInputPresentReading.requestFocus();
+                            scannedMeter.setImageBitmap(croppedImage);
+                        }
+                    }else{
+                        txtInputPresentReading.setText(modifiedText);
+                        scannedMeter.setImageBitmap(croppedImage);
+                        result();
+                        txtInputPresentReading.setEnabled(false);
+                        scanButton.setClickable(false);
+                        scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                    }
                 }
             }
         });
