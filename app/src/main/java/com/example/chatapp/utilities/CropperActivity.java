@@ -65,7 +65,6 @@ public class CropperActivity extends AppCompatActivity {
             returnIntent.putExtra("RESULT", resultUri+"");
             setResult(-1,returnIntent);
            //image.setImage(resultUri+"");
-           Toast.makeText(getApplicationContext(), "cropper result", Toast.LENGTH_SHORT).show();
             finish();
         } else if(resultCode==UCrop.RESULT_ERROR) {
             final Throwable cropError = UCrop.getError(data);
