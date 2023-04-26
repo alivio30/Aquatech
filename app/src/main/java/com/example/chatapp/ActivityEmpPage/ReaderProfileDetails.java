@@ -119,7 +119,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
     Uri resultUri;
 
     //request camera
-    private static final int REQUEST_CAMERA_CODE = 100;
+    private static final int REQUEST_CAMERA_CODE = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +210,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
                     Manifest.permission.CAMERA
             }, REQUEST_CAMERA_CODE);
         }
-
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -259,6 +258,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 })
                                 .show();
                     }else{
+                        ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
+                                Manifest.permission.SEND_SMS}, 100);
                         calculateBill();
                     }
                 }
@@ -425,10 +426,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
     public void openCamera(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        //if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Launch the camera to capture an image
             takePictureLauncher.launch(takePictureIntent);
-        }
+        //}
     }
     public void getPrevReading(){
         db.collection("billing")
@@ -784,8 +785,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                                                 @Override
                                                                                                                                                 public void onSuccess(Void unused) {
                                                                                                                                                     notifyBill();
-                                                                                                                                                    progressBar.setVisibility(View.INVISIBLE);
-                                                                                                                                                    submitButton.setVisibility((View.VISIBLE));
+                                                                                                                                                    //progressBar.setVisibility(View.INVISIBLE);
+                                                                                                                                                    //submitButton.setVisibility((View.VISIBLE));
                                                                                                                                                     onBackPressed();
                                                                                                                                                 }
                                                                                                                                             });
@@ -848,13 +849,14 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
     public void notifySMS(){
         //Send to SMS
+        //sendSMS();
         if(ContextCompat.checkSelfPermission(ReaderProfileDetails.this, Manifest.permission.SEND_SMS)
                 == PackageManager.PERMISSION_GRANTED){
             sendSMS();
-        }else{
+        }/*else{
             ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
                     Manifest.permission.SEND_SMS}, 100);
-        }
+        }*/
     }
     public void notifyEmail(){
         //Send to email
@@ -923,13 +925,31 @@ public class ReaderProfileDetails extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == 100 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            sendSMS();
-        }else{
+            //Toast.makeText(this, "SMS Permission Granted!", Toast.LENGTH_SHORT).show();
+            //sendSMS();
+        }/*else{
             Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+        }*/
+        if(requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            //Toast.makeText(this, "Camera Permission Granted!", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void sendSMS(){
+        /*messageNetAmount = String.format("%.2f", netAmount);
+        // Get the default SmsManager
+        SmsManager smsManager = SmsManager.getDefault();
+
+        // Set the destination phone number and message text
+        String phone = number;
+        String message = "Dear "+name+", \n\n" +
+                "Your partial bill is amounting "+messageNetAmount+" pesos for the month of "+filterDate+"." +
+                "\nDue date is by "+messageDate+". " +
+                "\n\nBest regards,\nAquatech";
+
+        // Send the message
+        smsManager.sendTextMessage(phone, null, message, null, null);*/
+        Toast.makeText(getApplicationContext(), "dsadsad", Toast.LENGTH_LONG).show();
         messageNetAmount = String.format("%.2f", netAmount);
         SmsManager smsManager = SmsManager.getDefault();
         String phone = number;
