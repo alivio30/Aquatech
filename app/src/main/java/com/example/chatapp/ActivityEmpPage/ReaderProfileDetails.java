@@ -931,7 +931,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
             Toast.makeText(this, "Permission Denied!", Toast.LENGTH_SHORT).show();
         }*/
         if(requestCode == 101 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Camera Permission Granted!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Camera Permission Granted!", Toast.LENGTH_SHORT).show();
         }
     }
 
