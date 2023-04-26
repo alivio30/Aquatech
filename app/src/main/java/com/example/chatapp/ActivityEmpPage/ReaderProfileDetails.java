@@ -27,6 +27,8 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
@@ -178,6 +180,23 @@ public class ReaderProfileDetails extends AppCompatActivity {
         billingNumber = Integer.toString(year)+ "" +Integer.toString(month);
 
         validation();
+        txtInputPresentReading.setFilters(new InputFilter[] {
+                new InputFilter() {
+                    @Override
+                    public CharSequence filter(CharSequence source, int start, int end,
+                                               Spanned dest, int dstart, int dend) {
+                        String pattern = "[0-9]+";
+                        if (!source.toString().matches(pattern)) {
+                            return "";
+                        }
+                        if (source.toString().contains(" ")) {
+                            return source.toString().replaceAll(" ", "");
+                        }
+                        return null;
+                    }
+                }
+        });
+
         imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,6 +310,10 @@ public class ReaderProfileDetails extends AppCompatActivity {
         dialogTextResult = dialog.findViewById(R.id.textResult);
         dialogAttempt = dialog.findViewById(R.id.textAttempt);
 
+        /*if(containsAlphabet(modifiedText)){
+            yes.setClickable(false);
+            yes.setBackgroundColor(Color.rgb(255, 0, 0));
+        }*/
 
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +352,38 @@ public class ReaderProfileDetails extends AppCompatActivity {
                             txtInputPresentReading.requestFocus();
                             scannedMeter.setImageBitmap(croppedImage);
                         }
-                    }else{
+                    }/*else if(containsAlphabet(modifiedText)){
+                        counter--;
+                        if(counter!=0){
+                            builder.setTitle("Alert!")
+                                    .setMessage("Present reading contains alphabet! Please scan again.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                            openCamera();
+                                        }
+                                    })
+                                    .show();
+                        }else{
+                            builder.setTitle("Manual input override..")
+                                    .setMessage("Present reading contains alphabet! Please input the present reading manually.")
+                                    .setCancelable(false)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.cancel();
+                                            scanButton.setClickable(false);
+                                            scanButton.setBackgroundColor(Color.rgb(255, 0, 0));
+                                        }
+                                    })
+                                    .show();
+                            txtInputPresentReading.setEnabled(true);
+                            txtInputPresentReading.requestFocus();
+                            scannedMeter.setImageBitmap(croppedImage);
+                        }
+                    }*/else{
                         txtInputPresentReading.setText(modifiedText);
                         scannedMeter.setImageBitmap(croppedImage);
                         result();
@@ -576,8 +630,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
 
     public void calculateBill(){
-        progressBar.setVisibility(View.VISIBLE);
-        submitButton.setVisibility((View.INVISIBLE));
+        //progressBar.setVisibility(View.VISIBLE);
+        //submitButton.setVisibility((View.INVISIBLE));
         billingID = billingID();
         messageNetAmount = String.format("%.2f", netAmount);
         messageDate = notifyFormat.format(getDueDate(15));
@@ -764,8 +818,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                                                                                                             @Override
                                                                                                                             public void onSuccess(Void unused) {
                                                                                                                                 notifyBill();
-                                                                                                                                progressBar.setVisibility(View.INVISIBLE);
-                                                                                                                                submitButton.setVisibility((View.VISIBLE));
+                                                                                                                                //progressBar.setVisibility(View.INVISIBLE);
+                                                                                                                                //submitButton.setVisibility((View.VISIBLE));
                                                                                                                                 onBackPressed();
                                                                                                                             }
                                                                                                                         });
@@ -1001,11 +1055,15 @@ public class ReaderProfileDetails extends AppCompatActivity {
                 List<Text.Element> elements = lines.get(j).getElements();
                 for (int k = 0; k < elements.size(); k++) {
                     String elementText = elements.get(k).getText();
-                    showToast(elementText);
+                    //showToast(elementText);
                     modifiedText = elementText.replace("O", "0").replace("o", "0").replace("B", "8").replace("D", "0").replace("d", "0");
                     modifiedText = modifiedText.replaceAll("[^a-zA-Z0-9]", "");
                 }
             }
+        }
+        if(containsAlphabet(modifiedText)){
+            yes.setClickable(false);
+            yes.setTextColor(getResources().getColor(R.color.error));
         }
         dialog.show();
         result.setImageBitmap(croppedImage);
@@ -1045,5 +1103,14 @@ public class ReaderProfileDetails extends AppCompatActivity {
 
             }
         });
+    }
+
+    public static boolean containsAlphabet(String inputString){
+        for (char c : inputString.toCharArray()) {
+            if (Character.isLetter(c)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
