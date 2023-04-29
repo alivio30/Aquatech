@@ -3,6 +3,7 @@ package com.example.chatapp.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -52,5 +53,14 @@ public class SignInActivity extends AppCompatActivity {
 
         //displays the login fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, loginFragment).commit();
+    }
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

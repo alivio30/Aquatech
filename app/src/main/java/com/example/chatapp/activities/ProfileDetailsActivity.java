@@ -1,6 +1,7 @@
 package com.example.chatapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.View;
@@ -64,16 +65,12 @@ public class ProfileDetailsActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
-        if (count == 0) {
-            super.onBackPressed();
-            //additional code
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
         } else {
-            getSupportFragmentManager().popBackStack();
+            super.onBackPressed();
         }
-
     }
     //method for storing consumer data to a getter/setter class
     public void retrieveConsumerData(){
