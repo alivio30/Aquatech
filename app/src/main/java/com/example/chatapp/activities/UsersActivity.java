@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.chatapp.R;
 import com.example.chatapp.adapters.UsersAdapter;
@@ -59,10 +60,6 @@ public class UsersActivity extends BaseActivity implements UserListener {
         }else if(userDetails.getUserType().equalsIgnoreCase("consumer") || userDetails.getUserType().equalsIgnoreCase("meter reader")){
             getAdmin();
         }
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 
     private void setListener() {
@@ -165,5 +162,15 @@ public class UsersActivity extends BaseActivity implements UserListener {
         intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

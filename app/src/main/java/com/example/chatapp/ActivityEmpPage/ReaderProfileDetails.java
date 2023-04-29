@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -976,7 +977,12 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void StringToBitMap(ImageView bitImage, String image){

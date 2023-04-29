@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.chatapp.R;
 import com.example.chatapp.adapters.RecentConversionsAdapter;
@@ -73,10 +74,6 @@ public class MainActivity extends BaseActivity implements ConversationListener {
                 onBackPressed();
             }
         });
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
     //method for displaying users
     private void loadUserDetails() {
@@ -191,5 +188,15 @@ public class MainActivity extends BaseActivity implements ConversationListener {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

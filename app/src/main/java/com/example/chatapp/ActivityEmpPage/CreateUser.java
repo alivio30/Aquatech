@@ -53,6 +53,11 @@ public class CreateUser extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
