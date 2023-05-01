@@ -108,6 +108,7 @@ public class CMasterPage extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.FragmentContainer, fragment, fragment.getClass().getSimpleName())
+                .addToBackStack(null)
                 .commit();
     }
     @Override
