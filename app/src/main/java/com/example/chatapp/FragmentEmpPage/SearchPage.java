@@ -184,4 +184,16 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                     });
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        usersArrayList.clear();
+        usersArrayList = new ArrayList<UserDetailsRecyclerView>();
+
+        //set data adapter for displaying consumers
+        myAdapter = new searchUserAdapter(SearchPage.this.getContext(), usersArrayList, this);
+        recyclerView.setAdapter(myAdapter);
+        EventChangeListener();
+    }
 }
