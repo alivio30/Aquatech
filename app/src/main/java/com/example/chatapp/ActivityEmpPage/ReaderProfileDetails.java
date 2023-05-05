@@ -259,8 +259,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                 })
                                 .show();
                     }else{
-                        ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
-                                Manifest.permission.SEND_SMS}, 100);
+                        /*ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
+                                Manifest.permission.SEND_SMS}, 100);*/
                         calculateBill();
                     }
                 }
@@ -634,6 +634,8 @@ public class ReaderProfileDetails extends AppCompatActivity {
     public void calculateBill(){
         //progressBar.setVisibility(View.VISIBLE);
         //submitButton.setVisibility((View.INVISIBLE));
+        ActivityCompat.requestPermissions(ReaderProfileDetails.this, new String[]{
+                Manifest.permission.SEND_SMS}, 100);
         billingID = billingID();
         messageNetAmount = String.format("%.2f", netAmount);
         messageDate = notifyFormat.format(getDueDate(15));
@@ -937,20 +939,6 @@ public class ReaderProfileDetails extends AppCompatActivity {
     }
 
     private void sendSMS(){
-        /*messageNetAmount = String.format("%.2f", netAmount);
-        // Get the default SmsManager
-        SmsManager smsManager = SmsManager.getDefault();
-
-        // Set the destination phone number and message text
-        String phone = number;
-        String message = "Dear "+name+", \n\n" +
-                "Your partial bill is amounting "+messageNetAmount+" pesos for the month of "+filterDate+"." +
-                "\nDue date is by "+messageDate+". " +
-                "\n\nBest regards,\nAquatech";
-
-        // Send the message
-        smsManager.sendTextMessage(phone, null, message, null, null);*/
-        Toast.makeText(getApplicationContext(), "dsadsad", Toast.LENGTH_LONG).show();
         messageNetAmount = String.format("%.2f", netAmount);
         SmsManager smsManager = SmsManager.getDefault();
         String phone = number;

@@ -127,8 +127,22 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                         }
                         for(DocumentChange dc : value.getDocumentChanges()){
                             if(dc.getType() == DocumentChange.Type.ADDED){
-                                usersArrayList.add(dc.getDocument().toObject(UserDetailsRecyclerView.class));
-                                progressBar.setVisibility(view.GONE);
+                                //usersArrayList.add(dc.getDocument().toObject(UserDetailsRecyclerView.class));
+                                UserDetailsRecyclerView user = dc.getDocument().toObject(UserDetailsRecyclerView.class);
+                                //progressBar.setVisibility(view.GONE);
+
+                                boolean exists = false;
+                                for (UserDetailsRecyclerView u : usersArrayList) {
+                                    if (u.getConsId().equals(user.getConsId())) {
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                                // Only add the new user if it does not already exist in the list
+                                if (!exists) {
+                                    usersArrayList.add(user);
+                                    progressBar.setVisibility(view.GONE);
+                                }
                             }
                         }
                         myAdapter.notifyDataSetChanged();
