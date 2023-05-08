@@ -114,7 +114,10 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     }
     //method for displaying all consumers
     private void EventChangeListener() {
-        db.collection("consumers").whereEqualTo("companyId", userDetails.getCompanyID()).orderBy("name")
+        db.collection("consumers")
+                .whereEqualTo("companyId", userDetails.getCompanyID())
+                .whereEqualTo("status", "Active")
+                .orderBy("name")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

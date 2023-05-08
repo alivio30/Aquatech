@@ -73,6 +73,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereEqualTo("userType", "Admin")
                 .whereEqualTo("companyId", userDetails.getCompanyID())
+                .whereEqualTo("status", "Active")
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
@@ -111,6 +112,7 @@ public class UsersActivity extends BaseActivity implements UserListener {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereEqualTo("companyId", userDetails.getCompanyID())
+                .whereEqualTo("status", "Active")
                 .get()
                 .addOnCompleteListener(task -> {
                     loading(false);
