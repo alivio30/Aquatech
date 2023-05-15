@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     ArrayList<UserDetailsRecyclerView> usersArrayList;
     searchUserAdapter myAdapter;
     FirebaseFirestore db;
+    Button unreadFilter, readFilter;
     Toast toast;
     Image image = new Image();
 
@@ -65,6 +67,8 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_search_page, container, false);
         search = view.findViewById(R.id.inputSearch);
+        readFilter = view.findViewById(R.id.buttonRead);
+        unreadFilter = view.findViewById(R.id.buttonUnread);
         progressBar = view.findViewById(R.id.progressBar);
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setCancelable(false);
@@ -98,6 +102,22 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                 Filter(editable.toString());
             }
         });
+
+        readFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayReadMeter();
+                Toast.makeText(getContext(), "read", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        unreadFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayUnreadMeter();
+                Toast.makeText(getContext(), "unread", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
     //method for searching consumers by serial number
@@ -110,6 +130,109 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
             }
         }
         myAdapter.setFilteredList(filterList);
+
+    }
+    //method for unread meter display
+    private void displayUnreadMeter(){
+        usersArrayList.clear();
+        usersArrayList = new ArrayList<UserDetailsRecyclerView>();
+
+        //set data adapter for displaying consumers
+        myAdapter = new searchUserAdapter(SearchPage.this.getContext(), usersArrayList, this);
+        recyclerView.setAdapter(myAdapter);
+
+        db.collection("consumers")
+                .whereEqualTo("companyId", userDetails.getCompanyID())
+                .whereEqualTo("status", "Active")
+                .whereEqualTo("remarks", "Unread")
+                .orderBy("name")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null){
+                            if(progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
+                            Log.e("Firestore error", error.getMessage());
+                            return;
+                        }
+                        for(DocumentChange dc : value.getDocumentChanges()){
+                            if(dc.getType() == DocumentChange.Type.ADDED){
+                                //usersArrayList.add(dc.getDocument().toObject(UserDetailsRecyclerView.class));
+                                UserDetailsRecyclerView user = dc.getDocument().toObject(UserDetailsRecyclerView.class);
+                                //progressBar.setVisibility(view.GONE);
+
+                                boolean exists = false;
+                                for (UserDetailsRecyclerView u : usersArrayList) {
+                                    if (u.getConsId().equals(user.getConsId())) {
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                                // Only add the new user if it does not already exist in the list
+                                if (!exists) {
+                                    usersArrayList.add(user);
+                                    progressBar.setVisibility(view.GONE);
+                                }
+                            }
+                        }
+                        myAdapter.notifyDataSetChanged();
+                        if(progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+    }
+    //method for read meter display
+    private void displayReadMeter(){
+        usersArrayList.clear();
+        usersArrayList = new ArrayList<UserDetailsRecyclerView>();
+
+        //set data adapter for displaying consumers
+        myAdapter = new searchUserAdapter(SearchPage.this.getContext(), usersArrayList, this);
+        recyclerView.setAdapter(myAdapter);
+
+        db.collection("consumers")
+                .whereEqualTo("companyId", userDetails.getCompanyID())
+                .whereEqualTo("status", "Active")
+                .whereEqualTo("remarks", "Read")
+                .orderBy("name")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(error != null){
+                            if(progressDialog.isShowing()){
+                                progressDialog.dismiss();
+                            }
+                            Log.e("Firestore error", error.getMessage());
+                            return;
+                        }
+                        for(DocumentChange dc : value.getDocumentChanges()){
+                            if(dc.getType() == DocumentChange.Type.ADDED){
+                                //usersArrayList.add(dc.getDocument().toObject(UserDetailsRecyclerView.class));
+                                UserDetailsRecyclerView user = dc.getDocument().toObject(UserDetailsRecyclerView.class);
+                                //progressBar.setVisibility(view.GONE);
+
+                                boolean exists = false;
+                                for (UserDetailsRecyclerView u : usersArrayList) {
+                                    if (u.getConsId().equals(user.getConsId())) {
+                                        exists = true;
+                                        break;
+                                    }
+                                }
+                                // Only add the new user if it does not already exist in the list
+                                if (!exists) {
+                                    usersArrayList.add(user);
+                                    progressBar.setVisibility(view.GONE);
+                                }
+                            }
+                        }
+                        myAdapter.notifyDataSetChanged();
+                        if(progressDialog.isShowing()){
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
 
     }
     //method for displaying all consumers
