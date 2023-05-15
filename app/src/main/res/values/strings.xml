@@ -120,6 +120,9 @@
     <string name="others">Others :</string>
     <string name="discount">Discount :</string>
     <string name="credit">Credit :</string>
+    <string name="unread">Unread</string>
+    <string name="read">Read</string>
+    <string name="choose_to_filter_status">Choose to Filter Status :</string>
     <string-array name="Positions">
         <item>Consumer</item>
         <item>Meter Reader</item>
