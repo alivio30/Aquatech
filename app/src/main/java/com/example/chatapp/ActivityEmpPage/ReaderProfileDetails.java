@@ -653,7 +653,7 @@ public class ReaderProfileDetails extends AppCompatActivity {
                                         int consumption = Integer.parseInt(txtWaterConsumption.getText().toString());
                                         for(DocumentSnapshot ds : task1.getResult().getDocuments()){
                                             //int consumption1 = 0;
-                                            if(consumption >= Integer.parseInt(ds.getString("rateStartUnit")) && consumption <= Integer.parseInt(ds.getString("rateEndUnit"))) {
+                                            if(consumption >= ds.getDouble("rateStartUnit") && consumption <= ds.getDouble("rateEndUnit")) {
                                                 watercharge = Integer.parseInt((ds.getString("ratePrice")));
                                             }
                                         }
