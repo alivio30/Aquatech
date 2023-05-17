@@ -107,7 +107,6 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
             @Override
             public void onClick(View v) {
                 displayReadMeter();
-                Toast.makeText(getContext(), "read", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -115,7 +114,6 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
             @Override
             public void onClick(View v) {
                 displayUnreadMeter();
-                Toast.makeText(getContext(), "unread", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
