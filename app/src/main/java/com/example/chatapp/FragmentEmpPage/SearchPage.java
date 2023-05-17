@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.ActivityEmpPage.MasterPage;
@@ -54,6 +55,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
     ProgressDialog progressDialog;
     ProgressBar progressBar;
     EditText search;
+    TextView filter;
     RecyclerView recyclerView;
     ArrayList<UserDetailsRecyclerView> usersArrayList;
     searchUserAdapter myAdapter;
@@ -69,6 +71,7 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
         search = view.findViewById(R.id.inputSearch);
         readFilter = view.findViewById(R.id.buttonRead);
         unreadFilter = view.findViewById(R.id.buttonUnread);
+        filter = view.findViewById(R.id.textFilter);
         progressBar = view.findViewById(R.id.progressBar);
         progressDialog = new ProgressDialog(this.getContext());
         progressDialog.setCancelable(false);
@@ -116,6 +119,12 @@ public class SearchPage extends Fragment implements RecyclerViewInterface {
                 displayUnreadMeter();
             }
         });
+
+        if(userDetails.getUserType().equalsIgnoreCase("Admin")){
+            filter.setVisibility(View.GONE);
+            readFilter.setVisibility(View.GONE);
+            unreadFilter.setVisibility(View.GONE);
+        }
         return view;
     }
     //method for searching consumers by serial number
